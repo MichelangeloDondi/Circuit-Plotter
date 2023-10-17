@@ -1,4 +1,4 @@
-# ----------------- Required Packages -----------------
+# ----------------- Packages -----------------
 
     using Pkg 
 
@@ -43,9 +43,16 @@
         graph::SimpleGraph
     end
 
-# ----------------- Functions -----------------
+# ----------------- Other Functions -----------------
 
     include("auxiliary_functions.jl")
+
+# ----------------- Imported Modules -----------------
+
+    using .Auxiliary_Functions: get_positive_integer_input
+
+# ----------------- IO Functions -----------------
+
     include("function_collect_nodes.jl")
     include("function_collect_edges.jl")
     include("function_collect_components.jl")
@@ -61,7 +68,7 @@
         println()
         println("You will be guided to input nodes, edges and components of your circuit.")
         println("The program will then plot your circuit.")
-        println("The plot will be automatically saved as a .png file in the 'Images' folder.")
+        println("The plot will be automatically save as a .png file in the 'Images' folder.")
         println()
         
         circuit = Circuit([], [], SimpleGraph())
@@ -69,13 +76,26 @@
 
         node_count = get_positive_integer_input("How many nodes does your circuit have? ")
 
+        # Collect the nodes
         collect_nodes_from_cmd(node_count, circuit)
-        collect_edges_from_cmd(node_count, circuit, edge_info)
-        collect_components_from_cmd(circuit, edge_info)
+        nodes_recap(circuit)
+        draw_plot(circuit)
 
+        # Collect the edges
+        collect_edges_from_cmd(node_count, circuit, edge_info)
+        edges_recap(edge_info)
+        draw_plot(circuit)
+
+        # Collect the components
+        collect_components_from_cmd(circuit, edge_info)
+        components_recap(circuit)
         draw_plot(circuit)
 
         save_current_plot()
+
+        println("Press Enter to exit...")
+        readline()
+
     end
 
 # ----------------- Run -----------------

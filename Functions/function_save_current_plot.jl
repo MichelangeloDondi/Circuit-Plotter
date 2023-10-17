@@ -8,6 +8,13 @@ function save_current_plot()
         mkdir("Images")
     end
 
-    Plots.savefig("Images\\circuit_plot.png")
-    println("Circuit plot saved as 'Images\\circuit_plot.png'.")
+    # Save the plot as an image in the Images directory
+    current_date = Dates.now()
+
+    # Convert the current_date to a formatted string
+    formatted_date = Dates.format(current_date, "YYYY_MM_DD_HH_MM_SS")
+    filename = "circuit_plot_$(formatted_date).png"
+    
+    Plots.savefig("Images\\$(filename)")
+    println("Circuit plot saved as 'Images\\$(filename)'.")
 end
