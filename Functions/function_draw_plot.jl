@@ -1,3 +1,5 @@
+# This file contains functions to plot the circuit
+
 #########################################################
     # Begin of the drawing functions
 #########################################################

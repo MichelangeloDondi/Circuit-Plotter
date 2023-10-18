@@ -1,6 +1,10 @@
 function save_current_plot()
     # Set the working directory to the directory of the script
     cd(@__DIR__)
+
+    # Navigate to the parent directory "Circuit-Plotter" of the current directory 
+    # (i.e. the root directory of the project, where the Images directory is located)
+    # The ".." is the parent directory of the current directory
     cd("..")
 
     # Create the Images directory if it doesn't exist

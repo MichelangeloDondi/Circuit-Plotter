@@ -1,5 +1,8 @@
+# User input for node coordinates
+
 # ----------------- Imported Modules -----------------
 
+    # Help functions from help_functions.jl
     using .Help_Functions: show_help
 
 #########################################################

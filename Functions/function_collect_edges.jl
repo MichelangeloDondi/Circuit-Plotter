@@ -1,6 +1,12 @@
+# User input for edges
+
+
 # ----------------- Imported Modules -----------------
     
+    # Auxiliary functions from auxiliary_functions2.jl
     using .Auxiliary_Functions: overlapping_edges 
+
+    # Help functions from help_functions.jl
     using .Help_Functions: show_help
     
 #########################################################

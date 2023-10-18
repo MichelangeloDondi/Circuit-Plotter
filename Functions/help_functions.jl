@@ -7,6 +7,8 @@ module Help_Functions
 
     # ----------------- Internal Functions -----------------
 
+        # show_instructions()
+
         # Show the instructions
         function show_instructions()
 
@@ -39,6 +41,7 @@ module Help_Functions
             println()
             println("-----------------------------------------------")
             println()
+            # List of instructions
             show_instructions()
             println()
             println("-----------------------------------------------")
@@ -102,6 +105,7 @@ module Help_Functions
             println("The name of the image contains the current date and time of the program execution.")
             println("This way you can easily keep track of your images and avoid overwriting them.")
             println()
+            # List of instructions
             show_instructions()
             println("---------------------------------------------------")
             println("                   END OF HELP                     ")
