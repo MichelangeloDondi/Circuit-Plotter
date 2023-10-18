@@ -1,3 +1,7 @@
+# ----------------- Imported Modules -----------------
+
+    using .Help_Functions: show_help
+
 #########################################################
     # Begin of the function collect_nodes_from_cmd
 #########################################################
@@ -11,7 +15,10 @@
                 flush(stdout)
                 input = readline()
             
-                if input == "exit"
+                if input == "help"
+                    show_help()
+                    continue
+                elseif input == "exit"
                     println("Exiting the program.")
                     exit(0)
                 end

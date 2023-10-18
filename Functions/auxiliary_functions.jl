@@ -1,5 +1,10 @@
 module Auxiliary_Functions
 
+    # ----------------- Imported Modules -----------------
+
+        include("help_functions.jl")
+        using .Help_Functions: show_help
+
     # ----------------- Exported Functions -----------------
 
         export get_positive_integer_input, overlapping_edges

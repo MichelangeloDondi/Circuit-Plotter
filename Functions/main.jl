@@ -45,11 +45,13 @@
 
 # ----------------- Other Functions -----------------
 
+    include("help_functions.jl") 
     include("auxiliary_functions.jl")
 
 # ----------------- Imported Modules -----------------
 
     using .Auxiliary_Functions: get_positive_integer_input
+    using .Help_Functions: show_initial_greetings
 
 # ----------------- IO Functions -----------------
 
@@ -63,13 +65,7 @@
 
     function main()
    
-        println()
-        println("Welcome to the program Circuit Plotter!")
-        println()
-        println("You will be guided to input nodes, edges and components of your circuit.")
-        println("The program will then plot your circuit.")
-        println("The plot will be automatically save as a .png file in the 'Images' folder.")
-        println()
+        show_initial_greetings()
         
         circuit = Circuit([], [], SimpleGraph())
         edge_info = EdgeInfo([])

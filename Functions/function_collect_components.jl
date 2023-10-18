@@ -1,3 +1,7 @@
+# ----------------- Imported Modules -----------------
+
+    using .Help_Functions: show_help
+
 #########################################################
     # Begin of the function collect_components_from_cmd 
 #########################################################    
@@ -12,7 +16,7 @@
                 println()
                 print("If you choose not to add a component, the edge will be considered to be a section of wire ")
                 println("(note that no more then one component can be added for each edge).")
-                println("Enter your choice (y/n/exit):")
+                println("Enter your choice (y/n/help/exit):")
                 println()
                 flush(stdout)
                 decision = readline(stdin)
@@ -27,6 +31,8 @@
                     break
                 elseif decision == "n"
                     break
+                elseif decision == "help"
+                    show_help() 
                 elseif decision == "exit"
                     println("Exiting the program.")
                     exit(0)

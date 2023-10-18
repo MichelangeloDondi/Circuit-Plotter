@@ -1,6 +1,7 @@
 # ----------------- Imported Modules -----------------
     
     using .Auxiliary_Functions: overlapping_edges 
+    using .Help_Functions: show_help
     
 #########################################################
     # Begin of the function collect_edges_from_cmd
@@ -23,7 +24,10 @@
             flush(stdout)
             input = readline()
         
-            if input == "exit"
+            if input == "help"
+                show_help()
+                continue
+            elseif input == "exit"
                 println("Exiting the program.")
                 exit(0)
             elseif input == ""
