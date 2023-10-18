@@ -1,49 +1,73 @@
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
+# ======================== Program Circuit Plotter =============================
+# ==============================================================================
+# ==============================================================================
+# ==============================================================================
+
 """
-    Author: Michelangelo Dondi
-    Description: A tool that allows the user to draw a circuit and visualize it.
-    Version: 1.2
-    License: MIT License
-    Title: Circuit Plotter
+    Program Circuit Plotter
+
+Author: Michelangelo Dondi
+Date: 18-10-2023
+Description:
+    A user-friendly tool that allows the creation and visualization of electrical circuits.
+    Users can define nodes, components, and their connections, with an end visualization
+    rendered using the PlotlyJS backend for interactivity.
+
+Version: 2.0
+License: MIT License
 """
 
-# ----------------- Packages -----------------
+# ==============================================================================
+# ============================ Required Packages ===============================
+# ==============================================================================
 
-    using Pkg # For adding packages
+    println("Installing necessary packages...")
 
-    Pkg.add("LightGraphs")
-    Pkg.add("GraphRecipes")
-    Pkg.add("Plots")
-    Pkg.add("PlotlyJS")
-    Pkg.add("Dates")
+    # Ensure that all necessary Julia packages are installed before execution.
+    using Pkg
 
-    using LightGraphs   # For graph data structure
-    using GraphRecipes  # For plotting graphs
-    using Plots         # For plotting
-    using PlotlyJS      # For plotting
-    using Dates         # For date and time
+    Pkg.add("LightGraphs")    # Data structure to represent electrical circuits as graphs    
+    Pkg.add("GraphRecipes")   # Plotting backend for the LightGraphs package
+    Pkg.add("Plots")          # Plotting package that utilizes the GraphRecipes backend
+    Pkg.add("PlotlyJS")       # Plotting backend for the Plots package
+    Pkg.add("Dates")          # For generating timestamped filenames
+    
+    using LightGraphs  # Data structure to represent electrical circuits as graphs
 
-#########################################################
-    # Begin of the main program
-#########################################################
+# ==============================================================================
+# ============================= Data Structures ================================
+# ==============================================================================
 
-    # Set the backend to PlotlyJS
-    plotlyjs()
+    println("Defining data structures...")
 
-# ----------------- Structures -----------------
+    """
+        Node
 
-    # Node structure
+    A structure that encapsulates the particulars of a node.
+    """
     struct Node
         id::Int
         x::Int
         y::Int
     end
 
-    # Edge information structure
+    """
+        EdgeInfo
+
+    A structure that chronicles the connectivity between diverse nodes.
+    """
     mutable struct EdgeInfo
         edges::Vector{Tuple{Int, Int}}
     end
 
-    # Component structure
+    """
+        Component
+
+    A structure that encapsulates the particulars of a component.
+    """
     struct Component
         id::Int
         start_node::Int
@@ -51,86 +75,95 @@
         details::String
     end
 
-    # Circuit structure
+    """
+        Circuit
+
+    A structure that encapsulates the nodes, components, and their pictorial
+    representation within the circuit.
+    """
     mutable struct Circuit
         nodes::Vector{Node}
         components::Vector{Component}
         graph::SimpleGraph
     end
 
-# ----------------- Other Functions -----------------
+# ==============================================================================
+# =========================== Imported Modules ===============================
+# ==============================================================================
 
-    # help functions (initial greetings and instructions are also included here)
-    include("help_functions.jl") # contains module Help_Functions
+    println("Defining imported modules...")
 
-    # Auxiliary functions (functions that are used by other functions)
-    include("auxiliary_functions.jl") # contains module Auxiliary_Functions
+    # Module_Helping.jl provides helper functions for the main program.
+    include("Module_Helping.jl")
+    using .Helping: show_initial_greetings # Greetings and instructions
 
-# ----------------- Imported Modules -----------------
+    # Module_Gathering_Nodes.jl: Provides functions for collecting node details.
+    include("Module_Gathering_Nodes.jl")
+    using .Gathering_Nodes: gather_nodes # Collect node details from the user
 
-    # Auxiliary functions from auxiliary_functions.jl
-    using .Auxiliary_Functions: get_positive_integer_input
+    # Module_Gathering_Edges.jl: Provides functions for collecting edge details.
+    include("Module_Gathering_Edges.jl")
+    using .Gathering_Edges: gather_edges # Collect edge details from the user
 
-    # Help functions from help_functions.jl
-    using .Help_Functions: show_initial_greetings
+    # Module_Gathering_Components.jl: Provides functions for collecting component details.
+    include("Module_Gathering_Components.jl")
+    using .Gathering_Components: gather_components # Collect component details from the user
 
-# ----------------- IO Functions -----------------
+    # Module_Plotting.jl: Provides functions for drawing the current circuit plot.
+    include("Module_Plotting.jl")
+    using .Plotting: draw_plot # Draw the current circuit plot
 
-    # User input for node coordinates
-    include("function_collect_nodes.jl")
+    # Module_Saving.jl: Provides functions for saving the current plot.
+    include("Module_Saving.jl")
+    using .Saving: save_current_plot # Save the current plot
 
-    # User input for edge information
-    include("function_collect_edges.jl")
+# ==============================================================================
+# ============================== Main Function ================================
+# ==============================================================================
+     
+    println("Defining main function...")
+    """
+        main() -> nothing   
 
-    # User input for circuit components
-    include("function_collect_components.jl")
-
-    # Display the circuit status
-    include("function_draw_plot.jl")
-
-    # Save the visualization of the circuit
-    include("function_save_current_plot.jl")
-
-# ----------------- Main -----------------
-
+    The main function of the program. It orchestrates the execution of the
+    various modules that comprise the program, and provides the user with
+    feedback and instructions as necessary.
+        
+    Parameters:
+    - none
+        
+    Returns:
+    - nothing
+    """
     function main()
         
-        # Initial greetings and instructions
+        # Greet the user and provide any necessary instructions or information.
         show_initial_greetings()
-        
-        # Initialize the main circuit and edge information structures
+
+        # Initialize the data structures that will house the circuit particulars.
         circuit = Circuit([], [], SimpleGraph())
         edge_info = EdgeInfo([])
 
-        # User input for number of nodes 
-        node_count = get_positive_integer_input("How many nodes does your circuit have? ")
+        # Gather the particulars of the nodes and provide feedback to the user.
+        gather_nodes(circuit)
 
-        # Node input from the user
-        collect_nodes_from_cmd(node_count, circuit)
-        # Providing feedback to the user about the nodes that have been inserted
-        nodes_recap(circuit)
-        draw_plot(circuit)
+        # Gather the particulars of the edges and provide feedback to the user.
+        gather_edges(circuit, edge_info)
 
-        # Edge input from the user
-        collect_edges_from_cmd(node_count, circuit, edge_info)
-        # Providing feedback to the user about the edges that have been inserted
-        edges_recap(edge_info)
-        draw_plot(circuit)
+        # Gather the particulars of the components and provide feedback to the user.
+        gather_components(circuit, edge_info)
 
-        # Component input from the user
-        collect_components_from_cmd(circuit, edge_info)
-        # Providing feedback to the user about the components that have been inserted
-        components_recap(circuit)
-        draw_plot(circuit)
-
-        # Save the visualization of the circuit
+        # Save the visual representation of the user-defined circuit.
         save_current_plot()
 
+        # Exit the program.
         println("Press Enter to exit...")
         readline()
-
     end
 
-# ----------------- Run -----------------
+# ==============================================================================
+# ================================= Run Main ==================================
+# ==============================================================================
 
+    println("Running main function...")
     main()
