@@ -13,7 +13,7 @@ Description:
     Dedicated to collecting components within the circuit.
     This module simplifies the collection process by providing a single function to call.   
 
-Version: 2.1
+Version: 2.2
 License: MIT License
 
 Exported functions:     
@@ -27,7 +27,7 @@ Exported functions:
 module Gathering_Components
 
     # ==============================================================================
-    # ========================== Exported Function ================================
+    # ========================== Exported Function =================================
     # ==============================================================================
 
         # Invoke this function to gather the components
@@ -43,16 +43,13 @@ module Gathering_Components
     # ==============================================================================
     # ============================ Required Packages ===============================
     # ==============================================================================
-    
-        using LightGraphs # For graph representation of the circuit
+        
+        # For graph representation of the circuit
+        using LightGraphs 
 
     # ==============================================================================
-    # =========================== Imported Modules ===============================
+    # =========================== Imported Modules =================================
     # ==============================================================================  
-        
-        # For data structures
-        #include("Module_Data_Structure.jl")
-        #using .Data_Structure: Circuit, EdgeInfo, Component
         
         # For assisting the user
         include("Module_Helping.jl") 
@@ -166,29 +163,6 @@ module Gathering_Components
                 end
             end
                 
-            # ==============================================================================
-            # ======================== Input Validation ====================================
-            # ==============================================================================
-            
-            """
-                _validate_component_details(input::String)::String  
-
-            Validates if `input` is a valid component detail.
-
-            Returns:
-            - The component detail.
-            - nothing: If `input` is not a valid component detail.
-            """
-            function _validate_component_details(input::String)::String
-                if occursin(r"^[A-Za-z0-9]+ = [0-9]+(\.[0-9]+)? \[[A-Za-z0-9]+\]$", input)
-                    return input
-                else
-                    println("Invalid component details. Please retry.")
-                    println("Component details should be in the format 'R1 = 10 [Ω]'.")
-                    return ""
-                end
-            end    
-
             """
                 _get_component_details()::String    
 
@@ -202,46 +176,9 @@ module Gathering_Components
             """
             function _get_component_details()::String
                 println("Provide component details (e.g. 'R1 = 10 [Ω]'):")
-                flush(stdout)
-                return _get_input("", _validate_component_details)
-            end
-
-            # ==============================================================================
-            # ======================== Helper Functions ====================================
-            # ==============================================================================
-
-            """
-                _get_input(prompt::String, validation::Function) -> String
-
-            Prompts the user for an input and validates it.
-
-            Parameters:
-            - prompt: The message to display to the user.
-            - validation: The validation function to use.
-                
-            Returns:
-            - The user's input.
-                
-            Raises:
-            - Invalid input: If the user's input is empty.
-            """
-            function _get_input(prompt::String, validation::Function)
-                while true
-                    print(prompt)
-                    flush(stdout)
-                    input = readline()
-                    if input == "help"
-                        show_help()
-                    elseif input == "exit"
-                        println("Exiting the program.")
-                        exit(0)
-                    else
-                        val = validation(input)
-                        if val !== nothing
-                            return val
-                        end
-                    end
-                end
+                return readline()
+                #flush(stdout)
+                #return _get_input("", _validate_component_details)
             end
 
             # ==============================================================================

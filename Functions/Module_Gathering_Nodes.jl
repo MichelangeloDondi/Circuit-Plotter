@@ -13,7 +13,7 @@ Description:
     Dedicated to collecting nodes within the circuit.
     This module simplifies the collection process by providing a single function to call.
 
-Version: 2.1
+Version: 2.2
 License: MIT License
 
 Exported functions:
@@ -39,34 +39,30 @@ module Gathering_Nodes
         import Main: Circuit, Node
 
     # ==============================================================================
-    # =========================== Required Packages ===============================
+    # =========================== Required Packages ================================
     # ==============================================================================
 
         # For graph representation of the circuit
         using LightGraphs
 
     # ==============================================================================
-    # =========================== Imported Modules ===============================
+    # =========================== Imported Modules =================================
     # ==============================================================================  
-        
-        # For housing the data structures used by the Circuit Visualization Tool    
-        #include("Module_Data_Structure.jl")
-        #using .Data_Structure: Circuit, Node
 
-        # For assisting the user
+        # To let the user call the help function
         include("Module_Helping.jl") 
         using .Helping: show_help  
 
         # For user input validation
-        include("Module_Auxiliary_Functions.jl")
+        include("Module_Auxiliary_Functions_Input_Validation.jl")
         using .Auxiliary_Functions_Input_Validation: get_positive_integer_input
 
-        # For drawing the circuit
+        # To draw the circuit
         include("Module_Plotting.jl")
         using .Plotting: draw_plot
 
     # ==============================================================================
-    # ======================== function gather_nodes ================================
+    # ======================== function gather_nodes ===============================
     # ==============================================================================
 
         """
@@ -86,7 +82,7 @@ module Gathering_Nodes
         - nothing
         """
         function gather_nodes(circuit::Circuit)
-            node_count = get_positive_integer_input("How many nodes does your circuit have? ")
+            node_count = get_positive_integer_input("How many nodes does your circuit have? \n")
             collect_nodes_from_cmd(node_count, circuit)
             nodes_recap(circuit)
             draw_plot(circuit)
@@ -113,7 +109,7 @@ module Gathering_Nodes
                 for i in 1:node_count
                     while true
                         println("\n===================================================")
-                        println("Node # $i/$node_count: Enter coordinates (format: x,y):")
+                        println("Node # $i/$node_count: Enter integer coordinates (format: x,y):")
 
                         input = readline()
                         if !_handle_special_input(input) && _add_node_to_circuit(input, i, circuit)
@@ -188,24 +184,29 @@ module Gathering_Nodes
 
                 try
                     x, y = parse(Int, coords[1]), parse(Int, coords[2])
-                    
-                    if _node_exists_at_position(x, y, circuit)
-                        println("\nNode already exists at position ($x, $y).")
-                        return false
+                    for node in circuit.nodes
+                        if node.x == x && node.y == y
+                            println("\nNode N",node.id," already exists at position ($x,$y).")
+                            return false
+                        end
                     end
+                   # if _node_exists_at_position(x, y, circuit)
+                   #     println("\nNode already exists at position ($x,$y).")
+                   #     return false
+                   # end
                     
                     push!(circuit.nodes, Main.Node(idx, x, y))
                     add_vertex!(circuit.graph)
-                    println("\nNode N$idx added at position ($x, $y).")
+                    println("\nNode N$idx added at position ($x,$y).")
                     return true
                 catch
-                    println("\nInvalid input. Enter coordinates as x,y.")
+                    println("\nInvalid input. Enter integer coordinates as x,y.")
                     return false
                 end
             end
 
         # ==============================================================================
-        # ======================== function nodes_recap =================================
+        # ======================== function nodes_recap ================================
         # ==============================================================================
 
             """
@@ -224,16 +225,16 @@ module Gathering_Nodes
             - The recap is displayed in the following format:
                 ===================================================
                 Nodes in the Circuit:
-                N1 at (0, 0)
-                N2 at (0, 1)
-                N3 at (1, 0)
+                N1 at (0,0)
+                N2 at (0,1)
+                N3 at (1,0)
                 ===================================================
             """
             function nodes_recap(circuit::Circuit)
                 println("\n===================================================")
                 println("Nodes in the Circuit:")
                 for node in circuit.nodes
-                    println("N$(node.id) at ($(node.x), $(node.y))")
+                    println("N$(node.id) at ($(node.x),$(node.y))")
                 end
                 println("===================================================")
             end

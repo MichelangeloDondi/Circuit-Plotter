@@ -13,7 +13,7 @@ Description:
     Dedicated to collecting edges within the circuit.
     This module simplifies the collection process by providing a single function to call.   
 
-Version: 2.1
+Version: 2.2
 License: MIT License
 
 Exported functions:
@@ -22,31 +22,33 @@ Exported functions:
         within the circuit, utilizing direct inputs from the user. The accumulated 
         data finds its place within the `edge_info` structure. Additionally, a recap 
         of edge particulars is presented, followed by the graphical portrayal of 
-        the updated circuit.       
+        the updated circuit.   
 """
 module Gathering_Edges
 
     # ==============================================================================
-    # =========================== Exported Function ===============================
+    # =========================== Exported Function ================================
     # ==============================================================================
 
         # Invoke this function to gather the edges
         export gather_edges
 
     # ==============================================================================
-    # =========================== Exported Function ===============================
+    # =========================== Exported Function ================================
     # ==============================================================================
 
+        # Use these variables to access the data structures used by the Circuit Visualization Tool
         import Main: Circuit, EdgeInfo
 
     # ==============================================================================
-    # =========================== Required Packages ===============================
+    # =========================== Required Packages ================================
     # ==============================================================================    
 
-        using LightGraphs # For graph representation of the circuit
+        # For graph representation of the circuit
+        using LightGraphs
     
     # ==============================================================================
-    # =========================== Imported Modules ===============================
+    # =========================== Imported Modules =================================
     # ==============================================================================  
     
         # For assisting the user
@@ -54,7 +56,7 @@ module Gathering_Edges
         using .Helping: show_help  
 
         # For checking edge overlaps
-        include("Module_Auxiliary_Functions.jl")
+        include("Module_Auxiliary_Functions_Geometry.jl")
         using .Auxiliary_Functions_Geometry: overlapping_edges
 
         # For drawing the circuit
@@ -133,16 +135,23 @@ module Gathering_Edges
         """
         function _edge_exists(node1::Int, node2::Int, edge_info::Main.EdgeInfo)::Bool
             for (index, existing_edge) in enumerate(edge_info.edges)
-                if (node1, node2) == existing_edge || (node2, node1) == existing_edge
-                    println("\nEdge between nodes N$node1 and N$node2 already exists as E$index.")
+                if (node1, node2) == existing_edge
+                    println("\nThe edge cannot be added for the following reason:")
+                    println("Edge between nodes N$node1 and N$node2 already exists as E$index(N$node1->N$node2).")
                     return true
+                    break
+                elseif (node2, node1) == existing_edge
+                    println("\nThe edge cannot be added for the following reason:")
+                    println("Edge between nodes N$node1 and N$node2 already exists as E$index(N$node2->N$node1).")
+                    return true
+                    break
                 end
             end
             return false
         end
 
     # ==============================================================================
-    # ======================== function collect_edges_from_cmd =======================
+    # ======================= function collect_edges_from_cmd ======================
     # ==============================================================================
         
         """
@@ -162,8 +171,8 @@ module Gathering_Edges
         function collect_edges_from_cmd(node_count::Int, circuit::Main.Circuit, edge_info::Main.EdgeInfo)
             edge_count = 0
             while true
-                println("===================================================")
-                println("Current edges: $edge_count. Press Enter to finish or provide nodes for the next edge (E$(edge_count + 1)).")
+                println("\n===================================================")
+                println("\nCurrent edges: $edge_count. Press Enter to finish or provide nodes for the next edge (E$(edge_count + 1)).")
                 println("Format: i,j (Direction: Ni->Nj)")
 
                 input = readline()
@@ -176,26 +185,32 @@ module Gathering_Edges
 
                 edge_nodes = split(input, ",")
                 if length(edge_nodes) != 2
-                    println("\nInvalid. Provide two node indices separated by a comma.")
+                    println("\nInvalid input. Provide two node indices separated by a comma.")
                     continue
                 end
 
                 try
                     node1, node2 = parse(Int, edge_nodes[1]), parse(Int, edge_nodes[2])
 
-                    if _edge_exists(node1, node2, edge_info) || node1 == node2
+                    if _edge_exists(node1, node2, edge_info)
+                        continue
+                    elseif node1 == node2
+                        println("\nThe edge cannot be added for the following reason:")
+                        println("Self-loops are not allowed.")
                         continue
                     end
 
                     if node1 < 1 || node1 > node_count || node2 < 1 || node2 > node_count
-                        println("\nInvalid node indices. Range: [1, $node_count].")
+                        println("\nThe edge cannot be added for the following reason:")
+                        println("Invalid node indices. Range: [1, $node_count].")
                         continue
                     end
 
                     overlapping = overlapping_edges((node1, node2), edge_info.edges, circuit.nodes)
                     if !isempty(overlapping)
                         overlaps_str = join(["E$(index)(N$(edge[1])->N$(edge[2]))" for (index, edge) in overlapping], ", ")
-                        println("\nOverlap detected with: $overlaps_str.")
+                        println("\nThe edge cannot be added for the following reason:")
+                        println("Overlap detected with: $overlaps_str.")
                         continue
                     end
 
@@ -211,7 +226,7 @@ module Gathering_Edges
         end
 
     # ==============================================================================
-    # ======================== function edges_recap =================================
+    # ======================== function edges_recap ================================
     # ==============================================================================
 
         """

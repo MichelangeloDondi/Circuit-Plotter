@@ -14,7 +14,7 @@ Description:
     core functionalities for plotting the circuit components and its design. It integrates
     with the main Circuit Plotter to provide an end-to-end circuit visualization tool.
 
-Version: 2.1
+Version: 2.2
 License: MIT License
         
 Exported functions:
@@ -40,20 +40,12 @@ module Plotting
     # ============================== Required Packages =============================
     # ==============================================================================
         
-        # Ensure that all necessary Julia packages are installed before execution.
+        # For plotting the circuit
         using PlotlyJS # Interactive plotting library
         using Plots: scatter, scatter!, plotlyjs, plot, plot!, title!, xlabel!, ylabel!, xlims!, ylims!, annotate!, sizehint!, size, text # Scatter plots to represent nodes
         using LightGraphs     # Graph representation of the circuit
         using GraphRecipes    # For plotting graph structures
      
-    # ==============================================================================
-    # ============================= Imported Modules ===============================
-    # ==============================================================================
-     
-        # For housing the data structures used by the Circuit Visualization Tool
-        # include("Module_Data_Structure.jl")
-        # using .Data_Structure: Circuit, Node   
-         
     # ==============================================================================
     # ============================== Constants =====================================
     # ==============================================================================
@@ -95,7 +87,7 @@ module Plotting
     # ==============================================================================
 
         """
-            draw_plot(circuit::Main.Circuit) 
+            draw_plot(circuit::Circuit) 
 
         Invoke this function to visualize a given circuit. This function sets up the basic
         visualization parameters and then integrates helper functions to plot nodes, edges,
@@ -125,7 +117,7 @@ module Plotting
         # --- Plot Preparation and Display ---
 
             """
-                _prepare_and_display_plot(p, circuit::Main.Circuit)
+                _prepare_and_display_plot(p, circuit::Circuit)
 
             This function prepares the plot object for visualization by configuring its
             properties and adding nodes, edges, and components to it. It then displays
@@ -135,21 +127,21 @@ module Plotting
             - `p`: The plot object to be modified.
             - `circuit::Circuit`: Data structure representing the circuit.
             """
-            function _prepare_and_display_plot(p, circuit::Main.Circuit)
+            function _prepare_and_display_plot(p, circuit::Circuit)
                 _set_plot_title(p, circuit)
                 _set_plot_labels(p, circuit)
-                _optimize_plot_dimensions(p, circuit)
                 _add_edges_to_plot(p, circuit)
                 _add_nodes_to_plot(p, circuit)
                 _annotate_nodes_on_plot(p, circuit)
                 _annotate_components_on_plot(p, circuit)
+                _optimize_plot_dimensions(p, circuit)
                 display(p)
             end
 
         # --- Node and Edge Rendering ---
 
             """
-                _add_nodes_to_plot(p, circuit::Main.Circuit)
+                _add_nodes_to_plot(p, circuit::Circuit)
 
             Adds nodes to the plot object.
 
@@ -164,7 +156,7 @@ module Plotting
             end
 
             """
-                _add_edges_to_plot(p, circuit::Main.Circuit)
+                _add_edges_to_plot(p, circuit::Circuit)
 
             Adds edges to the plot object.
 
@@ -189,7 +181,7 @@ module Plotting
         # --- Annotation Functions ---
 
             """
-                _annotate_nodes_on_plot(p, circuit::Main.Circuit)
+                _annotate_nodes_on_plot(p, circuit::Circuit)
 
             Adds annotations to the plot object for each node.
 
@@ -205,7 +197,7 @@ module Plotting
             end
 
             """
-                _annotate_components_on_plot(p, circuit::Main.Circuit)
+                _annotate_components_on_plot(p, circuit::Circuit)
 
             Adds annotations to the plot object for each component.
 
@@ -223,7 +215,7 @@ module Plotting
         # --- Component Positioning and Labeling ---
 
             """
-                _mark_component_position(p, circuit::Main.Circuit, component)
+                _mark_component_position(p, circuit::Circuit, component)
 
             Marks the midpoint of a component on the plot object.
 
@@ -239,7 +231,7 @@ module Plotting
             end
 
             """
-                _label_component_details(p, circuit::Main.Circuit, component)
+                _label_component_details(p, circuit::Circuit, component)
 
             Adds annotations to the plot object for a component.
 
@@ -255,7 +247,7 @@ module Plotting
             end
 
             """
-                _calculate_midpoint_of_component(circuit::Main.Circuit, component)
+                _calculate_midpoint_of_component(circuit::Circuit, component)
 
             Calculates the midpoint of a component.
 
@@ -276,7 +268,7 @@ module Plotting
         # --- Plot Title ---
 
             """
-                _set_plot_title(p, circuit::Main.Circuit)
+                _set_plot_title(p, circuit::Circuit)
 
             Sets the title of the plot object.
 
@@ -295,7 +287,7 @@ module Plotting
         # --- Plot Labels ---
 
             """
-                _set_plot_labels(p, circuit::Main.Circuit)
+                _set_plot_labels(p, circuit::Circuit)
 
             Sets the labels of the plot object.
 
@@ -311,7 +303,7 @@ module Plotting
         # --- Plot Dimensions and Optimization ---
 
             """
-                adjust_plot_limits_and_size!(p, circuit::Main.Circuit)
+                adjust_plot_limits_and_size!(p, circuit::Circuit)
 
             Optimizes the plot dimensions and axis limits based on the circuit's data for enhanced clarity.
 
@@ -357,16 +349,16 @@ module Plotting
                 padding = max(padding_x, padding_y)
 
                 # number of nodes = length(x_coords) = length(y_coords) = nv(circuit.graph)
-                image_shortside = 300 * (nv(circuit.graph))^0.6 # arbitrary scaling factor for image size
+                image_shortside = 200 * (nv(circuit.graph))^0.6 # arbitrary scaling factor for image size
                 image_longside = PHI * image_shortside # golden ratio
 
                 # Determine the orientation of the plot based on the ranges of X and Y coordinates
                 if (maximum(x_coords) - minimum(x_coords)) < (maximum(y_coords) - minimum(y_coords))
-                    plot!(p, size=(min(TITLE_WIDTH, image_shortside), image_longside), sizehint=(min(TITLE_WIDTH, image_shortside), image_longside))
+                    plot!(p, size=(max(TITLE_WIDTH, image_shortside), image_longside), sizehint=(max(TITLE_WIDTH, image_shortside), image_longside))
                     xlims!(p, minimum(x_coords) - padding, maximum(x_coords) + padding)
                     ylims!(p, minimum(y_coords) - padding, maximum(y_coords) + padding)
                 else
-                    plot!(p, size=(min(TITLE_WIDTH, image_longside), image_shortside), sizehint=(min(TITLE_WIDTH, image_longside), image_shortside))
+                    plot!(p, size=(max(TITLE_WIDTH, image_longside), image_shortside), sizehint=(max(TITLE_WIDTH, image_longside), image_shortside))
                     xlims!(p, minimum(x_coords) - padding, maximum(x_coords) + padding)
                     ylims!(p, minimum(y_coords) - padding, maximum(y_coords) + padding)
                 end

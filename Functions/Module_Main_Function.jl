@@ -14,7 +14,7 @@ Description:
     Dedicated to housing the main function of the Circuit Visualization Tool.
     This module simplifies the main function definition process by providing a single file to call.
 
-Version: 2.1
+Version: 2.2
 License: MIT License
         
 Exported functions:
@@ -40,25 +40,20 @@ module Main_Function
     # ============================ Imported Data Structure ================================
     # ==============================================================================
 
-        println("Importing data structures(Main_Function)...")
+        println("Importing data structures...")
         import Main: Circuit, EdgeInfo
     
     # ==============================================================================
     # ============================ Required Packages ===============================
     # ==============================================================================
 
-        println("Installing necessary packages(Main_Function)...")
         using LightGraphs  # Data structure to represent electrical circuits as graphs
 
     # ==============================================================================
     # =========================== Imported Modules ===============================
     # ==============================================================================
 
-        println("Defining imported modules(Main_Function)...")
-
-        # Module_Data_Structure.jl: Provides data structures for the program.
-        # include("Module_Data_Structure.jl") # Data structures for the program
-        # using .Data_Structure: Node, EdgeInfo, Component, Circuit
+        println("Importing modules...")
 
         # Module_Helping.jl provides helper functions for the main program.
         include("Module_Helping.jl")
@@ -88,7 +83,7 @@ module Main_Function
     # ============================== Main Function ================================
     # ==============================================================================
         
-        println("Defining main function(Main_Function)...")
+        println("Defining main function...")
         """
             main() -> nothing   
 

@@ -13,7 +13,7 @@ Description:
     Dedicated to providing guidance to users interacting with the Circuit Visualization Tool.
     This module simplifies user interactions by offering clear instructions and comprehensive assistance.
 
-Version: 2.1
+Version: 2.2
 License: MIT License
 
 Exported functions:
@@ -41,13 +41,13 @@ module Helping
         """
         function show_initial_greetings()
             println("""
-            \n-----------------------------------------------
+            \n---------------------------------------------------
             Welcome to the Electrical Circuit Visualization Tool!
             Follow the prompts to construct and visualize your circuit.
-            -----------------------------------------------
+            ---------------------------------------------------
             """)
             _show_instructions()
-            println("\nStart creating your circuit now!")
+            println("Start creating your circuit now!")
         end
 
         """
@@ -64,35 +64,36 @@ module Helping
         function show_help()
             println("""
             \n---------------------------------------------------
-                                HELP
+                                   HELP
             ---------------------------------------------------
 
             INTRODUCTION:
             - Create visual representations of electrical circuits.
-            - Input nodes, edges, and component details.
+            - Input nodes, edges, and component details following the prompts.
 
             NODE COORDINATES:
-            - Ensure coordinates are integers.
+            - Ensure coordinates are integer numbers.
 
             EDGES:
-            - Edges link nodes by either their indexes or the nodes they connect to.
-            - The system automatically manages reverse edges.
+            - Edges are links between 2 different nodes.
+            - Edges are directed.
+            - Edges are not allowed to overlap with other edges for a finite length.
 
             COMPONENTS:
-            - Attach components to circuit edges.
+            - Attach components to circuit edges. 
+            - No more than one component is allowed for each edge.
             - Without components, edges are merely wire sections.
-            - Utilize dummy nodes for circuits requiring multiple components.
+            - Utilize dummy nodes to add more components in a row.
 
             VISUALIZATION:
-            - Completed visuals are stored in the 'Images' directory.
-            - Image filenames incorporate execution timestamp.
-
+            - Completed visuals are saved in the 'Images' directory.
+            - Visuals are saved as "circuit_plot.png" by default.
             """)
             _show_instructions()
 
             println("""
             \n---------------------------------------------------
-                            END OF HELP
+                                END OF HELP 
             ---------------------------------------------------
             """)
         end
@@ -116,12 +117,13 @@ module Helping
         function _show_instructions()
             println("""
             Instructions:
-            1. Follow prompts to define nodes, edges, and circuit components.
-            2. 'help' brings up instructions. 'exit' closes the program.
+            1. Define circuit nodes, edges and components.
+            2. 'help' brings up instructions (type it at any time). 
+            3. 'exit' closes the program (type it at any time).
+        
             Notes:
-            - Visualizations are saved under 'Images'.
-            - Filenames use current date and time for easy tracking.
-            - For issues, please contact support.
+            - For more information, please refer to the documentation.
+            - For further issues, please contact support.
             """)
         end
 end
