@@ -13,7 +13,7 @@ Description:
     Dedicated to housing the input validation functions used by the Circuit Visualization Tool.
     This module simplifies the input validation process by providing a single file to call.
 
-Version: 2.2
+Version: 2.3
 License: MIT License
 
 Exported functions:
@@ -49,11 +49,11 @@ module Auxiliary_Functions_Input_Validation
         Returns:
         - Int: the positive integer input   
         """
-        function _get_input(prompt::String, validation::Function)
+        function _get_input(prompt::String, validation::Function, io::IO=stdin)
             while true
                 print(prompt)
                 flush(stdout)
-                input = readline()
+                input = readline(io)
                 if input == "help"
                     show_help()
                 elseif input == "exit"
@@ -67,7 +67,6 @@ module Auxiliary_Functions_Input_Validation
                 end
             end
         end
-
 
         """
 
@@ -90,8 +89,8 @@ module Auxiliary_Functions_Input_Validation
         Returns:
         - Int: the integer input
         """
-        function get_integer_input(prompt::String)
-            return _get_input(prompt, _validate_integer)
+        function get_integer_input(prompt::String, io::IO=stdin)
+            return _get_input(prompt, _validate_integer, io)
         end
 
         """
@@ -103,11 +102,11 @@ module Auxiliary_Functions_Input_Validation
         Returns:    
         - Int: the positive integer input
         """
-        function get_positive_integer_input(prompt::String)
-            val = get_integer_input(prompt)
+        function get_positive_integer_input(prompt::String, io::IO=stdin)
+            val = get_integer_input(prompt, io)
             while val <= 0
                 println("\nEnsure you are entering a positive integer.")
-                val = get_integer_input(prompt)
+                val = get_integer_input(prompt, io)
             end
             return val
         end
