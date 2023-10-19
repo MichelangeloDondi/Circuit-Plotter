@@ -1,19 +1,19 @@
 # ==============================================================================
 # ==============================================================================
-# ========================= Module_Gathering_Edges =============================
+# ======================== Module_Gathering_Edges.jl ===========================
 # ==============================================================================
 # ==============================================================================
 
 """
-    File: Module Gathering_Edges
+    Module: Gathering_Edges
 
 Author: Michelangelo Dondi
-Date: 18-10-2023
+Date: 19-10-2023
 Description:
     Dedicated to collecting edges within the circuit.
     This module simplifies the collection process by providing a single function to call.   
 
-Version: 2.0
+Version: 2.1
 License: MIT License
 
 Exported functions:
@@ -22,12 +22,22 @@ Exported functions:
         within the circuit, utilizing direct inputs from the user. The accumulated 
         data finds its place within the `edge_info` structure. Additionally, a recap 
         of edge particulars is presented, followed by the graphical portrayal of 
-        the updated circuit.
+        the updated circuit.       
 """
 module Gathering_Edges
 
-    # Invoke this function to gather the edges
-    export gather_edges
+    # ==============================================================================
+    # =========================== Exported Function ===============================
+    # ==============================================================================
+
+        # Invoke this function to gather the edges
+        export gather_edges
+
+    # ==============================================================================
+    # =========================== Exported Function ===============================
+    # ==============================================================================
+
+        import Main: Circuit, EdgeInfo
 
     # ==============================================================================
     # =========================== Required Packages ===============================

@@ -1,6 +1,6 @@
 # ==============================================================================
 # ==============================================================================
-# =================== Module Auxiliary_Functions_Geometry ======================
+# ================= Module_Auxiliary_Functions_Geometry.jl =====================
 # ==============================================================================
 # ==============================================================================
 
@@ -8,12 +8,12 @@
     Module Auxiliary_Functions_Geometry
 
 Author: Michelangelo Dondi
-Date: 18-10-2023
+Date: 19-10-2023
 Description:
     Dedicated to housing the geometry functions used by the Circuit Visualization Tool.
     This module simplifies the geometry process by providing a single file to call.
 
-Version: 2.0
+Version: 2.1
 License: MIT License
 
 Exported functions:
@@ -22,8 +22,12 @@ Exported functions:
 """
 module Auxiliary_Functions_Geometry
 
-    # Invoke this function to check whether a new edge is overlapping for a finite length with an existing edge.
-    export overlapping_edges # Edge overlap detection
+    # ==============================================================================
+    # =========================== Exported Function ================================
+    # ==============================================================================
+        
+        # Invoke this function to check whether a new edge is overlapping for a finite length with an existing edge.
+        export overlapping_edges # Edge overlap detection
 
     # ==============================================================================
     # ========================== Geometry Functions ================================
@@ -117,7 +121,7 @@ Description:
     Dedicated to housing the input validation functions used by the Circuit Visualization Tool.
     This module simplifies the input validation process by providing a single file to call.
 
-Version: 2.0
+Version: 2.1
 License: MIT License
 
 Exported functions:
@@ -125,8 +129,12 @@ Exported functions:
 """
 module Auxiliary_Functions_Input_Validation
 
-    # Invoke this function to obtain a positive integer input
-    export get_positive_integer_input # User input validation
+    # ==============================================================================
+    # =========================== Exported Function ===============================
+    # ==============================================================================
+        
+        # Invoke this function to obtain a positive integer input
+        export get_positive_integer_input # User input validation
 
     # ==============================================================================
     # =========================== Imported Modules ===============================
@@ -167,7 +175,6 @@ module Auxiliary_Functions_Input_Validation
                 end
             end
         end
-
 
         """
 

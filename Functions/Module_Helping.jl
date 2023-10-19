@@ -1,6 +1,6 @@
 # =================================================================================
 # =================================================================================
-# ================================== Helping Module ===============================
+# =============================== Helping_Module.jl ===============================
 # =================================================================================
 # =================================================================================
 
@@ -8,12 +8,12 @@
     Module: Helping 
 
 Author: Michelangelo Dondi
-Date: 02-10-2023
+Date: 19-10-2023
 Description:
     Dedicated to providing guidance to users interacting with the Circuit Visualization Tool.
     This module simplifies user interactions by offering clear instructions and comprehensive assistance.
 
-Version: 2.0
+Version: 2.1
 License: MIT License
 
 Exported functions:

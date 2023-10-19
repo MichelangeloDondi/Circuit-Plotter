@@ -1,19 +1,19 @@
 # ==============================================================================
 # ==============================================================================
-# ======================= Module_Gathering_Components ==========================
+# ===================== Module_Gathering_Components.jl =========================
 # ==============================================================================
 # ==============================================================================
 
 """
-    Module Gathering_Components
+    Module: Gathering_Components
 
 Author: Michelangelo Dondi
-Date: 18-10-2023
+Date: 19-10-2023
 Description:
     Dedicated to collecting components within the circuit.
     This module simplifies the collection process by providing a single function to call.   
 
-Version: 2.0
+Version: 2.1
 License: MIT License
 
 Exported functions:     
@@ -26,9 +26,20 @@ Exported functions:
 """
 module Gathering_Components
 
-    # Invoke this function to gather the components
-    export gather_components
-    
+    # ==============================================================================
+    # ========================== Exported Function ================================
+    # ==============================================================================
+
+        # Invoke this function to gather the components
+        export gather_components
+
+    # ==============================================================================
+    # ======================== Imported Data Structure =============================
+    # ==============================================================================
+
+        # For housing the data structures used by the Circuit Visualization Tool
+        import Main: Circuit, EdgeInfo, Component
+
     # ==============================================================================
     # ============================ Required Packages ===============================
     # ==============================================================================
@@ -72,7 +83,7 @@ module Gathering_Components
         Returns:
         - nothing
         """
-        function gather_components(circuit::Main.Circuit, edge_info::Main.EdgeInfo)
+        function gather_components(circuit::Circuit, edge_info::EdgeInfo)
             collect_components_from_cmd(circuit, edge_info)
             components_recap(circuit)
             draw_plot(circuit)
@@ -87,7 +98,7 @@ module Gathering_Components
 
         Sequentially gathers component details from the user.
         """
-        function collect_components_from_cmd(circuit::Main.Circuit, edge_info::Main.EdgeInfo)
+        function collect_components_from_cmd(circuit::Circuit, edge_info::EdgeInfo)
             for idx in 1:length(edge_info.edges)
                 _handle_edge_component(idx, circuit, edge_info)
             end
@@ -111,7 +122,7 @@ module Gathering_Components
             Returns:
             - nothing
             """
-            function _handle_edge_component(idx::Int, circuit::Main.Circuit, edge_info::Main.EdgeInfo)
+            function _handle_edge_component(idx::Int, circuit::Circuit, edge_info::EdgeInfo)
                 decision = _ask_user_choice("\n--- Edge E$idx (N$(edge_info.edges[idx][1]) -> N$(edge_info.edges[idx][2])) ---\nAdd a component? (y/n/help/exit): ")
 
                 if decision == "y"
@@ -258,7 +269,7 @@ module Gathering_Components
             - Component C3 on Edge E3 (N3 -> N4): "R3 = 30 [Ω]".
             - Component C4 on Edge E4 (N4 -> N1): "R4 = 40 [Ω]".
             """
-            function components_recap(circuit::Main.Circuit)
+            function components_recap(circuit::Circuit)
                 println("\n--- Components Overview ---")
                 for comp in circuit.components
                     println("Component C$(comp.id) on Edge E$(comp.id) (N$(comp.start_node) -> N$(comp.end_node)): \"$(comp.details)\".")

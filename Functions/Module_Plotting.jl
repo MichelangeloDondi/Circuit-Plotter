@@ -1,6 +1,6 @@
 # ==============================================================================
 # ==============================================================================
-# ======================== Module Plotting Module ==============================
+# ========================== Module_Plotting.jl ================================
 # ==============================================================================
 # ==============================================================================
 
@@ -8,13 +8,13 @@
     Module: Plotting
 
 Author: Michelangelo Dondi
-Date: 18-10-2023
+Date: 19-10-2023
 Description:
     A module dedicated to visually representing electrical circuits. This module provides
     core functionalities for plotting the circuit components and its design. It integrates
     with the main Circuit Plotter to provide an end-to-end circuit visualization tool.
 
-Version: 2.0
+Version: 2.1
 License: MIT License
         
 Exported functions:
@@ -22,9 +22,20 @@ Exported functions:
 """
 module Plotting
 
-    # Invoke this function to visualize a given circuit.
-    export draw_plot 
-     
+    # ==============================================================================
+    # ============================= Exported Functions =============================
+    # ==============================================================================
+
+        # Invoke this function to visualize a given circuit.
+        export draw_plot 
+
+    # ==============================================================================
+    # =========================== Imported data Structure ==========================
+    # ==============================================================================
+        
+        # Data structure to represent electrical circuits as graphs
+        import Main: Circuit, Node
+        
     # ==============================================================================
     # ============================== Required Packages =============================
     # ==============================================================================
@@ -93,7 +104,7 @@ module Plotting
         # Arguments
         - `circuit::Circuit`: A representation of the circuit to visualize.
         """
-        function draw_plot(circuit::Main.Circuit)
+        function draw_plot(circuit::Circuit)
             println("\nPlease wait while the circuit is being visualized...")
             p = scatter([], [], markersize=NODE_SIZE, markercolor=NODE_COLOR, label=false)  # Start with an empty plot
             _prepare_and_display_plot(p, circuit)
@@ -147,7 +158,7 @@ module Plotting
             - `circuit::Circuit`: Data structure representing the circuit.
             """
 
-            function _add_nodes_to_plot(p, circuit::Main.Circuit)
+            function _add_nodes_to_plot(p, circuit::Circuit)
                 scatter!(p, [node.x for node in circuit.nodes], [node.y for node in circuit.nodes],
                         markersize=NODE_SIZE, markercolor=NODE_COLOR, markeralpha=ALPHA, label=false)
             end
@@ -161,7 +172,7 @@ module Plotting
             - `p`: The plot object to be modified.
             - `circuit::Circuit`: Data structure representing the circuit.
             """
-            function _add_edges_to_plot(p, circuit::Main.Circuit)
+            function _add_edges_to_plot(p, circuit::Circuit)
                 if hasfield(typeof(circuit), :graph) && ne(circuit.graph) > 0
                     adj_matrix = adjacency_matrix(circuit.graph)
                     graphplot!(p, adj_matrix,
@@ -186,7 +197,7 @@ module Plotting
             - `p`: The plot object to be modified.
             - `circuit::Circuit`: Data structure representing the circuit.
             """
-            function _annotate_nodes_on_plot(p, circuit::Main.Circuit)
+            function _annotate_nodes_on_plot(p, circuit::Circuit)
                 for node in circuit.nodes
                     annotate!(p, node.x, node.y,
                             text("<b>N$(node.id)<br>($(node.x),$(node.y))</b>", NODE_FONT_SIZE, :center, :red, FONT))
@@ -202,7 +213,7 @@ module Plotting
             - `p`: The plot object to be modified.
             - `circuit::Circuit`: Data structure representing the circuit.
             """
-            function _annotate_components_on_plot(p, circuit::Main.Circuit)
+            function _annotate_components_on_plot(p, circuit::Circuit)
                 for component in circuit.components
                     _mark_component_position(p, circuit, component)
                     _label_component_details(p, circuit, component)
@@ -221,7 +232,7 @@ module Plotting
             - `circuit::Circuit`: Data structure representing the circuit.
             - `component`: The component to be marked.
             """
-            function _mark_component_position(p, circuit::Main.Circuit, component)
+            function _mark_component_position(p, circuit::Circuit, component)
                 mid_x, mid_y = _calculate_midpoint_of_component(circuit, component)
                 scatter!(p, [mid_x], [mid_y], markersize=COMPONENT_SIZE, markercolor=:white,
                         markerstrokecolor=:black, markeralpha=ALPHA, markerstrokewidth=2, label=false)
@@ -237,7 +248,7 @@ module Plotting
             - `circuit::Circuit`: Data structure representing the circuit.
             - `component`: The component to be labeled.
             """
-            function _label_component_details(p, circuit::Main.Circuit, component)
+            function _label_component_details(p, circuit::Circuit, component)
                 mid_x, mid_y = _calculate_midpoint_of_component(circuit, component)
                 annotate!(p, mid_x, mid_y, text("<b>E$(component.id)<br><br>(N$(component.start_node)⟶N$(component.end_node))</b>", EDGE_FONT_SIZE, :center, :darkgreen, "Tahoma"))
                 annotate!(p, mid_x, mid_y, text("<b>$(component.details)</b>", COMPONENT_FONT_SIZE, :center, :dodgerblue, FONT))
@@ -256,7 +267,7 @@ module Plotting
             - `mid_x`: The X coordinate of the midpoint.
             - `mid_y`: The Y coordinate of the midpoint.
             """
-            function _calculate_midpoint_of_component(circuit::Main.Circuit, component)
+            function _calculate_midpoint_of_component(circuit::Circuit, component)
                 mid_x = (circuit.nodes[component.start_node].x + circuit.nodes[component.end_node].x) / 2
                 mid_y = (circuit.nodes[component.start_node].y + circuit.nodes[component.end_node].y) / 2
                 return mid_x, mid_y
@@ -273,7 +284,7 @@ module Plotting
             - `p`: The plot object to be modified.
             - `circuit::Circuit`: Data structure representing the circuit.
             """
-            function _set_plot_title(p, circuit::Main.Circuit)
+            function _set_plot_title(p, circuit::Circuit)
                 N_n = nv(circuit.graph)
                 N_e = ne(circuit.graph)
                 N_c = length(circuit.components)
@@ -292,7 +303,7 @@ module Plotting
             - `p`: The plot object to be modified.
             - `circuit::Circuit`: Data structure representing the circuit.
             """
-            function _set_plot_labels(p, circuit::Main.Circuit)
+            function _set_plot_labels(p, circuit::Circuit)
                 xlabel!(p, "X")
                 ylabel!(p, "Y")
             end
@@ -313,7 +324,7 @@ module Plotting
             is too close to the plot's border. Additionally, it checks the range of x and y coordinates
             to determine the plot's layout (portrait or landscape) for best fit.
             """
-            function _optimize_plot_dimensions(p, circuit::Main.Circuit)
+            function _optimize_plot_dimensions(p, circuit::Circuit)
                 # Extract X and Y coordinates of nodes
                 x_coords = [node.x for node in circuit.nodes]
                 y_coords = [node.y for node in circuit.nodes]
@@ -346,7 +357,7 @@ module Plotting
                 padding = max(padding_x, padding_y)
 
                 # number of nodes = length(x_coords) = length(y_coords) = nv(circuit.graph)
-                image_shortside = 200 * (nv(circuit.graph))^0.6 # arbitrary scaling factor for image size
+                image_shortside = 300 * (nv(circuit.graph))^0.6 # arbitrary scaling factor for image size
                 image_longside = PHI * image_shortside # golden ratio
 
                 # Determine the orientation of the plot based on the ranges of X and Y coordinates

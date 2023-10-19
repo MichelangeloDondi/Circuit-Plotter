@@ -1,19 +1,19 @@
 # ==============================================================================
 # ==============================================================================
-# ======================== Module_Gathering_Nodes ==============================
+# ======================= Module_Gathering_Nodes.jl ============================
 # ==============================================================================
 # ==============================================================================
 
 """
-    File: Module_Gathering_Nodes.jl
+    Module: Gathering_Nodes
 
 Author: Michelangelo Dondi
-Date: 18-10-2023
+Date: 19-10-2023
 Description:    
     Dedicated to collecting nodes within the circuit.
     This module simplifies the collection process by providing a single function to call.
 
-Version: 2.0
+Version: 2.1
 License: MIT License
 
 Exported functions:
@@ -24,14 +24,26 @@ Exported functions:
 """
 module Gathering_Nodes
 
-    # Invoke this function to gather the nodes
-    export gather_nodes
+    # ==============================================================================
+    # =========================== Exported Function ================================
+    # ==============================================================================
+
+        # Invoke this function to gather the nodes
+        export gather_nodes
+
+    # ==============================================================================
+    # ========================= Imported Data Structure ============================
+    # ==============================================================================
+
+        # For housing the data structures used by the Circuit Visualization Tool
+        import Main: Circuit, Node
 
     # ==============================================================================
     # =========================== Required Packages ===============================
     # ==============================================================================
 
-        using LightGraphs # For graph representation of the circuit
+        # For graph representation of the circuit
+        using LightGraphs
 
     # ==============================================================================
     # =========================== Imported Modules ===============================
@@ -73,7 +85,7 @@ module Gathering_Nodes
         Returns:
         - nothing
         """
-        function gather_nodes(circuit::Main.Circuit)
+        function gather_nodes(circuit::Circuit)
             node_count = get_positive_integer_input("How many nodes does your circuit have? ")
             collect_nodes_from_cmd(node_count, circuit)
             nodes_recap(circuit)
@@ -97,7 +109,7 @@ module Gathering_Nodes
             Returns:
             - nothing
             """
-            function collect_nodes_from_cmd(node_count::Int, circuit::Main.Circuit)
+            function collect_nodes_from_cmd(node_count::Int, circuit::Circuit)
                 for i in 1:node_count
                     while true
                         println("\n===================================================")
@@ -147,7 +159,7 @@ module Gathering_Nodes
             Returns:
             - true if a node exists at the given position, false otherwise.
             """
-            function _node_exists_at_position(x::Int, y::Int, circuit::Main.Circuit)::Bool
+            function _node_exists_at_position(x::Int, y::Int, circuit::Circuit)::Bool
                 return findfirst(n -> n.x == x && n.y == y, circuit.nodes) !== nothing
             end
 
@@ -171,7 +183,7 @@ module Gathering_Nodes
             Notes:
             - The input is expected to be in the format x,y.
             """
-            function _add_node_to_circuit(input::String, idx::Int, circuit::Main.Circuit)::Bool
+            function _add_node_to_circuit(input::String, idx::Int, circuit::Circuit)::Bool
                 coords = split(input, ",")
 
                 try
@@ -191,8 +203,6 @@ module Gathering_Nodes
                     return false
                 end
             end
-
-
 
         # ==============================================================================
         # ======================== function nodes_recap =================================
@@ -219,7 +229,7 @@ module Gathering_Nodes
                 N3 at (1, 0)
                 ===================================================
             """
-            function nodes_recap(circuit::Main.Circuit)
+            function nodes_recap(circuit::Circuit)
                 println("\n===================================================")
                 println("Nodes in the Circuit:")
                 for node in circuit.nodes
