@@ -8,12 +8,12 @@
     Module: Helping 
 
 Author: Michelangelo Dondi
-Date: 19-10-2023
+Date: 20-10-2023
 Description:
     Dedicated to providing guidance to users interacting with the Circuit Visualization Tool.
     This module simplifies user interactions by offering clear instructions and comprehensive assistance.
 
-Version: 2.2
+Version: 2.5
 License: MIT License
 
 Exported functions:
@@ -22,12 +22,17 @@ Exported functions:
 """
 module Helping
 
-    export show_initial_greetings, show_help
+    # ==============================================================================
+    # ============================ Exported Functions ==============================
+    # ==============================================================================
+        
+        # Invoke these functions to obtain help and instructions
+        export show_initial_greetings, show_help
 
     # ==============================================================================
-    # ================================== Exported Functions ====================================
-    # ================================================================
-
+    # =========================== show_initial_greetings ===========================
+    # ==============================================================================
+            
         """
             show_initial_greetings() -> nothing
 
@@ -49,7 +54,11 @@ module Helping
             _show_instructions()
             println("Start creating your circuit now!")
         end
-
+    
+    # ==============================================================================
+    # ================================ show_help ===================================
+    # ==============================================================================
+        
         """
             show_help() -> nothing
 
@@ -64,7 +73,7 @@ module Helping
         function show_help()
             println("""
             \n---------------------------------------------------
-                                   HELP
+                                HELP
             ---------------------------------------------------
 
             INTRODUCTION:
@@ -97,11 +106,11 @@ module Helping
             ---------------------------------------------------
             """)
         end
-    
-    # ==============================================================================
-    # ================================== Internal Functions ========================
-    # ==============================================================================
 
+    # ==========================================================================
+    # ------------------------- _show_instructions -------------------------
+    # ==========================================================================
+            
         """
             _show_instructions() -> nothing
 
