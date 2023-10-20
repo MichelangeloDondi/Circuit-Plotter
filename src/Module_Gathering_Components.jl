@@ -181,8 +181,6 @@ module Gathering_Components
             function _get_component_details()::String
                 println("Provide component details (e.g. 'R1 = 10 [Ω]'):")
                 return readline()
-                #flush(stdout)
-                #return _get_input("", _validate_component_details)
             end
 
             # ==============================================================================
