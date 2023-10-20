@@ -82,8 +82,7 @@ module Gathering_Nodes
         - nothing
         """
         function gather_nodes(circuit::Circuit)
-            node_count = get_positive_integer_input("How many nodes does your circuit have? \n")
-            _collect_nodes_from_cmd(node_count, circuit)
+            _collect_nodes_from_cmd(circuit)
             _nodes_recap(circuit)
             draw_plot(circuit)
         end
@@ -98,23 +97,26 @@ module Gathering_Nodes
         Sequentially gathers node details from the user.
 
         Parameters:
-        - node_count: The number of nodes in the circuit.
         - circuit: The primary structure amalgamating nodes, components, and their 
                 illustrative representation within the circuit.
 
         Returns:
         - nothing
         """
-        function _collect_nodes_from_cmd(node_count::Int, circuit::Circuit)
-            for i in 1:node_count
-                while true
-                    println("\n===================================================")
-                    println("Node # $i/$node_count: Enter integer coordinates (format: x,y):")
+        function _collect_nodes_from_cmd(circuit::Circuit)
+            node_count = 0
+            while true
+                println("\n===================================================")
+                print("\nNodes already present in the Circuit: $node_count.")
+                print("Type 'stop' to stop adding nodes of provide the ")
+                println("coordinates of the next node (N$(node_count + 1)).")
+                println("Format: x,y (coordinates must be integer):")
 
-                    input = readline()
-                    if !_handle_special_input(input) && _add_node_to_circuit(input, i, circuit)
-                        break
-                    end
+                input = readline()
+                if input == "stop"
+                    break
+                elseif !_handle_special_input(input) && _add_node_to_circuit(input, node_count + 1, circuit)
+                    node_count += 1
                 end
             end
         end
