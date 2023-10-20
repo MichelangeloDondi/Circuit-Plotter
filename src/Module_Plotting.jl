@@ -8,13 +8,13 @@
     Module: Plotting
 
 Author: Michelangelo Dondi
-Date: 19-10-2023
+Date: 20-10-2023
 Description:
     A module dedicated to visually representing electrical circuits. This module provides
     core functionalities for plotting the circuit components and its design. It integrates
     with the main Circuit Plotter to provide an end-to-end circuit visualization tool.
 
-Version: 2.2
+Version: 2.4
 License: MIT License
         
 Exported functions:
@@ -32,7 +32,11 @@ module Plotting
     # ==============================================================================
     # =========================== Imported data Structure ==========================
     # ==============================================================================
-        
+
+        # For accessing the data structures 
+        include("Module_CircuitStructures.jl")
+        using .CircuitStructures
+
         # Data structure to represent electrical circuits as graphs
         import Main: Circuit, Node
         

@@ -9,12 +9,12 @@
     Module: Main_Function
 
 Author: Michelangelo Dondi
-Date: 19-10-2023
+Date: 20-10-2023
 Description:
     Dedicated to housing the main function of the Circuit Visualization Tool.
     This module simplifies the main function definition process by providing a single file to call.
 
-Version: 2.2
+Version: 2.4
 License: MIT License
         
 Exported functions:
@@ -39,6 +39,10 @@ module Main_Function
     # ==============================================================================
     # ============================ Imported Data Structure ================================
     # ==============================================================================
+
+        # For accessing the data structures 
+        include("Module_CircuitStructures.jl")
+        using .CircuitStructures
 
         println("Importing data structures...")
         import Main: Circuit, EdgeInfo

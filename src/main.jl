@@ -10,13 +10,13 @@
     Program: Circuit_Plotter
 
 Author: Michelangelo Dondi
-Date: 19-10-2023
+Date: 20-10-2023
 Description:
     A user-friendly tool that allows the creation and visualization of electrical circuits.
     Users can define nodes, components, and their connections, with an end visualization
     rendered using the PlotlyJS backend for interactivity.
 
-Version: 2.2
+Version: 2.4
 License: MIT License
 """
 
@@ -34,7 +34,7 @@ License: MIT License
     Pkg.add("Plots")          # Plotting package that utilizes the GraphRecipes backend
     Pkg.add("PlotlyJS")       # Plotting backend for the Plots package
     Pkg.add("Dates")          # For generating timestamped filenames
-    
+
     using LightGraphs  # Data structure to represent electrical circuits as graphs
 
 # ==============================================================================
@@ -43,49 +43,9 @@ License: MIT License
     
     println("Defining data structures...")
 
-    """
-        Node
-
-    A structure that encapsulates the details of a node.
-    """
-    struct Node
-        id::Int
-        x::Int
-        y::Int
-    end
-
-    """
-        EdgeInfo
-
-    A structure that chronicles the connectivity between diverse nodes.
-    """
-    mutable struct EdgeInfo
-        edges::Vector{Tuple{Int, Int}}
-    end
-
-    """
-        Component
-
-    A structure that encapsulates the details of a component.
-    """
-    struct Component
-        id::Int
-        start_node::Int
-        end_node::Int
-        details::String
-    end
-
-    """
-        Circuit
-
-    A structure that encapsulates the nodes, components, and their pictorial
-    representation within the circuit.
-    """
-    mutable struct Circuit
-        nodes::Vector{Node}
-        components::Vector{Component}
-        graph::SimpleGraph
-    end
+    # For accessing the data structures 
+    include("Module_CircuitStructures.jl")
+    using .CircuitStructures
 
 # ==============================================================================
 # ==================== Module Main_Function inclusion ==========================

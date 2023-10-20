@@ -8,12 +8,12 @@
     Module: Gathering_Components
 
 Author: Michelangelo Dondi
-Date: 19-10-2023
+Date: 20-10-2023
 Description:
     Dedicated to collecting components within the circuit.
     This module simplifies the collection process by providing a single function to call.   
 
-Version: 2.2
+Version: 2.4
 License: MIT License
 
 Exported functions:     
@@ -36,6 +36,10 @@ module Gathering_Components
     # ==============================================================================
     # ======================== Imported Data Structure =============================
     # ==============================================================================
+
+        # For accessing the data structures 
+        include("Module_CircuitStructures.jl")
+        using .CircuitStructures
 
         # For housing the data structures used by the Circuit Visualization Tool
         import Main: Circuit, EdgeInfo, Component
