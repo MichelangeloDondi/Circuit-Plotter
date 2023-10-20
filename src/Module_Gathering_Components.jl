@@ -37,10 +37,6 @@ module Gathering_Components
     # ======================== Imported Data Structure =============================
     # ==============================================================================
 
-        # For accessing the data structures 
-        include("Module_CircuitStructures.jl")
-        using .CircuitStructures
-
         # For housing the data structures used by the Circuit Visualization Tool
         import Main: Circuit, EdgeInfo, Component
 
@@ -55,13 +51,14 @@ module Gathering_Components
     # =========================== Imported Modules =================================
     # ==============================================================================  
         
-        # For assisting the user
-        include("Module_Helping.jl") 
-        using .Helping: show_help  
+        # Module_Helping.jl provides helper functions for the main program.
+        include("Module_Helping.jl")
+        using .Helping: show_help # Help and instructions
 
-        # For drawing the circuit
+        # Module_Plotting.jl provides functions for drawing the current circuit plot.
         include("Module_Plotting.jl")
-        using .Plotting: draw_plot
+        using .Plotting: draw_plot # Draw the current circuit plot
+
 
     # ==============================================================================
     # ======================== function gather_components ==========================
@@ -106,7 +103,7 @@ module Gathering_Components
         end
 
         # ==============================================================================
-        # ======================== Helper Functions ====================================
+        # ======================== helper functions ====================================
         # ==============================================================================
 
             """
@@ -184,7 +181,7 @@ module Gathering_Components
             end
 
             # ==============================================================================
-            # ================================ Component Recap =============================
+            # =========================== function componentr_ecap =========================
             # ==============================================================================
             
             """
