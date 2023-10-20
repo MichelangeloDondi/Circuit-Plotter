@@ -13,7 +13,7 @@ Description:
     Dedicated to collecting components within the circuit.
     This module simplifies the collection process by providing a single function to call.   
 
-Version: 2.4
+Version: 2.5
 License: MIT License
 
 Exported functions:     
@@ -37,18 +37,18 @@ module Gathering_Components
     # ======================== Imported Data Structure =============================
     # ==============================================================================
 
-        # For housing the data structures used by the Circuit Visualization Tool
+        # For housing the data structures used by the Circuit Plotter Program
         import Main: Circuit, EdgeInfo, Component
 
     # ==============================================================================
     # ============================ Required Packages ===============================
     # ==============================================================================
         
-        # For graph representation of the circuit
+        # For graph data structures
         using LightGraphs 
 
     # ==============================================================================
-    # =========================== Imported Modules =================================
+    # ============================ Included Modules ================================
     # ==============================================================================  
         
         # Module_Helping.jl provides helper functions for the main program.
@@ -58,7 +58,6 @@ module Gathering_Components
         # Module_Plotting.jl provides functions for drawing the current circuit plot.
         include("Module_Plotting.jl")
         using .Plotting: draw_plot # Draw the current circuit plot
-
 
     # ==============================================================================
     # ======================== function gather_components ==========================
@@ -82,133 +81,142 @@ module Gathering_Components
         - nothing
         """
         function gather_components(circuit::Circuit, edge_info::EdgeInfo)
-            collect_components_from_cmd(circuit, edge_info)
-            components_recap(circuit)
+            _collect_components_from_cmd(circuit, edge_info)
+            _components_recap(circuit)
             draw_plot(circuit)
         end
 
     # ==============================================================================
-    # ================== function collect_components_from_cmd ======================
+    # ------------------- function _collect_components_from_cmd --------------------
     # ==============================================================================
 
         """
-            collect_components_from_cmd(circuit::Circuit, edge_info::EdgeInfo)
+            _collect_components_from_cmd(circuit::Circuit, edge_info::EdgeInfo)
 
         Sequentially gathers component details from the user.
+
+        Parameters:
+        - circuit: The primary structure amalgamating nodes, components, and their 
+                illustrative representation within the circuit.
+        - edge_info: The structure encapsulating the edges in the circuit.
+
+        Returns:
+        - nothing
         """
-        function collect_components_from_cmd(circuit::Circuit, edge_info::EdgeInfo)
+        function _collect_components_from_cmd(circuit::Circuit, edge_info::EdgeInfo)
             for idx in 1:length(edge_info.edges)
                 _handle_edge_component(idx, circuit, edge_info)
             end
         end
 
-        # ==============================================================================
-        # ======================== helper functions ====================================
-        # ==============================================================================
+    # ------------------------------------------------------------------------------
+    # ------------------------- function _handle_edge_component --------------------
+    # ------------------------------------------------------------------------------
 
-            """
-                _handle_edge_component(idx::Int, circuit::Circuit, edge_info::EdgeInfo) -> nothing
+        """
+            _handle_edge_component(idx::Int, circuit::Circuit, edge_info::EdgeInfo) -> nothing
 
-            Handles the user input for a single component on a single edge.
+        Handles the user input for a single component on a single edge.
 
-            Parameters:
-            - idx: The index of the edge in the `edge_info` structure.
-            - circuit: The primary structure amalgamating nodes, components, and their 
-                    illustrative representation within the circuit.
-            - edge_info: The structure encapsulating the edges in the circuit.
-                
-            Returns:
-            - nothing
-            """
-            function _handle_edge_component(idx::Int, circuit::Circuit, edge_info::EdgeInfo)
-                decision = _ask_user_choice("\n--- Edge E$idx (N$(edge_info.edges[idx][1]) -> N$(edge_info.edges[idx][2])) ---\nAdd a component? (y/n/help/exit): ")
-
-                if decision == "y"
-                    component_details = _get_component_details()
-                    push!(circuit.components, Main.Component(idx, edge_info.edges[idx][1], edge_info.edges[idx][2], component_details))
-                end
-            end
-
-            """
-                _ask_user_choice(prompt::String)::String 
-
-            Prompts the user for a choice and validates it.
-
-            Parameters:
-            - prompt: The message to display to the user.
-                
-            Returns:
-            - The user's choice.
-                
-            Raises:
-            - Invalid choice: If the user's choice is not one of the available options.
-            """
-            function _ask_user_choice(prompt::String)::String
-                while true
-                    println(prompt)
-                    flush(stdout)
-                    decision = readline()
-
-                    if decision in ["y", "n", "help", "exit"]
-                        if decision == "help"
-                            show_help()
-                        elseif decision == "exit"
-                            println("Exiting...")
-                            exit(0)
-                        else
-                            return decision
-                        end
-                    else
-                        println("Invalid choice. Please retry.")
-                    end
-                end
-            end
-                
-            """
-                _get_component_details()::String    
-
-            Prompts the user for component details and validates them.
-
-            Returns:
-            - The component detail.
-                
-            Raises:
-            - Invalid input: If the user's input is not valid.
-            """
-            function _get_component_details()::String
-                println("Provide component details (e.g. 'R1 = 10 [Ω]'):")
-                return readline()
-            end
-
-            # ==============================================================================
-            # =========================== function componentr_ecap =========================
-            # ==============================================================================
+        Parameters:
+        - idx: The index of the edge in the `edge_info` structure.
+        - circuit: The primary structure amalgamating nodes, components, and their 
+                illustrative representation within the circuit.
+        - edge_info: The structure encapsulating the edges in the circuit.
             
-            """
-                components_recap(circuit::Circuit) -> nothing
+        Returns:
+        - nothing
+        """
+        function _handle_edge_component(idx::Int, circuit::Circuit, edge_info::EdgeInfo)
+            decision = _ask_user_choice("\n--- Edge E$idx (N$(edge_info.edges[idx][1]) -> N$(edge_info.edges[idx][2])) ---\nAdd a component? (y/n/help/exit): ")
 
-            Displays a recap of the components in the circuit.
+            if decision == "y"
+                component_details = _get_component_details()
+                push!(circuit.components, Main.Component(idx, edge_info.edges[idx][1], edge_info.edges[idx][2], component_details))
+            end
+        end
+    
+    # ======================= function _ask_user_choice ============================
 
-            Parameters:
-            - circuit: The primary structure amalgamating nodes, components, and their 
-                    illustrative representation within the circuit.
+        """
+            _ask_user_choice(prompt::String)::String 
 
-            Returns:
-            - nothing
+        Prompts the user for a choice and validates it.
 
-            Notes:
-            - The recap is displayed in the console.
+        Parameters:
+        - prompt: The message to display to the user.
+            
+        Returns:
+        - The user's choice.
+            
+        Raises:
+        - Invalid choice: If the user's choice is not one of the available options.
+        """
+        function _ask_user_choice(prompt::String)::String
+            while true
+                println(prompt)
+                flush(stdout)
+                decision = readline()
 
-            Example:
-            - Component C1 on Edge E1 (N1 -> N2): "R1 = 10 [Ω]".
-            - Component C2 on Edge E2 (N2 -> N3): "R2 = 20 [Ω]".
-            - Component C3 on Edge E3 (N3 -> N4): "R3 = 30 [Ω]".
-            - Component C4 on Edge E4 (N4 -> N1): "R4 = 40 [Ω]".
-            """
-            function components_recap(circuit::Circuit)
-                println("\n--- Components Overview ---")
-                for comp in circuit.components
-                    println("Component C$(comp.id) on Edge E$(comp.id) (N$(comp.start_node) -> N$(comp.end_node)): \"$(comp.details)\".")
+                if decision in ["y", "n", "help", "exit"]
+                    if decision == "help"
+                        show_help()
+                    elseif decision == "exit"
+                        println("Exiting...")
+                        exit(0)
+                    else
+                        return decision
+                    end
+                else
+                    println("Invalid choice. Please retry.")
                 end
             end
+        end
+        
+    # ====================== function _get_component_details =======================
+    
+        """
+            _get_component_details()::String    
+
+        Prompts the user for component details and validates them.
+
+        Returns:
+        - The component detail.
+        """
+        function _get_component_details()::String
+            println("Provide component details (e.g. 'R1 = 10 [Ω]'):")
+            return readline()
+        end
+
+    # ==============================================================================
+    # -------------------------- function _component_recap -------------------------
+    # ==============================================================================
+        
+        """
+            _components_recap(circuit::Circuit) -> nothing
+
+        Displays a recap of the components in the circuit.
+
+        Parameters:
+        - circuit: The primary structure amalgamating nodes, components, and their 
+                illustrative representation within the circuit.
+
+        Returns:
+        - nothing
+
+        Notes:
+        - The recap is displayed in the console.
+
+        Example:
+        - Component C1 on Edge E1 (N1 -> N2): "R1 = 10 [Ω]".
+        - Component C2 on Edge E2 (N2 -> N3): "R2 = 20 [Ω]".
+        - Component C3 on Edge E3 (N3 -> N4): "R3 = 30 [Ω]".
+        - Component C4 on Edge E4 (N4 -> N1): "R4 = 40 [Ω]".
+        """
+        function _components_recap(circuit::Circuit)
+            println("\n--- Components Overview ---")
+            for comp in circuit.components
+                println("Component C$(comp.id) on Edge E$(comp.id) (N$(comp.start_node) -> N$(comp.end_node)): \"$(comp.details)\".")
+            end
+        end
 end            
