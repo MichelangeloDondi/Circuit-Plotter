@@ -22,7 +22,7 @@ Exported functions:
 module Saving
 
     # ==============================================================================
-    # =========================== Exported functions ===============================
+    # =========================== Exported Functions ===============================
     # ==============================================================================
         
         # Invoke this function to export the save_current_plot function
@@ -32,88 +32,95 @@ module Saving
     # ============================ Required Packages ===============================
     # ==============================================================================
 
-        using Plots # For saving plots
-
-    """
-        save_current_plot() -> nothing
-
-    Saves the current plot into an "Images" directory with a timestamped filename.
-
-    Parameters:
-    - None
-
-    Returns:
-    - nothing
-    """
-    function save_current_plot(io::IO=stdin)
-        # Determine paths
-        project_dir = joinpath(@__DIR__, "..")   # Project root directory
-        images_dir = _ensure_images_directory(project_dir)
-        
-        # Generate a timestamped filename
-        filename = _generate_filename(io)
-        filepath = joinpath(images_dir, filename)
-        filepath = joinpath(images_dir, filename)
-              
-        # Save the plot and provide feedback to user
-        Plots.savefig(filepath)
-        println("Circuit plot saved as '$filepath'.")
-        return filepath
-    end
-
+        # For saving plots
+        using Plots
+    
     # ==============================================================================
-    # =========================== Internal functions ===============================
+    # ======================= function save_current_plot ===========================
     # ==============================================================================
 
-    """
-        ensure_images_directory(base_dir::String) -> String
+        """
+            save_current_plot() -> nothing
 
-    Ensures that an "Images" directory exists within the specified base directory.
-    Returns the path to the "Images" directory.
+        Saves the current plot into an "Images" directory with a timestamped filename.
 
-    Parameters:
-    - base_dir: The base directory to check for the existence of an "Images" directory.
+        Parameters:
+        - None
 
-    Returns:
-    - The path to the "Images" directory.
-    """
-    function _ensure_images_directory(base_dir::String)
-        images_path = joinpath(base_dir, "Images")
-        if !isdir(images_path)
-            mkdir(images_path)
-        end
-        return images_path
-    end    
-
-    """
-        generate_filename() -> String
-
-    Ask the user for a filename to save the plot as. If no filename is provided, 
-    a default filename "circuit_plot.png" is used.    
-
-    Parameters:
-    - None
-        
-    Returns:
-    - The generated filename.
-    """
-    function _generate_filename(io::IO=stdin)
-        println("Enter a filename for the circuit plot")
-        println("Otherwise, press Enter to use the default (default: circuit_plot.png).")
-        filename = readline(io)
-
-        # If filename is empty, use the default filename
-        if filename == ""
-            return "circuit_plot.png"
-        end
-        
-        # If filename doesn't have an extension, append ".png"
-        if !contains(filename, r"\.\w+$")  # Regular expression check for file extension
-            filename = filename * ".png"
+        Returns:
+        - nothing
+        """
+        function save_current_plot(io::IO=stdin)
+            # Determine paths
+            project_dir = joinpath(@__DIR__, "..")   # Project root directory
+            images_dir = _ensure_images_directory(project_dir)
+            
+            # Generate a timestamped filename
+            filename = _generate_filename(io)
+            filepath = joinpath(images_dir, filename)
+            filepath = joinpath(images_dir, filename)
+                
+            # Save the plot and provide feedback to user
+            Plots.savefig(filepath)
+            println("Circuit plot saved as '$filepath'.")
+            return filepath
         end
 
-        return filename
-    end
-    
-    
+    # ==============================================================================
+    # ------------------ _ensure_images_directory ---------------------
+    # ==============================================================================
+
+        """
+            _ensure_images_directory(base_dir::String) -> String
+
+        Ensures that an "Images" directory exists within the specified base directory.
+        Returns the path to the "Images" directory.
+
+        Parameters:
+        - base_dir: The base directory to check for the existence of an "Images" directory.
+
+        Returns:
+        - The path to the "Images" directory.
+        """
+        function _ensure_images_directory(base_dir::String)
+            images_path = joinpath(base_dir, "Images")
+            if !isdir(images_path)
+                mkdir(images_path)
+            end
+            return images_path
+        end    
+
+    # ==============================================================================
+    # ----------------------------- _generate_filename -----------------------------
+    # ==============================================================================
+
+        """
+            _generate_filename() -> String
+
+        Ask the user for a filename to save the plot as. If no filename is provided, 
+        a default filename "circuit_plot.png" is used.    
+
+        Parameters:
+        - None
+            
+        Returns:
+        - The generated filename.
+        """
+        function _generate_filename(io::IO=stdin)
+            println("Enter a filename for the circuit plot")
+            println("Otherwise, press Enter to use the default (default: circuit_plot.png).")
+            filename = readline(io)
+
+            # If filename is empty, use the default filename
+            if filename == ""
+                return "circuit_plot.png"
+            end
+            
+            # If filename doesn't have an extension, append ".png"
+            if !contains(filename, r"\.\w+$")  # Regular expression check for file extension
+                filename = filename * ".png"
+            end
+
+            return filename
+        end 
 end
