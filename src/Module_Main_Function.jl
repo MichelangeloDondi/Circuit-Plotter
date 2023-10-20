@@ -51,13 +51,9 @@ module Main_Function
         using LightGraphs  
 
     # ==============================================================================
-    # ============================ Included Modules ================================
+    # ============================== Included Modules ==============================
     # ==============================================================================
 
-        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("Module_CircuitStructures.jl")
-        using .CircuitStructures # Access the data structures
-        
         # Module_Helping.jl provides helper functions for the main program.
         include("Module_Helping.jl")
         using .Helping: show_initial_greetings # Greetings and instructions
