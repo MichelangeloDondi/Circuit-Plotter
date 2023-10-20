@@ -14,7 +14,7 @@ Description:
     Dedicated to housing the main function of the Circuit Visualization Tool.
     This module simplifies the main function definition process by providing a single file to call.
 
-Version: 2.4
+Version: 2.5
 License: MIT License
         
 Exported functions:

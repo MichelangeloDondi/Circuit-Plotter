@@ -16,7 +16,7 @@ Description:
     Users can define nodes, components, and their connections, with an end visualization
     rendered using the PlotlyJS backend for interactivity.
 
-Version: 2.4
+Version: 2.5
 License: MIT License
 """
 
