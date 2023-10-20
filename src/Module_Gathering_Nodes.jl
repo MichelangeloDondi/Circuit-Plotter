@@ -35,35 +35,36 @@ module Gathering_Nodes
     # ========================= Imported Data Structure ============================
     # ==============================================================================
 
-        # For accessing the data structures 
-        include("Module_CircuitStructures.jl")
-        using .CircuitStructures
 
-        # For housing the data structures used by the Circuit Visualization Tool
+        # For housing the data structures used by the Circuit Plotter Program
         import Main: Circuit, Node
 
     # ==============================================================================
     # =========================== Required Packages ================================
     # ==============================================================================
 
-        # For graph representation of the circuit
+        # For graph data structures
         using LightGraphs
 
     # ==============================================================================
     # =========================== Imported Modules =================================
     # ==============================================================================  
 
-        # To let the user call the help function
-        include("Module_Helping.jl") 
-        using .Helping: show_help  
+        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
+        include("Module_CircuitStructures.jl")
+        using .CircuitStructures # Access the data structures
+        
+        # Module_Helping.jl provides helper functions for the main program.
+        include("Module_Helping.jl")
+        using .Helping: show_help # Help and instructions
 
-        # For user input validation
+        # Module_Auxiliary_Functions_Input_Validation.jl provides functions for validating user input.
         include("Module_Auxiliary_Functions_Input_Validation.jl")
-        using .Auxiliary_Functions_Input_Validation: get_positive_integer_input
+        using .Auxiliary_Functions_Input_Validation: get_positive_integer_input # Get a positive integer input from the user
 
-        # To draw the circuit
+        # Module_Plotting.jl provides functions for drawing the current circuit plot.
         include("Module_Plotting.jl")
-        using .Plotting: draw_plot
+        using .Plotting: draw_plot # Draw the current circuit plot
 
     # ==============================================================================
     # ======================== function gather_nodes ===============================
@@ -194,10 +195,6 @@ module Gathering_Nodes
                             return false
                         end
                     end
-                   # if _node_exists_at_position(x, y, circuit)
-                   #     println("\nNode already exists at position ($x,$y).")
-                   #     return false
-                   # end
                     
                     push!(circuit.nodes, Main.Node(idx, x, y))
                     add_vertex!(circuit.graph)
