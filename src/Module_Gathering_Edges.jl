@@ -88,7 +88,7 @@ module Gathering_Edges
             Returns:
             - nothing
         """
-        function gather_edges(circuit::Main.Circuit, edge_info::Main.EdgeInfo)
+        function gather_edges(circuit::Circuit, edge_info::EdgeInfo)
             collect_edges_from_cmd(length(circuit.nodes), circuit, edge_info)
             edges_recap(edge_info)
             draw_plot(circuit)
@@ -137,7 +137,7 @@ module Gathering_Edges
         - true: if the edge was added successfully
         - false: otherwise
         """
-        function _edge_exists(node1::Int, node2::Int, edge_info::Main.EdgeInfo)::Bool
+        function _edge_exists(node1::Int, node2::Int, edge_info::EdgeInfo)::Bool
             for (index, existing_edge) in enumerate(edge_info.edges)
                 if (node1, node2) == existing_edge
                     println("\nThe edge cannot be added for the following reason:")
@@ -172,7 +172,7 @@ module Gathering_Edges
         Returns:
         - nothing
         """
-        function collect_edges_from_cmd(node_count::Int, circuit::Main.Circuit, edge_info::Main.EdgeInfo)
+        function collect_edges_from_cmd(node_count::Int, circuit::Circuit, edge_info::EdgeInfo)
             edge_count = 0
             while true
                 println("\n===================================================")
@@ -254,7 +254,7 @@ module Gathering_Edges
         E3: N3 -> N4
         E4: N4 -> N1
         """ 
-        function edges_recap(edge_info::Main.EdgeInfo)
+        function edges_recap(edge_info::EdgeInfo)
             println("===================================================")
             println("Edges in the Circuit:")
             for i in 1:length(edge_info.edges)
