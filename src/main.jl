@@ -24,24 +24,30 @@ License: MIT License
 # ============================ Required Packages ===============================
 # ==============================================================================
 
-    println("Installing necessary packages...")
-
-    # Ensure that all necessary Julia packages are installed before execution.
+    # Ensure necessary packages are added and used.
     using Pkg
 
-    Pkg.add("LightGraphs")    # For graph data structures    
-    Pkg.add("GraphRecipes")   # For plotting the circuit
-    Pkg.add("Plots")          # For plotting the circuit
-    Pkg.add("PlotlyJS")       # Plotting backend for the Plots package
+    for package in [
+        "LightGraphs",   # For graph data structures
+        "GraphRecipes",  # For plotting the circuit (the graph)
+        "Plots",         # For plotting the circuit (labels, etc.)
+        "PlotlyJS"       # Plotting backend for interactivity
+        ]
 
-    # For graph data structures
-    using LightGraphs
+        # Try to load the packages
+        try
+            eval(Meta.parse("using $package"))
+
+        # If any of the packages is not installed, install it
+        catch
+            Pkg.add(package)
+            eval(Meta.parse("using $package"))
+        end
+    end
 
 # ==============================================================================
 # =========================== Imported Modules =================================
 # ==============================================================================
-
-    println("Including modules in main function...")
 
     # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
     include("Module_CircuitStructures.jl")
@@ -54,8 +60,6 @@ License: MIT License
 # ==============================================================================
 # ================================= Run Main ===================================
 # ==============================================================================
-
-    println("Running main function...")
 
     # Run the main function.
     main()

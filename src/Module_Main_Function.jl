@@ -51,10 +51,8 @@ module Main_Function
         using LightGraphs  
 
     # ==============================================================================
-    # ============================ Imported Modules ================================
+    # ============================ Included Modules ================================
     # ==============================================================================
-
-        println("Including modules in Main_Function module...")
 
         # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
         include("Module_CircuitStructures.jl")
@@ -76,10 +74,6 @@ module Main_Function
         include("Module_Gathering_Components.jl")
         using .Gathering_Components: gather_components # Collect component details from the user
 
-        # Module_Plotting.jl provides functions for drawing the current circuit plot.
-        include("Module_Plotting.jl")
-        using .Plotting: draw_plot # Draw the current circuit plot
-
         # Module_Saving.jl provides functions for saving the current plot.
         include("Module_Saving.jl")
         using .Saving: save_current_plot # Save the current plot
@@ -87,8 +81,6 @@ module Main_Function
     # ==============================================================================
     # ============================== Main Function =================================
     # ==============================================================================
-        
-        println("Defining main function in Main_Function module...")
 
         """
             main() -> nothing   
@@ -124,7 +116,7 @@ module Main_Function
             # Save the visual representation of the user-defined circuit.
             save_current_plot()
 
-            # Exit the program.
+            # Exit the program after the user presses Enter.
             println("Press Enter to exit...")
             readline()
         end
