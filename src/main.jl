@@ -33,7 +33,6 @@ License: MIT License
     Pkg.add("GraphRecipes")   # Plotting backend for the LightGraphs package
     Pkg.add("Plots")          # Plotting package that utilizes the GraphRecipes backend
     Pkg.add("PlotlyJS")       # Plotting backend for the Plots package
-    Pkg.add("Dates")          # For generating timestamped filenames
 
     using LightGraphs  # Data structure to represent electrical circuits as graphs
 
