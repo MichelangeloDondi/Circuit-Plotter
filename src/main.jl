@@ -46,19 +46,19 @@ License: MIT License
     end
 
 # ==============================================================================
-# =========================== Imported Modules =================================
+# ============================== Imported Modules ==============================
 # ==============================================================================
 
     # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-    include("Module_CircuitStructures.jl")
-    using .CircuitStructures # Access the data structures
+    include("Module_Circuit_Structures.jl")
+    using .Circuit_Structures # Access the data structures
 
     # Module_Main_Function.jl provides the main function of the Circuit Plotter Program.
     include("Module_Main_Function.jl")
     using .Main_Function # Access the main function
 
 # ==============================================================================
-# ================================= Run Main ===================================
+# ================================== Run Main ==================================
 # ==============================================================================
 
     # Run the main function.
