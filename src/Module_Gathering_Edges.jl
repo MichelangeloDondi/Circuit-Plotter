@@ -34,12 +34,8 @@ module Gathering_Edges
         export gather_edges
 
     # ==============================================================================
-    # =========================== Exported Function ================================
+    # ========================= Imported Data Structure ============================
     # ==============================================================================
-
-        # For accessing the data structures 
-        include("Module_CircuitStructures.jl")
-        using .CircuitStructures
 
         # Use these variables to access the data structures used by the Circuit Visualization Tool
         import Main: Circuit, EdgeInfo
@@ -54,18 +50,18 @@ module Gathering_Edges
     # ==============================================================================
     # =========================== Imported Modules =================================
     # ==============================================================================  
-    
-        # For assisting the user
-        include("Module_Helping.jl") 
-        using .Helping: show_help  
 
-        # For checking edge overlaps
+        # Module_Helping.jl provides helper functions for the main program.
+        include("Module_Helping.jl")
+        using .Helping: show_help # Help and instructions
+
+        # Module_Auxiliary_Functions_Geometry.jl provides functions for validating user input.
         include("Module_Auxiliary_Functions_Geometry.jl")
-        using .Auxiliary_Functions_Geometry: overlapping_edges
+        using .Auxiliary_Functions_Geometry: overlapping_edges # Check if the new edge overlaps with existing edges
 
-        # For drawing the circuit
+        # Module_Plotting.jl provides functions for drawing the current circuit plot.
         include("Module_Plotting.jl")
-        using .Plotting: draw_plot
+        using .Plotting: draw_plot # Draw the current circuit plot
 
     # ==============================================================================
     # ======================== function gather_edges ===============================
@@ -74,92 +70,32 @@ module Gathering_Edges
         """
             gather_edges(circuit::Circuit, edge_info::EdgeInfo) -> nothing
 
-            Systematically assembles information about the edges or connections present 
-            within the circuit, utilizing direct inputs from the user. The accumulated 
-            data finds its place within the `edge_info` structure. Additionally, a recap 
-            of edge particulars is presented, followed by the graphical portrayal of 
-            the updated circuit.
+        Systematically assembles information about the edges or connections present 
+        within the circuit, utilizing direct inputs from the user. The accumulated 
+        data finds its place within the `edge_info` structure. Additionally, a recap 
+        of edge particulars is presented, followed by the graphical portrayal of 
+        the updated circuit.
 
-            Parameters:
-            - circuit: The nucleus structure, encapsulating nodes, components, and their 
-                    pictorial representation in the circuit.
-            - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
+        Parameters:
+        - circuit: The nucleus structure, encapsulating nodes, components, and their 
+                pictorial representation in the circuit.
+        - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
 
-            Returns:
-            - nothing
+        Returns:
+        - nothing
         """
         function gather_edges(circuit::Circuit, edge_info::EdgeInfo)
-            collect_edges_from_cmd(length(circuit.nodes), circuit, edge_info)
-            edges_recap(edge_info)
+            _collect_edges_from_cmd(length(circuit.nodes), circuit, edge_info)
+            _edges_recap(edge_info)
             draw_plot(circuit)
         end
 
     # ==============================================================================
-    # ======================== Helper Functions ====================================
-    # ==============================================================================
-
-        """
-            _handle_special_input(input::String) -> Bool
-
-        Handles special inputs, such as "help" and "exit".
-
-        Parameters:
-        - input: The input provided by the user.
-
-        Returns:
-        - true: if the input is a special input
-        - false: otherwise
-        """
-        function _handle_special_input(input::String)::Bool
-            if input == "help"
-                show_help()
-                return true
-            elseif input == "exit"
-                println("Exiting the program.")
-                exit(0)
-            end
-            return false
-        end
-
-        """
-            _add_edge_to_circuit(input::String, edge_count::Int, circuit::Circuit, edge_info::EdgeInfo) -> Bool
-
-        Adds an edge to the circuit.
-
-        Parameters:
-        - input: The input provided by the user.
-        - edge_count: The number of edges in the circuit.
-        - circuit: The primary structure amalgamating nodes, components, and their 
-                illustrative representation within the circuit.
-        - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
-
-        Returns:
-        - true: if the edge was added successfully
-        - false: otherwise
-        """
-        function _edge_exists(node1::Int, node2::Int, edge_info::EdgeInfo)::Bool
-            for (index, existing_edge) in enumerate(edge_info.edges)
-                if (node1, node2) == existing_edge
-                    println("\nThe edge cannot be added for the following reason:")
-                    println("Edge between nodes N$node1 and N$node2 already exists as E$index(N$node1->N$node2).")
-                    return true
-                    break
-                elseif (node2, node1) == existing_edge
-                    println("\nThe edge cannot be added for the following reason:")
-                    println("Edge between nodes N$node1 and N$node2 already exists as E$index(N$node2->N$node1).")
-                    return true
-                    break
-                end
-            end
-            return false
-        end
-
-    # ==============================================================================
-    # ======================= function collect_edges_from_cmd ======================
+    # ---------------------- function _collect_edges_from_cmd ----------------------
     # ==============================================================================
         
         """
-            collect_edges_from_cmd(node_count::Int, circuit::Circuit, edge_info::EdgeInfo) -> nothing  
+            _collect_edges_from_cmd(node_count::Int, circuit::Circuit, edge_info::EdgeInfo) -> nothing  
 
         Sequentially gathers edge details from the user.
 
@@ -172,7 +108,7 @@ module Gathering_Edges
         Returns:
         - nothing
         """
-        function collect_edges_from_cmd(node_count::Int, circuit::Circuit, edge_info::EdgeInfo)
+        function _collect_edges_from_cmd(node_count::Int, circuit::Circuit, edge_info::EdgeInfo)
             edge_count = 0
             while true
                 println("\n===================================================")
@@ -230,11 +166,73 @@ module Gathering_Edges
         end
 
     # ==============================================================================
-    # ======================== function edges_recap ================================
+    # --------------------------- _handle_special_input ----------------------------
     # ==============================================================================
 
         """
-            edges_recap(edge_info::EdgeInfo) -> nothing
+            _handle_special_input(input::String) -> Bool
+
+        Handles special inputs, such as "help" and "exit".
+
+        Parameters:
+        - input: The input provided by the user.
+
+        Returns:
+        - true: if the input is a special input
+        - false: otherwise
+        """
+        function _handle_special_input(input::String)::Bool
+            if input == "help"
+                show_help()
+                return true
+            elseif input == "exit"
+                println("Exiting the program.")
+                exit(0)
+            end
+            return false
+        end
+
+    # ==============================================================================
+    # -------------------------------- _edge_exists --------------------------------
+    # ==============================================================================
+
+        """
+            _edge_exists(node1::Int, node2::Int, edge_info::EdgeInfo) -> Bool
+
+        Checks if an edge already exists between two nodes.
+
+        Parameters:
+        - node1: The index of the first node.
+        - node2: The index of the second node.
+        - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
+
+        Returns:
+        - true: if the edge already exists
+        - false: otherwise
+        """
+        function _edge_exists(node1::Int, node2::Int, edge_info::EdgeInfo)::Bool
+            for (index, existing_edge) in enumerate(edge_info.edges)
+                if (node1, node2) == existing_edge
+                    println("\nThe edge cannot be added for the following reason:")
+                    println("Edge between nodes N$node1 and N$node2 already exists as E$index(N$node1->N$node2).")
+                    return true
+                    break
+                elseif (node2, node1) == existing_edge
+                    println("\nThe edge cannot be added for the following reason:")
+                    println("Edge between nodes N$node1 and N$node2 already exists as E$index(N$node2->N$node1).")
+                    return true
+                    break
+                end
+            end
+            return false
+        end
+
+    # ==============================================================================
+    # ======================== function _edges_recap ===============================
+    # ==============================================================================
+
+        """
+            _edges_recap(edge_info::EdgeInfo) -> nothing
 
         Displays a recap of the edges in the circuit.
 
@@ -254,7 +252,7 @@ module Gathering_Edges
         E3: N3 -> N4
         E4: N4 -> N1
         """ 
-        function edges_recap(edge_info::EdgeInfo)
+        function _edges_recap(edge_info::EdgeInfo)
             println("===================================================")
             println("Edges in the Circuit:")
             for i in 1:length(edge_info.edges)
@@ -262,4 +260,4 @@ module Gathering_Edges
             end
             println("===================================================")
         end
-    end
+end
