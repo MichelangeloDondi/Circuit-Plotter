@@ -23,71 +23,73 @@ Exported functions:
 module Main_Function
 
     # ==============================================================================
-    # ============================ Exported Function ================================
+    # ============================ Exported Function ===============================
     # ==============================================================================
 
-        # Invoke this function to run the main program
+        # main function of the program 
         export main
     
     # ==============================================================================
-    # ============================ Exported Variables ================================
+    # =========================== Exported Variables ===============================
     # ==============================================================================
 
-        # Use these variables to access the data structures used by the Circuit Visualization Tool
+        # Use these variables to access the data structures used by the Circuit Plotter Program
         export circuit, edge_info
 
     # ==============================================================================
-    # ============================ Imported Data Structure ================================
+    # ========================= Imported Data Structure ============================
     # ==============================================================================
-
-        # For accessing the data structures 
-        include("Module_CircuitStructures.jl")
-        using .CircuitStructures
-
-        println("Importing data structures...")
+        
+        # For housing the data structures used by the Circuit Plotter Program
         import Main: Circuit, EdgeInfo
     
     # ==============================================================================
     # ============================ Required Packages ===============================
     # ==============================================================================
 
-        using LightGraphs  # Data structure to represent electrical circuits as graphs
+        # For graph data structures
+        using LightGraphs  
 
     # ==============================================================================
-    # =========================== Imported Modules ===============================
+    # ============================ Imported Modules ================================
     # ==============================================================================
 
-        println("Importing modules...")
+        println("Including modules in Main_Function module...")
 
+        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
+        include("Module_CircuitStructures.jl")
+        using .CircuitStructures # Access the data structures
+        
         # Module_Helping.jl provides helper functions for the main program.
         include("Module_Helping.jl")
         using .Helping: show_initial_greetings # Greetings and instructions
 
-        # Module_Gathering_Nodes.jl: Provides functions for collecting node details.
+        # Module_Gathering_Nodes.jl provides functions for collecting node details.
         include("Module_Gathering_Nodes.jl")
         using .Gathering_Nodes: gather_nodes # Collect node details from the user
 
-        # Module_Gathering_Edges.jl: Provides functions for collecting edge details.
+        # Module_Gathering_Edges.jl provides functions for collecting edge details.
         include("Module_Gathering_Edges.jl")
         using .Gathering_Edges: gather_edges # Collect edge details from the user
 
-        # Module_Gathering_Components.jl: Provides functions for collecting component details.
+        # Module_Gathering_Components.jl provides functions for collecting component details.
         include("Module_Gathering_Components.jl")
         using .Gathering_Components: gather_components # Collect component details from the user
 
-        # Module_Plotting.jl: Provides functions for drawing the current circuit plot.
+        # Module_Plotting.jl provides functions for drawing the current circuit plot.
         include("Module_Plotting.jl")
         using .Plotting: draw_plot # Draw the current circuit plot
 
-        # Module_Saving.jl: Provides functions for saving the current plot.
+        # Module_Saving.jl provides functions for saving the current plot.
         include("Module_Saving.jl")
         using .Saving: save_current_plot # Save the current plot
 
     # ==============================================================================
-    # ============================== Main Function ================================
+    # ============================== Main Function =================================
     # ==============================================================================
         
-        println("Defining main function...")
+        println("Defining main function in Main_Function module...")
+
         """
             main() -> nothing   
 

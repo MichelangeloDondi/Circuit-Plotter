@@ -29,35 +29,33 @@ License: MIT License
     # Ensure that all necessary Julia packages are installed before execution.
     using Pkg
 
-    Pkg.add("LightGraphs")    # Data structure to represent electrical circuits as graphs    
-    Pkg.add("GraphRecipes")   # Plotting backend for the LightGraphs package
-    Pkg.add("Plots")          # Plotting package that utilizes the GraphRecipes backend
+    Pkg.add("LightGraphs")    # For graph data structures    
+    Pkg.add("GraphRecipes")   # For plotting the circuit
+    Pkg.add("Plots")          # For plotting the circuit
     Pkg.add("PlotlyJS")       # Plotting backend for the Plots package
 
-    using LightGraphs  # Data structure to represent electrical circuits as graphs
+    # For graph data structures
+    using LightGraphs
 
 # ==============================================================================
-# ============================= Data Structures ================================
+# =========================== Imported Modules =================================
 # ==============================================================================
-    
-    println("Defining data structures...")
 
-    # For accessing the data structures 
+    println("Including modules in main function...")
+
+    # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
     include("Module_CircuitStructures.jl")
-    using .CircuitStructures
+    using .CircuitStructures # Access the data structures
 
-# ==============================================================================
-# ==================== Module Main_Function inclusion ==========================
-# ==============================================================================
-
-    println("Including main function...")
+    # Module_Main_Function.jl provides the main function of the Circuit Plotter Program.
     include("Module_Main_Function.jl")
-    using .Main_Function
+    using .Main_Function # Access the main function
 
 # ==============================================================================
 # ================================= Run Main ===================================
 # ==============================================================================
 
     println("Running main function...")
+
     # Run the main function.
     main()
