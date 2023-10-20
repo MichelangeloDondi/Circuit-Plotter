@@ -13,7 +13,7 @@ Description:
     Dedicated to collecting edges within the circuit.
     This module simplifies the collection process by providing a single function to call.   
 
-Version: 2.4
+Version: 2.5
 License: MIT License
 
 Exported functions:
@@ -37,14 +37,14 @@ module Gathering_Edges
     # ========================= Imported Data Structure ============================
     # ==============================================================================
 
-        # Use these variables to access the data structures used by the Circuit Visualization Tool
+        # For housing the data structures used by the Circuit Plotter Program
         import Main: Circuit, EdgeInfo
 
     # ==============================================================================
     # =========================== Required Packages ================================
     # ==============================================================================    
 
-        # For graph representation of the circuit
+        # For graph data structures
         using LightGraphs
     
     # ==============================================================================
@@ -165,9 +165,9 @@ module Gathering_Edges
             end
         end
 
-    # ==============================================================================
-    # --------------------------- _handle_special_input ----------------------------
-    # ==============================================================================
+    # -------------------------------------------------------------------------------
+    # --------------------------- _handle_special_input -----------------------------
+    # -------------------------------------------------------------------------------
 
         """
             _handle_special_input(input::String) -> Bool
@@ -192,9 +192,9 @@ module Gathering_Edges
             return false
         end
 
-    # ==============================================================================
-    # -------------------------------- _edge_exists --------------------------------
-    # ==============================================================================
+    # -------------------------------------------------------------------------------
+    # -------------------------------- _edge_exists ---------------------------------
+    # -------------------------------------------------------------------------------
 
         """
             _edge_exists(node1::Int, node2::Int, edge_info::EdgeInfo) -> Bool
@@ -212,11 +212,15 @@ module Gathering_Edges
         """
         function _edge_exists(node1::Int, node2::Int, edge_info::EdgeInfo)::Bool
             for (index, existing_edge) in enumerate(edge_info.edges)
+
+                # Check if the edge already exists
                 if (node1, node2) == existing_edge
                     println("\nThe edge cannot be added for the following reason:")
                     println("Edge between nodes N$node1 and N$node2 already exists as E$index(N$node1->N$node2).")
                     return true
                     break
+                    
+                # Check if the edge already exists in the opposite direction
                 elseif (node2, node1) == existing_edge
                     println("\nThe edge cannot be added for the following reason:")
                     println("Edge between nodes N$node1 and N$node2 already exists as E$index(N$node2->N$node1).")
@@ -228,7 +232,7 @@ module Gathering_Edges
         end
 
     # ==============================================================================
-    # ======================== function _edges_recap ===============================
+    # --------------------------- function _edges_recap ----------------------------
     # ==============================================================================
 
         """
