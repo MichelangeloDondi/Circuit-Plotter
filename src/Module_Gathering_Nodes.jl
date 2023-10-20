@@ -35,7 +35,6 @@ module Gathering_Nodes
     # ========================= Imported Data Structure ============================
     # ==============================================================================
 
-
         # For housing the data structures used by the Circuit Plotter Program
         import Main: Circuit, Node
 
@@ -89,159 +88,140 @@ module Gathering_Nodes
             draw_plot(circuit)
         end
 
-        # ==============================================================================
-        # ---------------------- function _collect_nodes_from_cmd ----------------------
-        # ==============================================================================
-           
-            """
-                _collect_nodes_from_cmd(node_count::Int, circuit::Circuit) -> nothing
+    # ==============================================================================
+    # ---------------------- function _collect_nodes_from_cmd ----------------------
+    # ==============================================================================
+        
+        """
+            _collect_nodes_from_cmd(node_count::Int, circuit::Circuit) -> nothing
 
-            Sequentially gathers node details from the user.
+        Sequentially gathers node details from the user.
 
-            Parameters:
-            - node_count: The number of nodes in the circuit.
-            - circuit: The primary structure amalgamating nodes, components, and their 
-                    illustrative representation within the circuit.
+        Parameters:
+        - node_count: The number of nodes in the circuit.
+        - circuit: The primary structure amalgamating nodes, components, and their 
+                illustrative representation within the circuit.
 
-            Returns:
-            - nothing
-            """
-            function _collect_nodes_from_cmd(node_count::Int, circuit::Circuit)
-                for i in 1:node_count
-                    while true
-                        println("\n===================================================")
-                        println("Node # $i/$node_count: Enter integer coordinates (format: x,y):")
+        Returns:
+        - nothing
+        """
+        function _collect_nodes_from_cmd(node_count::Int, circuit::Circuit)
+            for i in 1:node_count
+                while true
+                    println("\n===================================================")
+                    println("Node # $i/$node_count: Enter integer coordinates (format: x,y):")
 
-                        input = readline()
-                        if !_handle_special_input(input) && _add_node_to_circuit(input, i, circuit)
-                            break
-                        end
+                    input = readline()
+                    if !_handle_special_input(input) && _add_node_to_circuit(input, i, circuit)
+                        break
                     end
                 end
             end
+        end
 
-            # --------------------------------------------------------------------------
-            # --------------- helper functions of _collect_nodes_from_cmd --------------
-            # --------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------
+    # ----------------------- function _handle_special_input -----------------------
+    # ------------------------------------------------------------------------------
+        
+        """
+            _handle_special_input(input::String)::Bool
 
-                # ------------------- function _handle_special_input -------------------
-                
-                """
-                    _handle_special_input(input::String)::Bool
+        Handles special input from the user.
 
-                Handles special input from the user.
+        Parameters:
+        - input: The input provided by the user.
 
-                Parameters:
-                - input: The input provided by the user.
+        Returns:
+        - true if the input was handled, false otherwise.
+        """
+        function _handle_special_input(input::String)::Bool
+            if input == "help"
+                show_help()
+                return true
+            elseif input == "exit"
+                println("Exiting the program.")
+                exit(0)
+            end
+            return false
+        end
 
-                Returns:
-                - true if the input was handled, false otherwise.
-                """
-                function _handle_special_input(input::String)::Bool
-                    if input == "help"
-                        show_help()
-                        return true
-                    elseif input == "exit"
-                        println("Exiting the program.")
-                        exit(0)
-                    end
-                    return false
-                end
+    # ------------------------------------------------------------------------------
+    # ------------------------ function _add_node_to_circuit -----------------------
+    # ------------------------------------------------------------------------------
 
-                # ------------------- function _node_exists_at_position -------------------
+        """
+            _add_node_to_circuit(input::String, idx::Int, circuit::Circuit)::Bool
 
-                """
-                    _node_exists_at_position(x::Int, y::Int, circuit::Circuit)::Bool
+        Adds a node to the circuit.
 
-                Checks if a node exists at the given position.
+        Parameters:
+        - input: The input provided by the user.
+        - idx: The index of the node.
+        - circuit: The primary structure amalgamating nodes, components, and their 
+                illustrative representation within the circuit.
 
-                Parameters:
-                - x: The x-coordinate of the node.
-                - y: The y-coordinate of the node.
-                - circuit: The primary structure amalgamating nodes, components, and their 
-                        illustrative representation within the circuit.
+        Returns:
+        - true if the node was added, false otherwise.
 
-                Returns:
-                - true if a node exists at the given position, false otherwise.
-                """
-                function _node_exists_at_position(x::Int, y::Int, circuit::Circuit)::Bool
-                    return findfirst(n -> n.x == x && n.y == y, circuit.nodes) !== nothing
-                end
+        Raises:
+        - Invalid input: If the input provided by the user is invalid.
 
-                # --------------------- function _add_node_to_circuit ---------------------
-                """
-                    _add_node_to_circuit(input::String, idx::Int, circuit::Circuit)::Bool
+        Notes:
+        - The input is expected to be in the format x,y.
+        """
+        function _add_node_to_circuit(input::String, idx::Int, circuit::Circuit)::Bool
+            coords = split(input, ",")
 
-                Adds a node to the circuit.
-
-                Parameters:
-                - input: The input provided by the user.
-                - idx: The index of the node.
-                - circuit: The primary structure amalgamating nodes, components, and their 
-                        illustrative representation within the circuit.
-
-                Returns:
-                - true if the node was added, false otherwise.
-
-                Raises:
-                - Invalid input: If the input provided by the user is invalid.
-
-                Notes:
-                - The input is expected to be in the format x,y.
-                """
-                function _add_node_to_circuit(input::String, idx::Int, circuit::Circuit)::Bool
-                    coords = split(input, ",")
-
-                    try
-                        x, y = parse(Int, coords[1]), parse(Int, coords[2])
-                        for node in circuit.nodes
-                            if node.x == x && node.y == y
-                                println("\nNode N",node.id," already exists at position ($x,$y).")
-                                return false
-                            end
-                        end
-                        
-                        push!(circuit.nodes, Main.Node(idx, x, y))
-                        add_vertex!(circuit.graph)
-                        println("\nNode N$idx added at position ($x,$y).")
-                        return true
-                    catch
-                        println("\nInvalid input. Enter integer coordinates as x,y.")
+            try
+                x, y = parse(Int, coords[1]), parse(Int, coords[2])
+                for node in circuit.nodes
+                    if node.x == x && node.y == y
+                        println("\nNode N",node.id," already exists at position ($x,$y).")
                         return false
                     end
                 end
-
-        # ==============================================================================
-        # ---------------------------- function _nodes_recap ---------------------------
-        # ==============================================================================
-
-            """
-                _nodes_recap(circuit::Circuit) -> nothing
-
-            Displays a recap of the nodes in the circuit.
-
-            Parameters:
-            - circuit: The primary structure amalgamating nodes, components, and their 
-                    illustrative representation within the circuit.
-
-            Returns:
-            - nothing
-
-            Notes:
-            - The recap is displayed in the following format:
-                ===================================================
-                Nodes in the Circuit:
-                N1 at (0,0)
-                N2 at (0,1)
-                N3 at (1,0)
-                ===================================================
-            """
-            function _nodes_recap(circuit::Circuit)
-                println("\n===================================================")
-                println("Nodes in the Circuit:")
-                for node in circuit.nodes
-                    println("N$(node.id) at ($(node.x),$(node.y))")
-                end
-                println("===================================================")
+                
+                push!(circuit.nodes, Main.Node(idx, x, y))
+                add_vertex!(circuit.graph)
+                println("\nNode N$idx added at position ($x,$y).")
+                return true
+            catch
+                println("\nInvalid input. Enter integer coordinates as x,y.")
+                return false
             end
+        end
+        
+    # ==============================================================================
+    # ---------------------------- function _nodes_recap ---------------------------
+    # ==============================================================================
+
+        """
+            _nodes_recap(circuit::Circuit) -> nothing
+
+        Displays a recap of the nodes in the circuit.
+
+        Parameters:
+        - circuit: The primary structure amalgamating nodes, components, and their 
+                illustrative representation within the circuit.
+
+        Returns:
+        - nothing
+
+        Notes:
+        - The recap is displayed in the following format:
+            ===================================================
+            Nodes in the Circuit:
+            N1 at (0,0)
+            N2 at (0,1)
+            N3 at (1,0)
+            ===================================================
+        """
+        function _nodes_recap(circuit::Circuit)
+            println("\n===================================================")
+            println("Nodes in the Circuit:")
+            for node in circuit.nodes
+                println("N$(node.id) at ($(node.x),$(node.y))")
+            end
+            println("===================================================")
+        end
     end
