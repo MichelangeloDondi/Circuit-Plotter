@@ -104,8 +104,7 @@ module Gathering_Nodes
             while true
                 println("\n===================================================")
                 println("\nNumber of nodes already present in the Circuit: $node_count.")
-                println("Type 'stop' to stop adding nodes or provide the
-                      coordinates of the next node (N$(node_count + 1)).")
+                println("\nType 'stop' to stop adding nodes or provide the coordinates of the next node (N$(node_count + 1)).")
                 println("Format: x,y (coordinates must be integer):")
 
                 input = readline()
@@ -206,20 +205,27 @@ module Gathering_Nodes
         - nothing
 
         Notes:
-        - The recap is displayed in the following format:
-            ===================================================
+        - The recap is displayed in the console in the following format:
+            - Ni at (xi,yi), where i is the index of the node.
+
+        Example:
+        ===================================================
+            
             Nodes in the Circuit:
-            N1 at (0,0)
-            N2 at (0,1)
-            N3 at (1,0)
+            
+               - N1 at (0,0)
+               - N2 at (0,1)
+               - N3 at (1,0)
+               - N4 at (1,1)
+
             ===================================================
         """
         function _nodes_recap(circuit::Circuit)
             println("\n===================================================")
-            println("Nodes in the Circuit:")
+            println("\nNodes in the Circuit:\n")
             for node in circuit.nodes
-                println("N$(node.id) at ($(node.x),$(node.y))")
+                println("   - N$(node.id) at ($(node.x),$(node.y))")
             end
-            println("===================================================")
+            println("\n===================================================")
         end
     end

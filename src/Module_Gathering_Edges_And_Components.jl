@@ -1,44 +1,43 @@
 # ==============================================================================
 # ==============================================================================
-# ======================== Module_Gathering_Edges.jl ===========================
+# ================= Module_Gathering_Edges_And_Components.jl ===================
 # ==============================================================================
 # ==============================================================================
 
 """
-    Module: Gathering_Edges
+    Module: Gathering_Edges_And_Components
 
 Author: Michelangelo Dondi
-Date: 20-10-2023
+Date: 21-10-2023
 Description:
-    Dedicated to collecting edges within the circuit.
-    This module simplifies the collection process by providing a single function to call.   
+    Dedicated to housing the functions for collecting edge details and component details.
+    This module simplifies the main function definition process by providing a single file to call.
 
-Version: 2.5
+Version: 2.6
 License: MIT License
 
 Exported functions:
-- `gather_edges(circuit::Circuit, edge_info::EdgeInfo)`: 
-        Systematically assembles information about the edges or connections present 
-        within the circuit, utilizing direct inputs from the user. The accumulated 
-        data finds its place within the `edge_info` structure. Additionally, a recap 
-        of edge particulars is presented, followed by the graphical portrayal of 
-        the updated circuit.   
+- `gather_edges_and_components(circuit::Circuit, edge_info::EdgeInfo)`: Systematically 
+    assembles information about the edges and components present within the circuit,
+    utilizing direct inputs from the user. The accumulated data finds its place within 
+    the `circuit` structure. Additionally, a recap of edge particulars and of components
+    particulars is presented, followed by the graphical portrayal of the updated circuit.
 """
-module Gathering_Edges
+module Gathering_Edges_And_Components
 
     # ==============================================================================
     # =========================== Exported Function ================================
     # ==============================================================================
 
         # Invoke this function to gather the edges
-        export gather_edges
+        export gather_edges_and_components
 
     # ==============================================================================
     # ========================= Imported Data Structure ============================
     # ==============================================================================
 
         # For housing the data structures used by the Circuit Plotter Program
-        import Main: Circuit, EdgeInfo
+        import Main: Circuit, EdgeInfo, Component
 
     # ==============================================================================
     # =========================== Required Packages ================================
@@ -84,20 +83,21 @@ module Gathering_Edges
         Returns:
         - nothing
         """
-        function gather_edges(circuit::Circuit, edge_info::EdgeInfo)
-            _collect_edges_from_cmd(length(circuit.nodes), circuit, edge_info)
+        function gather_edges_and_components(circuit::Circuit, edge_info::EdgeInfo)
+            _collect_edges_and_components_from_cmd(length(circuit.nodes), circuit, edge_info)
             _edges_recap(edge_info)
+            _components_recap(circuit)
             draw_plot(circuit)
         end
 
     # ==============================================================================
-    # ---------------------- function _collect_edges_from_cmd ----------------------
+    # --------------- function _collect_edges_and_components_from_cmd --------------
     # ==============================================================================
         
         """
-            _collect_edges_from_cmd(node_count::Int, circuit::Circuit, edge_info::EdgeInfo) -> nothing  
+            _collect_edges_and_components_from_cmd(node_count::Int, circuit::Circuit, edge_info::EdgeInfo) -> nothing  
 
-        Sequentially gathers edge details from the user.
+        Sequentially gathers edge details and component details from the user.
 
         Parameters:
         - node_count: The number of nodes in the circuit.
@@ -108,13 +108,12 @@ module Gathering_Edges
         Returns:
         - nothing
         """
-        function _collect_edges_from_cmd(node_count::Int, circuit::Circuit, edge_info::EdgeInfo)
+        function _collect_edges_and_components_from_cmd(node_count::Int, circuit::Circuit, edge_info::EdgeInfo)
             edge_count = 0
             while true
                 println("\n===================================================")
                 println("\nNumber of edges already present in the Circuit:: $edge_count.")
-                println("Type 'stop' to stop adding edges or provide the node indexes
-                         for the next edge (E$(edge_count + 1)).")
+                println("\nType 'stop' to stop adding edges or provide the node indexes for the next edge (E$(edge_count + 1)).")
                 println("Format: i,j (Direction: Ni->Nj)")
 
                 input = readline()
@@ -161,12 +160,59 @@ module Gathering_Edges
                     edge_count += 1
                     println("\nEdge E$edge_count: N$node1 -> N$node2 added.")
 
+                    # Ask the user if they want to add a component to the edge
+                    decision = _ask_user_choice("\nDo you want to add component to edge E$edge_count? (y/n)")
+                    if decision == "y"
+                        println("Provide component details (e.g. 'R1 = 10 [Ω]'):")
+                        component_details = readline()
+                        # Add the component to the circuit 
+                        push!(circuit.components, Main.Component(edge_count, edge_info.edges[edge_count][1], edge_info.edges[edge_count][2], component_details))
+                    end
+
                 catch e
                     println("\nError: ", e)
                 end
             end
         end
 
+        # -------------------------------------------------------------------------------
+        # -------------------------- function _ask_user_choice --------------------------
+        # -------------------------------------------------------------------------------
+
+            """
+            _ask_user_choice(prompt::String)::String 
+
+        Prompts the user for a choice and validates it.
+
+        Parameters:
+        - prompt: The message to display to the user.
+            
+        Returns:
+        - The user's choice.
+            
+        Raises:
+        - Invalid choice: If the user's choice is not one of the available options.
+        """
+        function _ask_user_choice(prompt::String)::String
+            while true
+                println(prompt)
+                flush(stdout)
+                decision = readline()
+
+                if decision in ["y", "n", "help", "exit"]
+                    if decision == "help"
+                        show_help()
+                    elseif decision == "exit"
+                        println("Exiting...")
+                        exit(0)
+                    else
+                        return decision
+                    end
+                else
+                    println("Invalid choice. Please retry.")
+                end
+            end
+        end
     # -------------------------------------------------------------------------------
     # --------------------------- _handle_special_input -----------------------------
     # -------------------------------------------------------------------------------
@@ -253,17 +299,64 @@ module Gathering_Edges
                 j is the index of the first node, and k is the index of the second node.
         
         Example: 
-        E1: N1 -> N2
-        E2: N2 -> N3
-        E3: N3 -> N4
-        E4: N4 -> N1
+        ===================================================
+
+        Edges in the Circuit:
+
+            - E1: N1 -> N2
+            - E2: N2 -> N3
+            - E3: N3 -> N4
+            - E4: N4 -> N1
+
+        ===================================================
         """ 
         function _edges_recap(edge_info::EdgeInfo)
-            println("===================================================")
-            println("Edges in the Circuit:")
+            println("\n===================================================\n")
+            println("\nEdges in the Circuit:\n")
             for i in 1:length(edge_info.edges)
-                println("E$i: N$(edge_info.edges[i][1]) -> N$(edge_info.edges[i][2])")
+                println("   - E$i: N$(edge_info.edges[i][1]) -> N$(edge_info.edges[i][2])")
             end
-            println("===================================================")
+            println("\n===================================================")
+        end
+    
+    # ==============================================================================
+    # -------------------------- function _component_recap -------------------------
+    # ==============================================================================
+        
+        """
+            _components_recap(circuit::Circuit) -> nothing
+
+        Displays a recap of the components in the circuit.
+
+        Parameters:
+        - circuit: The primary structure amalgamating nodes, components, and their 
+                illustrative representation within the circuit.
+
+        Returns:
+        - nothing
+
+        Notes:
+        - The recap is displayed in the console in the following format:
+                - "Component details" on edge Ei (Nj -> Nk), where i is the edge index, 
+                j is the index of the first node, and k is the index of the second node.
+
+        Example:
+        ===================================================
+        Components in the Circuit:
+
+            - "R1 = 10 [Ω]" on edge E1 (N1 -> N2)
+            - "R2 = 20 [Ω]" on edge E2 (N2 -> N3)
+            - "R3 = 30 [Ω]" on edge E3 (N3 -> N4)
+            - "R4 = 40 [Ω]" on edge E4 (N4 -> N1)
+
+        ===================================================
+        """
+        function _components_recap(circuit::Circuit)
+            println("\n===================================================")
+            println("\nComponents in the Circuit:\n")
+            for comp in circuit.components
+                println("   - \"$(comp.details)\" on edge  E$(comp.id) (N$(comp.start_node) -> N$(comp.end_node))")
+            end
+            println("\n===================================================")
         end
 end
