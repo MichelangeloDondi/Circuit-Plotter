@@ -11,14 +11,14 @@ Author: Michelangelo Dondi
 Date: 21-10-2023
 Description:
     Dedicated to housing the functions for collecting edge details and component details.
-    This module simplifies the main function definition process by providing a single file to call.
+    This module simplifies the main function definition process by providing a single function to call.
 
-Version: 2.6
+Version: 2.7
 License: MIT License
 
 Exported functions:
 - `gather_edges_and_components(circuit::Circuit, edge_info::EdgeInfo)`: Systematically 
-    assembles information about the edges and components present within the circuit,
+    assembles information about the edges and the components present within the circuit,
     utilizing direct inputs from the user. The accumulated data finds its place within 
     the `circuit` structure. Additionally, a recap of edge particulars and of components
     particulars is presented, followed by the graphical portrayal of the updated circuit.
@@ -48,7 +48,7 @@ module Gathering_Edges_And_Components
     
     # ==============================================================================
     # =========================== Included Modules =================================
-    # ==============================================================================  
+    # ==============================================================================    
 
         # Module_Helping.jl provides helper functions for the main program.
         include("Module_Helping.jl")
@@ -62,6 +62,11 @@ module Gathering_Edges_And_Components
         include("Module_Plotting.jl")
         using .Plotting: draw_plot # Draw the current circuit plot
 
+        # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
+        include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
+        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input # Handle special input such as 'help', 'draw', 'exit', 'stop'
+        #using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_yn # Handle special input such as 'help', 'draw', 'exit', 'stop', 'y', 'n'
+        
     # ==============================================================================
     # ======================== function gather_edges ===============================
     # ==============================================================================
@@ -109,44 +114,64 @@ module Gathering_Edges_And_Components
         - nothing
         """
         function _collect_edges_and_components_from_cmd(node_count::Int, circuit::Circuit, edge_info::EdgeInfo)
+            
+            # Initialize the edge count.
             edge_count = 0
+
+            # Start collecting edges and components.
             while true
+
+                # Prompt the user for the next edge.
                 println("\n===================================================")
-                println("\nNumber of edges already present in the Circuit:: $edge_count.")
+                println("\nNumber of edges already present in the Circuit: $edge_count.")
                 println("\nType 'stop' to stop adding edges or provide the node indexes for the next edge (E$(edge_count + 1)).")
                 println("Format: i,j (Direction: Ni->Nj)")
-
+                
+                # Read the input from the user.
                 input = readline()
 
-                if input == "stop"
-                    break        
-                elseif _handle_special_input(input)
+                # Handle special input (e.g. 'help', 'draw', 'exit', 'stop').
+                handle_result = handle_special_input(input)
+
+                # If the input was handled, continue to the next iteration.
+                if handle_result == :handled
                     continue
+
+                # If the input was to stop collecting nodes, break out of the loop.
+                elseif handle_result == :stop
+                    break
                 end
 
+                # Split the input into the node indices.
                 edge_nodes = split(input, ",")
                 if length(edge_nodes) != 2
                     println("\nInvalid input. Provide two node indices separated by a comma.")
                     continue
                 end
 
+                # Try adding the edge to the circuit.
                 try
                     node1, node2 = parse(Int, edge_nodes[1]), parse(Int, edge_nodes[2])
 
+                    # Check if the edge already exists.
                     if _edge_exists(node1, node2, edge_info)
                         continue
+
+                    # Check if the edge tries to connect a node to itself.
                     elseif node1 == node2
                         println("\nThe edge cannot be added for the following reason:")
                         println("Self-loops are not allowed.")
                         continue
                     end
 
+                    # Check if the edge tries to connect a node to a non-existent node.
                     if node1 < 1 || node1 > node_count || node2 < 1 || node2 > node_count
                         println("\nThe edge cannot be added for the following reason:")
                         println("Invalid node indices. Range: [1, $node_count].")
                         continue
                     end
 
+                    # Check if the edge overlaps with existing edges
                     overlapping = overlapping_edges((node1, node2), edge_info.edges, circuit.nodes)
                     if !isempty(overlapping)
                         overlaps_str = join(["E$(index)(N$(edge[1])->N$(edge[2]))" for (index, edge) in overlapping], ", ")
@@ -155,9 +180,14 @@ module Gathering_Edges_And_Components
                         continue
                     end
 
+                    # Add the edge to the circuit.
                     push!(edge_info.edges, (node1, node2))
                     add_edge!(circuit.graph, node1, node2)
+
+                    # Increase the edge count.
                     edge_count += 1
+
+                    # Print a confirmation message.
                     println("\nEdge E$edge_count: N$node1 -> N$node2 added.")
 
                     # Ask the user if they want to add a component to the edge
@@ -175,11 +205,11 @@ module Gathering_Edges_And_Components
             end
         end
 
-        # -------------------------------------------------------------------------------
-        # -------------------------- function _ask_user_choice --------------------------
-        # -------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------
+    # -------------------------- function _ask_user_choice --------------------------
+    # -------------------------------------------------------------------------------
 
-            """
+        """
             _ask_user_choice(prompt::String)::String 
 
         Prompts the user for a choice and validates it.
@@ -213,6 +243,7 @@ module Gathering_Edges_And_Components
                 end
             end
         end
+
     # -------------------------------------------------------------------------------
     # --------------------------- _handle_special_input -----------------------------
     # -------------------------------------------------------------------------------
