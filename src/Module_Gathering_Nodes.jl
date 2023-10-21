@@ -13,7 +13,7 @@ Description:
     Dedicated to collecting nodes within the circuit.
     This module simplifies the collection process by providing a single function to call.
 
-Version: 2.6
+Version: 2.7
 License: MIT License
 
 Exported functions:
@@ -49,13 +49,9 @@ module Gathering_Nodes
     # =========================== Included Modules =================================
     # ==============================================================================  
 
-        # Module_Helping.jl provides helper functions for the main program.
-        include("Module_Helping.jl")
-        using .Helping: show_help # Help and instructions
-
-        # Module_Plotting.jl provides functions for drawing the current circuit plot.
-        include("Module_Plotting.jl")
-        using .Plotting: draw_plot # Draw the current circuit plot
+        # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
+        include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
+        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input # Handle special input such as 'help', 'draw', 'exit', 'stop'
 
     # ==============================================================================
     # ======================== function gather_nodes ===============================
@@ -64,23 +60,20 @@ module Gathering_Nodes
         """
             gather_nodes(circuit::Circuit) -> nothing
 
-        Diligently fetches the specifics pertaining to the nodes in the circuit,
-        sourcing directly from the user. The acquired nodes are securely housed
-        within the `circuit` structure. As an auxiliary utility, the function renders
-        a concise summary of the node particulars and visually maps the circuit's
-        current configuration.
-
+        Systematically assembles information about the nodes present within the circuit,
+        utilizing direct inputs from the user. The accumulated data finds its place within
+        the `circuit` structure. Additionally, a recap of node particulars is presented.
+                
         Parameters:
-        - circuit: The primary structure amalgamating nodes, components, and their
+        - circuit: The primary structure amalgamating nodes, components, and their 
                 illustrative representation within the circuit.
-
+                
         Returns:
         - nothing
         """
         function gather_nodes(circuit::Circuit)
             _collect_nodes_from_cmd(circuit)
             _nodes_recap(circuit)
-            draw_plot(circuit)
         end
 
     # ==============================================================================
@@ -88,58 +81,53 @@ module Gathering_Nodes
     # ==============================================================================
         
         """
-            _collect_nodes_from_cmd(node_count::Int, circuit::Circuit) -> nothing
+            _collect_nodes_from_cmd(circuit::Circuit) -> nothing
 
-        Sequentially gathers node details from the user.
+        Collects node coordinates from the user and adds them to the provided circuit.
+        The user is prompted to input node coordinates or type 'stop' to end the node collection.
 
-        Parameters:
-        - circuit: The primary structure amalgamating nodes, components, and their 
-                illustrative representation within the circuit.
+        # Parameters:
+        - circuit: The primary data structure representing the circuit, including its nodes and components.
 
-        Returns:
+        # Returns:
         - nothing
         """
         function _collect_nodes_from_cmd(circuit::Circuit)
+            
+            # Initialize the node_count to track the number of nodes added to the circuit.
             node_count = 0
-            while true
+            
+            # Continuously prompt the user for node coordinates.
+            while true  
+
+                # Print the prompt message.
                 println("\n===================================================")
                 println("\nNumber of nodes already present in the Circuit: $node_count.")
-                println("\nType 'stop' to stop adding nodes or provide the coordinates of the next node (N$(node_count + 1)).")
-                println("Format: x,y (coordinates must be integer):")
+                println("\nProvide the coordinates of the next node (N$(node_count + 1)) or type 'stop' to finish.")
+                println("Format: x,y (coordinates must be integers):")
 
+                # Read the input from the user.
                 input = readline()
-                if input == "stop"
+
+                # Handle special input (e.g. 'help', 'draw', 'exit', 'stop').
+                handle_result = handle_special_input(input)
+
+                # If the input was handled, continue to the next iteration.
+                if handle_result == :handled
+                    continue
+
+                # If the input was to stop collecting nodes, break out of the loop.
+                elseif handle_result == :stop
                     break
-                elseif !_handle_special_input(input) && _add_node_to_circuit(input, node_count + 1, circuit)
+                end
+                
+                # If the input isn't a special command, try adding the node to the circuit; increase count if successful.
+                if _add_node_to_circuit(input, node_count + 1, circuit)
+                    
+                    # If the node was added, increase the node count.
                     node_count += 1
                 end
             end
-        end
-
-    # ------------------------------------------------------------------------------
-    # ----------------------- function _handle_special_input -----------------------
-    # ------------------------------------------------------------------------------
-        
-        """
-            _handle_special_input(input::String)::Bool
-
-        Handles special input from the user.
-
-        Parameters:
-        - input: The input provided by the user.
-
-        Returns:
-        - true if the input was handled, false otherwise.
-        """
-        function _handle_special_input(input::String)::Bool
-            if input == "help"
-                show_help()
-                return true
-            elseif input == "exit"
-                println("Exiting the program.")
-                exit(0)
-            end
-            return false
         end
 
     # ------------------------------------------------------------------------------
@@ -167,22 +155,30 @@ module Gathering_Nodes
         - The input is expected to be in the format x,y.
         """
         function _add_node_to_circuit(input::String, idx::Int, circuit::Circuit)::Bool
+            
+            # Split the input into its x and y coordinates.
             coords = split(input, ",")
 
+            # Try to parse the coordinates as integers.
             try
                 x, y = parse(Int, coords[1]), parse(Int, coords[2])
+
+                # Check if a node already exists at the provided coordinates.
                 for node in circuit.nodes
                     if node.x == x && node.y == y
                         println("\nNode N",node.id," already exists at position ($x,$y).")
                         return false
                     end
                 end
-                
+
+                # Add the node to the circuit if it doesn't already exist.
                 push!(circuit.nodes, Main.Node(idx, x, y))
                 add_vertex!(circuit.graph)
                 println("\nNode N$idx added at position ($x,$y).")
                 return true
             catch
+
+                # If the coordinates couldn't be parsed as integers, print an error message and return false.
                 println("\nInvalid input. Enter integer coordinates as x,y.")
                 return false
             end
