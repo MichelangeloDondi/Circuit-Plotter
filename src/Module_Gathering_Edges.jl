@@ -112,12 +112,14 @@ module Gathering_Edges
             edge_count = 0
             while true
                 println("\n===================================================")
-                println("\nCurrent edges: $edge_count. Press Enter to finish or provide nodes for the next edge (E$(edge_count + 1)).")
+                println("\nNumber of edges already present in the Circuit:: $edge_count.")
+                println("Type 'stop' to stop adding edges or provide the node indexes
+                         for the next edge (E$(edge_count + 1)).")
                 println("Format: i,j (Direction: Ni->Nj)")
 
                 input = readline()
 
-                if input == ""
+                if input == "stop"
                     break        
                 elseif _handle_special_input(input)
                     continue

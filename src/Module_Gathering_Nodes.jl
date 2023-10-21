@@ -8,12 +8,12 @@
     Module: Gathering_Nodes
 
 Author: Michelangelo Dondi
-Date: 20-10-2023
+Date: 21-10-2023
 Description:    
     Dedicated to collecting nodes within the circuit.
     This module simplifies the collection process by providing a single function to call.
 
-Version: 2.5
+Version: 2.6
 License: MIT License
 
 Exported functions:
@@ -52,10 +52,6 @@ module Gathering_Nodes
         # Module_Helping.jl provides helper functions for the main program.
         include("Module_Helping.jl")
         using .Helping: show_help # Help and instructions
-
-        # Module_Auxiliary_Functions_Input_Validation.jl provides functions for validating user input.
-        include("Module_Auxiliary_Functions_Input_Validation.jl")
-        using .Auxiliary_Functions_Input_Validation: get_positive_integer_input # Get a positive integer input from the user
 
         # Module_Plotting.jl provides functions for drawing the current circuit plot.
         include("Module_Plotting.jl")
@@ -107,9 +103,9 @@ module Gathering_Nodes
             node_count = 0
             while true
                 println("\n===================================================")
-                print("\nNodes already present in the Circuit: $node_count.")
-                print("Type 'stop' to stop adding nodes of provide the ")
-                println("coordinates of the next node (N$(node_count + 1)).")
+                println("\nNumber of nodes already present in the Circuit: $node_count.")
+                println("Type 'stop' to stop adding nodes or provide the
+                      coordinates of the next node (N$(node_count + 1)).")
                 println("Format: x,y (coordinates must be integer):")
 
                 input = readline()

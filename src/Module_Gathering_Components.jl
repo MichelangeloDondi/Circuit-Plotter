@@ -214,9 +214,11 @@ module Gathering_Components
         - Component C4 on Edge E4 (N4 -> N1): "R4 = 40 [Ω]".
         """
         function _components_recap(circuit::Circuit)
-            println("\n--- Components Overview ---")
+            println("===================================================")
+            println("Components in the Circuit:")
             for comp in circuit.components
                 println("Component C$(comp.id) on Edge E$(comp.id) (N$(comp.start_node) -> N$(comp.end_node)): \"$(comp.details)\".")
             end
+            println("===================================================")
         end
 end            
