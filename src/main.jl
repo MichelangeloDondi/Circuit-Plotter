@@ -10,13 +10,13 @@
     Program: Circuit_Plotter
 
 Author: Michelangelo Dondi
-Date: 20-10-2023
+Date: 21-10-2023
 Description:
     A user-friendly tool that allows the creation and visualization of electrical circuits.
     Users can define nodes, components, and their connections, with an end visualization
     rendered using the PlotlyJS backend for interactivity.
 
-Version: 2.5
+Version: 2.6
 License: MIT License
 """
 
