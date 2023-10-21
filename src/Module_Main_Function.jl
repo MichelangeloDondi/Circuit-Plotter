@@ -14,7 +14,7 @@ Description:
     Dedicated to housing the main function of the Circuit Visualization Tool.
     This module simplifies the main function definition process by providing a single file to call.
 
-Version: 2.6
+Version: 2.7
 License: MIT License
         
 Exported functions:
@@ -99,7 +99,7 @@ module Main_Function
             # Gather the particulars of the nodes and provide feedback to the user.
             gather_nodes(circuit)
 
-            # Gather the particulars of the edges and provide feedback to the user.
+            # Gather the particulars of the edges and of the components and provide feedback to the user.
             gather_edges_and_components(circuit, edge_info)
 
             # Save the visual representation of the user-defined circuit.
