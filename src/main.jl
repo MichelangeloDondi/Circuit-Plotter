@@ -46,7 +46,7 @@ License: MIT License
     end
 
 # ==============================================================================
-# ============================== Imported Modules ==============================
+# ============================== Included Modules ==============================
 # ==============================================================================
 
     # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
