@@ -107,8 +107,8 @@ module Plotting
         - `circuit::Circuit`: Data structure representing the circuit.
         """
         function _prepare_and_display_plot(p, circuit::Circuit)
+            _set_plot_labels(p)
             _set_plot_title(p, circuit)
-            _set_plot_labels(p, circuit)
             _add_edges_to_plot(p, circuit)
             _add_nodes_to_plot(p, circuit)
             _annotate_nodes_on_plot(p, circuit)
@@ -117,6 +117,24 @@ module Plotting
             display(p)
         end
     
+    # ------------------------------------------------------------------------------
+    # ------------------------- function _set_plot_labels --------------------------
+    # ------------------------------------------------------------------------------
+
+        """
+            _set_plot_labels(p, circuit::Circuit)
+
+        Sets the labels of the plot object.
+
+        # Arguments
+        - `p`: The plot object to be modified.
+        - `circuit::Circuit`: Data structure representing the circuit.
+        """
+        function _set_plot_labels(p)
+            xlabel!(p, "X")
+            ylabel!(p, "Y")
+        end
+
     # ------------------------------------------------------------------------------
     # ------------------------- function _set_plot_title ---------------------------
     # ------------------------------------------------------------------------------
@@ -137,25 +155,7 @@ module Plotting
             title_text = "Circuit with $N_n node" * (N_n != 1 ? "s" : "") * ", $N_e edge" * (N_e != 1 ? "s" : "") * " and $N_c component" * (N_c != 1 ? "s" : "") * "      "
             title!(p, title_text)
         end
-    
-    # ------------------------------------------------------------------------------
-    # ------------------------- function _set_plot_labels --------------------------
-    # ------------------------------------------------------------------------------
 
-        """
-            _set_plot_labels(p, circuit::Circuit)
-
-        Sets the labels of the plot object.
-
-        # Arguments
-        - `p`: The plot object to be modified.
-        - `circuit::Circuit`: Data structure representing the circuit.
-        """
-        function _set_plot_labels(p, circuit::Circuit)
-            xlabel!(p, "X")
-            ylabel!(p, "Y")
-        end
-    
     # ------------------------------------------------------------------------------
     # ----------------------- function _add_edges_to_plot --------------------------
     # ------------------------------------------------------------------------------
