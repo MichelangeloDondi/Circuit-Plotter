@@ -64,8 +64,8 @@ module Gathering_Edges_And_Components
 
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
         include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
-        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input # Handle special input such as 'help', 'draw', 'exit', 'stop'
-        #using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_yn # Handle special input such as 'help', 'draw', 'exit', 'stop', 'y', 'n'
+        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_stop # Handle special input such as 'help', 'draw', 'exit', 'stop'
+        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_yn # Handle special input such as 'help', 'draw', 'exit', 'stop', 'y', 'n'
         
     # ==============================================================================
     # ======================== function gather_edges ===============================
@@ -77,8 +77,7 @@ module Gathering_Edges_And_Components
         Systematically assembles information about the edges or connections present 
         within the circuit, utilizing direct inputs from the user. The accumulated 
         data finds its place within the `edge_info` structure. Additionally, a recap 
-        of edge particulars is presented, followed by the graphical portrayal of 
-        the updated circuit.
+        of edge particulars is presented.
 
         Parameters:
         - circuit: The nucleus structure, encapsulating nodes, components, and their 
@@ -92,7 +91,6 @@ module Gathering_Edges_And_Components
             _collect_edges_and_components_from_cmd(length(circuit.nodes), circuit, edge_info)
             _edges_recap(edge_info)
             _components_recap(circuit)
-            draw_plot(circuit)
         end
 
     # ==============================================================================
@@ -131,7 +129,7 @@ module Gathering_Edges_And_Components
                 input = readline()
 
                 # Handle special input (e.g. 'help', 'draw', 'exit', 'stop').
-                handle_result = handle_special_input(input)
+                handle_result = handle_special_input_stop(input, circuit)
 
                 # If the input was handled, continue to the next iteration.
                 if handle_result == :handled
@@ -144,6 +142,8 @@ module Gathering_Edges_And_Components
 
                 # Split the input into the node indices.
                 edge_nodes = split(input, ",")
+
+                # Check if the input is valid.
                 if length(edge_nodes) != 2
                     println("\nInvalid input. Provide two node indices separated by a comma.")
                     continue
@@ -151,6 +151,8 @@ module Gathering_Edges_And_Components
 
                 # Try adding the edge to the circuit.
                 try
+
+                    # Parse the node indices.
                     node1, node2 = parse(Int, edge_nodes[1]), parse(Int, edge_nodes[2])
 
                     # Check if the edge already exists.
@@ -173,6 +175,8 @@ module Gathering_Edges_And_Components
 
                     # Check if the edge overlaps with existing edges
                     overlapping = overlapping_edges((node1, node2), edge_info.edges, circuit.nodes)
+                    
+                    # If the edge overlaps with existing edges, print the overlapping edges and continue to the next iteration.
                     if !isempty(overlapping)
                         overlaps_str = join(["E$(index)(N$(edge[1])->N$(edge[2]))" for (index, edge) in overlapping], ", ")
                         println("\nThe edge cannot be added for the following reason:")
@@ -190,85 +194,47 @@ module Gathering_Edges_And_Components
                     # Print a confirmation message.
                     println("\nEdge E$edge_count: N$node1 -> N$node2 added.")
 
-                    # Ask the user if they want to add a component to the edge
-                    decision = _ask_user_choice("\nDo you want to add component to edge E$edge_count? (y/n)")
-                    if decision == "y"
-                        println("Provide component details (e.g. 'R1 = 10 [Ω]'):")
-                        component_details = readline()
-                        # Add the component to the circuit 
-                        push!(circuit.components, Main.Component(edge_count, edge_info.edges[edge_count][1], edge_info.edges[edge_count][2], component_details))
+                    # Start collecting components for the edge.
+                    while true 
+
+                        # Ask the user if they want to add a component to the edge
+                        println("\nDo you want to add component to edge E$edge_count? (y/n)")
+                        
+                        # Read the input from the user.
+                        input = readline()
+
+                        # Handle special input (e.g. 'help', 'draw', 'exit', 'stop').
+                        handle_result = handle_special_input_yn(input, circuit)
+
+                        # If the input was handled, continue to the next iteration.
+                        if handle_result == :handled
+                            continue
+
+                        # If the input was to stop collecting nodes, break out of the loop.
+                        elseif handle_result == :not_handle
+                            break
+
+                        # If the input was to add a component, prompt the user for the component details.
+                        elseif handle_result  == "y"
+
+                            # Prompt the user for the component details.
+                            println("Provide component details (e.g. 'R1 = 10 [Ω]'):")
+                            component_details = readline()
+
+                            # Add the component to the circuit 
+                            push!(circuit.components, Main.Component(edge_count, edge_info.edges[edge_count][1], edge_info.edges[edge_count][2], component_details))
+
+                            # Print a confirmation message.
+                            println("\nComponent \"$component_details\" added to edge E$edge_count.")  
+                            break
+                        end
                     end
 
+                # Catch any errors.
                 catch e
                     println("\nError: ", e)
                 end
             end
-        end
-
-    # -------------------------------------------------------------------------------
-    # -------------------------- function _ask_user_choice --------------------------
-    # -------------------------------------------------------------------------------
-
-        """
-            _ask_user_choice(prompt::String)::String 
-
-        Prompts the user for a choice and validates it.
-
-        Parameters:
-        - prompt: The message to display to the user.
-            
-        Returns:
-        - The user's choice.
-            
-        Raises:
-        - Invalid choice: If the user's choice is not one of the available options.
-        """
-        function _ask_user_choice(prompt::String)::String
-            while true
-                println(prompt)
-                flush(stdout)
-                decision = readline()
-
-                if decision in ["y", "n", "help", "exit"]
-                    if decision == "help"
-                        show_help()
-                    elseif decision == "exit"
-                        println("Exiting...")
-                        exit(0)
-                    else
-                        return decision
-                    end
-                else
-                    println("Invalid choice. Please retry.")
-                end
-            end
-        end
-
-    # -------------------------------------------------------------------------------
-    # --------------------------- _handle_special_input -----------------------------
-    # -------------------------------------------------------------------------------
-
-        """
-            _handle_special_input(input::String) -> Bool
-
-        Handles special inputs, such as "help" and "exit".
-
-        Parameters:
-        - input: The input provided by the user.
-
-        Returns:
-        - true: if the input is a special input
-        - false: otherwise
-        """
-        function _handle_special_input(input::String)::Bool
-            if input == "help"
-                show_help()
-                return true
-            elseif input == "exit"
-                println("Exiting the program.")
-                exit(0)
-            end
-            return false
         end
 
     # -------------------------------------------------------------------------------
@@ -330,7 +296,6 @@ module Gathering_Edges_And_Components
                 j is the index of the first node, and k is the index of the second node.
         
         Example: 
-        ===================================================
 
         Edges in the Circuit:
 
@@ -342,7 +307,6 @@ module Gathering_Edges_And_Components
         ===================================================
         """ 
         function _edges_recap(edge_info::EdgeInfo)
-            println("\n===================================================\n")
             println("\nEdges in the Circuit:\n")
             for i in 1:length(edge_info.edges)
                 println("   - E$i: N$(edge_info.edges[i][1]) -> N$(edge_info.edges[i][2])")
@@ -372,7 +336,7 @@ module Gathering_Edges_And_Components
                 j is the index of the first node, and k is the index of the second node.
 
         Example:
-        ===================================================
+
         Components in the Circuit:
 
             - "R1 = 10 [Ω]" on edge E1 (N1 -> N2)
@@ -383,7 +347,6 @@ module Gathering_Edges_And_Components
         ===================================================
         """
         function _components_recap(circuit::Circuit)
-            println("\n===================================================")
             println("\nComponents in the Circuit:\n")
             for comp in circuit.components
                 println("   - \"$(comp.details)\" on edge  E$(comp.id) (N$(comp.start_node) -> N$(comp.end_node))")

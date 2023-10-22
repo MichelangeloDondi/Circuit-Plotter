@@ -8,12 +8,12 @@
     Module: Helping 
 
 Author: Michelangelo Dondi
-Date: 20-10-2023
+Date: 21-10-2023
 Description:
     Dedicated to providing guidance to users interacting with the Circuit Visualization Tool.
     This module simplifies user interactions by offering clear instructions and comprehensive assistance.
 
-Version: 2.5
+Version: 2.7
 License: MIT License
 
 Exported functions:
@@ -126,9 +126,11 @@ module Helping
         function _show_instructions()
             println("""
             Instructions:
-            1. Define circuit nodes, edges and components.
-            2. 'help' brings up instructions (type it at any time). 
-            3. 'exit' closes the program (type it at any time).
+            1. Follow the prompts to define circuit nodes, edges and components.
+            2. 'exit' closes the program (type it at any time).
+            3. 'help' brings up instructions (type it at any time).
+            4. 'draw' renders the circuit (type it at any time).
+            5. 'save' saves the current plot.            
         
             Notes:
             - For more information, please refer to the documentation.

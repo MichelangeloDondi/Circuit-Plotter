@@ -51,7 +51,7 @@ module Gathering_Nodes
 
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
         include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
-        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input # Handle special input such as 'help', 'draw', 'exit', 'stop'
+        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_stop # Handle special input such as 'help', 'draw', 'exit', 'stop'
 
     # ==============================================================================
     # ======================== function gather_nodes ===============================
@@ -110,7 +110,7 @@ module Gathering_Nodes
                 input = readline()
 
                 # Handle special input (e.g. 'help', 'draw', 'exit', 'stop').
-                handle_result = handle_special_input(input)
+                handle_result = handle_special_input_stop(input, circuit)
 
                 # If the input was handled, continue to the next iteration.
                 if handle_result == :handled
@@ -205,19 +205,17 @@ module Gathering_Nodes
             - Ni at (xi,yi), where i is the index of the node.
 
         Example:
-        ===================================================
-            
-            Nodes in the Circuit:
-            
-               - N1 at (0,0)
-               - N2 at (0,1)
-               - N3 at (1,0)
-               - N4 at (1,1)
+     
+        Nodes in the Circuit:
+        
+            - N1 at (0,0)
+            - N2 at (0,1)
+            - N3 at (1,0)
+            - N4 at (1,1)
 
-            ===================================================
+        ===================================================
         """
         function _nodes_recap(circuit::Circuit)
-            println("\n===================================================")
             println("\nNodes in the Circuit:\n")
             for node in circuit.nodes
                 println("   - N$(node.id) at ($(node.x),$(node.y))")
