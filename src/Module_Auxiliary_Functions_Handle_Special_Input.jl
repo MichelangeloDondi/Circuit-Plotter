@@ -72,14 +72,18 @@ module Auxiliary_Functions_Handle_Special_Input
             # Checking if the input is a special input
             result = _handle_special_input(input, circuit)
 
-            # Handle specific commands for this function
+            # If the user types 'stop', return :stop.
             if input == "stop"
                 return :stop
-            elseif result != :not_handled_yet
-                return result
+                
+            # If the input was handled, return the result.
+            elseif result == :handled
+                return :handled
+            
+            # If the input was not handled, return :not_handled.
+            else
+                return :not_handled
             end
-
-            return :not_handled
         end
     
     # ==============================================================================
@@ -98,6 +102,7 @@ module Auxiliary_Functions_Handle_Special_Input
 
         Returns:
         - :handled if the input was handled.
+        - :n if the user types 'n'.
         - :y if the user types 'y'.
         - :not_handled otherwise.
         """
@@ -106,16 +111,22 @@ module Auxiliary_Functions_Handle_Special_Input
             # Checking if the input is a special input
             result = _handle_special_input(input, circuit)
 
-            # Handle specific commands for this function
+            # If the user types 'n', return :n.
             if input == "n"
-                return :handled
+                return :n
+
+            # If the user types 'y', return :y.
             elseif input == "y"
                 return :y
-            elseif result != :not_handled_yet
-                return result
+            
+            # If the input was handled, return :handled.
+            elseif result == :handled
+                return :handled
+        
+            # If the input was not handled, return :not_handled.
+            else
+                return :not_handled
             end
-
-            return :not_handled
         end
 
     # ==============================================================================
@@ -133,7 +144,7 @@ module Auxiliary_Functions_Handle_Special_Input
 
         Returns:
         - :handled if the input was handled.
-        - :not_handled_yet otherwise.
+        - :not_common_special_input otherwise.
         """
         function _handle_special_input(input::String, circuit)
 
@@ -157,9 +168,9 @@ module Auxiliary_Functions_Handle_Special_Input
                 save_current_plot()
                 return :handled
             
-            # If the input was not handled, return :not_handled.
+            # If the input was not handled, return :not_common_special_input.
             else
-                return :not_handled_yet
+                return :not_common_special_input
             end
         end
 end

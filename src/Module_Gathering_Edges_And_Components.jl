@@ -210,12 +210,12 @@ module Gathering_Edges_And_Components
                         if handle_result == :handled
                             continue
 
-                        # If the input was to stop collecting nodes, break out of the loop.
-                        elseif handle_result == :not_handle
+                        # If the input was to not add a component, break out of the loop.
+                        elseif handle_result == :n
                             break
 
                         # If the input was to add a component, prompt the user for the component details.
-                        elseif handle_result  == "y"
+                        elseif handle_result  == :y
 
                             # Prompt the user for the component details.
                             println("Provide component details (e.g. 'R1 = 10 [Ω]'):")
