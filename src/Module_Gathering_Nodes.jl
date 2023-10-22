@@ -8,7 +8,7 @@
     Module: Gathering_Nodes
 
 Author: Michelangelo Dondi
-Date: 21-10-2023
+Date: 22-10-2023
 Description:    
     Dedicated to collecting nodes within the circuit.
     This module simplifies the collection process by providing a single function to call.
@@ -51,7 +51,7 @@ module Gathering_Nodes
 
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
         include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
-        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_stop # Handle special input such as 'help', 'draw', 'exit', 'stop'
+        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input such as 'help', 'draw', 'exit', 'break'
 
     # ==============================================================================
     # ======================== function gather_nodes ===============================
@@ -103,21 +103,21 @@ module Gathering_Nodes
                 # Print the prompt message.
                 println("\n===================================================")
                 println("\nNumber of nodes already present in the Circuit: $node_count.")
-                println("\nProvide the coordinates of the next node (N$(node_count + 1)) or type 'stop' to finish.")
+                println("\nProvide the coordinates of the next node (N$(node_count + 1)) or type 'break' or 'b' to finish adding nodes.")
                 println("Format: x,y (coordinates must be integers):")
 
                 # Read the input from the user.
                 input = readline()
 
                 # Handle special input (e.g. 'help', 'draw', 'exit', 'stop').
-                handle_result = handle_special_input_stop(input, circuit)
+                handle_result = handle_special_input_break(input, circuit)
 
                 # If the input was handled, continue to the next iteration.
                 if handle_result == :handled
                     continue
 
                 # If the input was to stop collecting nodes, break out of the loop.
-                elseif handle_result == :stop
+                elseif handle_result == :break
                     break
                 end
                 

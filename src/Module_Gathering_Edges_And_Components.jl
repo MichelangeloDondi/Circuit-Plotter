@@ -8,7 +8,7 @@
     Module: Gathering_Edges_And_Components
 
 Author: Michelangelo Dondi
-Date: 21-10-2023
+Date: 22-10-2023
 Description:
     Dedicated to housing the functions for collecting edge details and component details.
     This module simplifies the main function definition process by providing a single function to call.
@@ -64,8 +64,8 @@ module Gathering_Edges_And_Components
 
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
         include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
-        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_stop # Handle special input such as 'help', 'draw', 'exit', 'stop'
-        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_yn # Handle special input such as 'help', 'draw', 'exit', 'stop', 'y', 'n'
+        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input such as 'help', 'draw', 'exit', 'break'
+        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break_yes_no # Handle special input such as 'help', 'draw', 'exit', 'break', 'yes', 'no'
         
     # ==============================================================================
     # ======================== function gather_edges ===============================
@@ -104,8 +104,8 @@ module Gathering_Edges_And_Components
 
         Parameters:
         - node_count: The number of nodes in the circuit.
-        - circuit: The primary structure amalgamating nodes, components, and their 
-                illustrative representation within the circuit.
+        - circuit: The primary structure amalgamating nodes, components, and their illustrative
+                 representation within the circuit.
         - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
 
         Returns:
@@ -122,21 +122,21 @@ module Gathering_Edges_And_Components
                 # Prompt the user for the next edge.
                 println("\n===================================================")
                 println("\nNumber of edges already present in the Circuit: $edge_count.")
-                println("\nType 'stop' to stop adding edges or provide the node indexes for the next edge (E$(edge_count + 1)).")
+                println("\nProvide the node indexes for the next edge (E$(edge_count + 1)) or type 'break' or 'b' to stop adding edges.")
                 println("Format: i,j (Direction: Ni->Nj)")
                 
                 # Read the input from the user.
                 input = readline()
 
-                # Handle special input (e.g. 'help', 'draw', 'exit', 'stop').
-                handle_result = handle_special_input_stop(input, circuit)
+                # Handle special input (e.g. 'help', 'draw', 'exit', 'break').
+                handle_result = handle_special_input_break(input, circuit)
 
                 # If the input was handled, continue to the next iteration.
                 if handle_result == :handled
                     continue
 
                 # If the input was to stop collecting nodes, break out of the loop.
-                elseif handle_result == :stop
+                elseif handle_result == :break
                     break
                 end
 
@@ -198,24 +198,24 @@ module Gathering_Edges_And_Components
                     while true 
 
                         # Ask the user if they want to add a component to the edge
-                        println("\nDo you want to add component to edge E$edge_count? (y/n)")
+                        println("\nDo you want to add component to edge E$edge_count? Answer typing 'yes'/'y' or 'no'/'n'.")
                         
                         # Read the input from the user.
                         input = readline()
 
                         # Handle special input (e.g. 'help', 'draw', 'exit', 'stop').
-                        handle_result = handle_special_input_yn(input, circuit)
+                        handle_result = handle_special_input_yes_no(input, circuit)
 
                         # If the input was handled, continue to the next iteration.
                         if handle_result == :handled
                             continue
 
                         # If the input was to not add a component, break out of the loop.
-                        elseif handle_result == :n
+                        elseif handle_result == :no
                             break
 
                         # If the input was to add a component, prompt the user for the component details.
-                        elseif handle_result  == :y
+                        elseif handle_result  == :yes
 
                             # Prompt the user for the component details.
                             println("Provide component details (e.g. 'R1 = 10 [Ω]'):")
@@ -262,6 +262,8 @@ module Gathering_Edges_And_Components
                 if (node1, node2) == existing_edge
                     println("\nThe edge cannot be added for the following reason:")
                     println("Edge between nodes N$node1 and N$node2 already exists as E$index(N$node1->N$node2).")
+
+                    # Return true to indicate that the edge already exists
                     return true
                     break
                     
@@ -269,10 +271,14 @@ module Gathering_Edges_And_Components
                 elseif (node2, node1) == existing_edge
                     println("\nThe edge cannot be added for the following reason:")
                     println("Edge between nodes N$node1 and N$node2 already exists as E$index(N$node2->N$node1).")
+
+                    # Return true to indicate that the edge already exists
                     return true
                     break
                 end
             end
+
+            # Return false to indicate that the edge does not already exist
             return false
         end
 
