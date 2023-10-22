@@ -48,7 +48,6 @@ module Helping
             println("""
             \n---------------------------------------------------
             Welcome to the Electrical Circuit Visualization Tool!
-            Follow the prompts to construct and visualize your circuit.
             ---------------------------------------------------
             """)
             _show_instructions()
@@ -95,6 +94,8 @@ module Helping
             - Utilize dummy nodes to add more components in a row.
 
             VISUALIZATION:
+            - You can visualize the circuit at any time by entering 'draw'.
+            - You will be asked whether to save the plot before continuing.
             - Completed visuals are saved in the 'Images' directory.
             - Visuals are saved as "circuit_plot.png" by default.
             """)
@@ -125,13 +126,17 @@ module Helping
         """
         function _show_instructions()
             println("""
-            Instructions:
-            1. Follow the prompts to define circuit nodes, edges and components.
-            2. 'exit' closes the program (type it at any time).
-            3. 'help' brings up instructions (type it at any time).
-            4. 'draw' renders the circuit (type it at any time).
-            5. 'save' saves the current plot.            
-        
+            \n---------------------------------------------------
+                                INSTRUCTIONS
+            ---------------------------------------------------
+
+            General Usage:
+            - Follow the prompts to create, visualize and save your circuit.
+            - Enter 'exit' at any time to close the program.
+            - Enter 'help' at any time to show the help.
+            - Enter 'draw' at any time to render the circuit.
+            - Enter 'save' at any time to save the current plot.
+
             Notes:
             - For more information, please refer to the documentation.
             - For further issues, please contact support.

@@ -65,7 +65,7 @@ module Gathering_Edges_And_Components
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
         include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
         using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input such as 'help', 'draw', 'exit', 'break'
-        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break_yes_no # Handle special input such as 'help', 'draw', 'exit', 'break', 'yes', 'no'
+        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_yes_no # Handle special input such as 'help', 'draw', 'exit' 'yes', 'no'
         
     # ==============================================================================
     # ======================== function gather_edges ===============================
@@ -128,15 +128,18 @@ module Gathering_Edges_And_Components
                 # Read the input from the user.
                 input = readline()
 
-                # Handle special input (e.g. 'help', 'draw', 'exit', 'break').
+                # Handle special input (e.g. 'help', 'draw', 'exit', 'save', 'break').
                 handle_result = handle_special_input_break(input, circuit)
 
                 # If the input was handled, continue to the next iteration.
                 if handle_result == :handled
                     continue
 
-                # If the input was to stop collecting nodes, break out of the loop.
+                # If the input was to stop collecting edges, break out of the loop.
                 elseif handle_result == :break
+
+                    # Provide feedback to the user.
+                    println("\nFinished adding edges to the circuit.")
                     break
                 end
 

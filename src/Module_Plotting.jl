@@ -8,13 +8,13 @@
     Module: Plotting
 
 Author: Michelangelo Dondi
-Date: 20-10-2023
+Date: 22-10-2023
 Description:
     A module dedicated to visually representing electrical circuits. This module provides
     core functionalities for plotting the circuit components and its design. It integrates
     with the main Circuit Plotter to provide an end-to-end circuit visualization tool.
 
-Version: 2.5
+Version: 2.7
 License: MIT License
         
 Exported functions:
@@ -45,7 +45,7 @@ module Plotting
         using Plots: scatter, scatter!, plotlyjs, plot, plot!, title!, xlabel!, ylabel!, xlims!, ylims!, annotate!, sizehint!, size, text # Scatter plots to represent nodes
         using LightGraphs     # Graph representation of the circuit
         using GraphRecipes    # For plotting graph structures
-     
+
     # ==============================================================================
     # ============================== Constants =====================================
     # ==============================================================================
@@ -86,10 +86,19 @@ module Plotting
         - `circuit::Circuit`: A representation of the circuit to visualize.
         """
         function draw_plot(circuit::Circuit)
+
+            # Provide feedback to the user
             println("\nPlease wait while the circuit is being visualized...")
-            p = scatter([], [], markersize=NODE_SIZE, markercolor=NODE_COLOR, label=false)  # Start with an empty plot
+
+            # Create an empty plot
+            p = scatter([], [], markersize=NODE_SIZE, markercolor=NODE_COLOR, label=false) 
+
+            # Prepare and display the plot
             _prepare_and_display_plot(p, circuit)
-        end 
+
+            # Provide feedback to the user
+            println("Circuit visualization complete. You can now interact with the plot.")
+        end
 
     # ==============================================================================
     # --------------------- function _prepare_and_display_plot ---------------------
@@ -100,7 +109,7 @@ module Plotting
 
         This function prepares the plot object for visualization by configuring its
         properties and adding nodes, edges, and components to it. It then displays
-        the plot to the user.
+        the plot to the user and provides feedback.
 
         # Arguments
         - `p`: The plot object to be modified.
@@ -114,7 +123,7 @@ module Plotting
             _annotate_nodes_on_plot(p, circuit)
             _annotate_components_on_plot(p, circuit)
             _optimize_plot_dimensions(p, circuit)
-            display(p)
+            display(p)  
         end
     
     # ------------------------------------------------------------------------------
@@ -299,68 +308,68 @@ module Plotting
             annotate!(p, mid_x, mid_y, text("<b>$(component.details)</b>", COMPONENT_FONT_SIZE, :center, :dodgerblue, FONT))
         end
 
-        # ------------------------------------------------------------------------------
-        # -------------------- function _optimize_plot_dimensions ----------------------
-        # ------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------
+    # -------------------- function _optimize_plot_dimensions ----------------------
+    # ------------------------------------------------------------------------------
 
-            """
-                _optimize_plot_dimensions(p, circuit::Circuit)
+        """
+            _optimize_plot_dimensions(p, circuit::Circuit)
 
-            Optimizes the plot dimensions and axis limits based on the circuit's data for enhanced clarity.
+        Optimizes the plot dimensions and axis limits based on the circuit's data for enhanced clarity.
 
-            # Arguments
-            - `p`: The plot object to be modified.
-            - `circuit::Circuit`: Data structure representing the circuit.
+        # Arguments
+        - `p`: The plot object to be modified.
+        - `circuit::Circuit`: Data structure representing the circuit.
 
-            This function dynamically adjusts the dimensions of the plot and its axis limits.
-            It calculates appropriate padding based on the circuit's nodes, ensuring no node
-            is too close to the plot's border. Additionally, it checks the range of x and y coordinates
-            to determine the plot's layout (portrait or landscape) for best fit.
-            """
-            function _optimize_plot_dimensions(p, circuit::Circuit)
-                # Extract X and Y coordinates of nodes
-                x_coords = [node.x for node in circuit.nodes]
-                y_coords = [node.y for node in circuit.nodes]
-                
-                # Handle the special case of a single node
-                if length(x_coords) == 1
-                    padding = 1.0  # arbitrary padding for single node
-                    xlims!(p, x_coords[1] - padding, x_coords[1] + padding)
-                    ylims!(p, y_coords[1] - padding, y_coords[1] + padding)
-                    return
-                end
-
-                # Golden ratio for aesthetic padding calculation
-                phi = 1.61803398875
-                edge_fraction = 1 / (2 * phi)
-
-                # Calculate padding for X and Y axes based on node positions
-                padding_x = edge_fraction * (maximum(x_coords) - minimum(x_coords))
-                padding_y = edge_fraction * (maximum(y_coords) - minimum(y_coords))
-
-                # Check if all nodes are aligned vertically or horizontally, and adjust padding accordingly to avoid zero range
-                if maximum(x_coords) == minimum(x_coords)  # Nodes aligned vertically
-                    padding_x = 1.0  # arbitrary padding for vertical alignment
-                elseif maximum(y_coords) == minimum(y_coords)  # Nodes aligned horizontally
-                    padding_y = 1.0  # arbitrary padding for horizontal alignment
-                end
-
-                # Use the largest padding for both axes for consistent appearance
-                padding = max(padding_x, padding_y)
-
-                # number of nodes = length(x_coords) = length(y_coords) = nv(circuit.graph)
-                image_shortside = 200 * (nv(circuit.graph))^0.6 # arbitrary scaling factor for image size
-                image_longside = PHI * image_shortside # golden ratio
-
-                # Determine the orientation of the plot based on the ranges of X and Y coordinates
-                if (maximum(x_coords) - minimum(x_coords)) < (maximum(y_coords) - minimum(y_coords))
-                    plot!(p, size=(max(TITLE_WIDTH, image_shortside), image_longside), sizehint=(max(TITLE_WIDTH, image_shortside), image_longside))
-                    xlims!(p, minimum(x_coords) - padding, maximum(x_coords) + padding)
-                    ylims!(p, minimum(y_coords) - padding, maximum(y_coords) + padding)
-                else
-                    plot!(p, size=(max(TITLE_WIDTH, image_longside), image_shortside), sizehint=(max(TITLE_WIDTH, image_longside), image_shortside))
-                    xlims!(p, minimum(x_coords) - padding, maximum(x_coords) + padding)
-                    ylims!(p, minimum(y_coords) - padding, maximum(y_coords) + padding)
-                end
+        This function dynamically adjusts the dimensions of the plot and its axis limits.
+        It calculates appropriate padding based on the circuit's nodes, ensuring no node
+        is too close to the plot's border. Additionally, it checks the range of x and y coordinates
+        to determine the plot's layout (portrait or landscape) for best fit.
+        """
+        function _optimize_plot_dimensions(p, circuit::Circuit)
+            # Extract X and Y coordinates of nodes
+            x_coords = [node.x for node in circuit.nodes]
+            y_coords = [node.y for node in circuit.nodes]
+            
+            # Handle the special case of a single node
+            if length(x_coords) == 1
+                padding = 1.0  # arbitrary padding for single node
+                xlims!(p, x_coords[1] - padding, x_coords[1] + padding)
+                ylims!(p, y_coords[1] - padding, y_coords[1] + padding)
+                return
             end
+
+            # Golden ratio for aesthetic padding calculation
+            phi = 1.61803398875
+            edge_fraction = 1 / (2 * phi)
+
+            # Calculate padding for X and Y axes based on node positions
+            padding_x = edge_fraction * (maximum(x_coords) - minimum(x_coords))
+            padding_y = edge_fraction * (maximum(y_coords) - minimum(y_coords))
+
+            # Check if all nodes are aligned vertically or horizontally, and adjust padding accordingly to avoid zero range
+            if maximum(x_coords) == minimum(x_coords)  # Nodes aligned vertically
+                padding_x = 1.0  # arbitrary padding for vertical alignment
+            elseif maximum(y_coords) == minimum(y_coords)  # Nodes aligned horizontally
+                padding_y = 1.0  # arbitrary padding for horizontal alignment
+            end
+
+            # Use the largest padding for both axes for consistent appearance
+            padding = max(padding_x, padding_y)
+
+            # number of nodes = length(x_coords) = length(y_coords) = nv(circuit.graph)
+            image_shortside = 200 * (nv(circuit.graph))^0.6 # arbitrary scaling factor for image size
+            image_longside = PHI * image_shortside # golden ratio
+
+            # Determine the orientation of the plot based on the ranges of X and Y coordinates
+            if (maximum(x_coords) - minimum(x_coords)) < (maximum(y_coords) - minimum(y_coords))
+                plot!(p, size=(max(TITLE_WIDTH, image_shortside), image_longside), sizehint=(max(TITLE_WIDTH, image_shortside), image_longside))
+                xlims!(p, minimum(x_coords) - padding, maximum(x_coords) + padding)
+                ylims!(p, minimum(y_coords) - padding, maximum(y_coords) + padding)
+            else
+                plot!(p, size=(max(TITLE_WIDTH, image_longside), image_shortside), sizehint=(max(TITLE_WIDTH, image_longside), image_shortside))
+                xlims!(p, minimum(x_coords) - padding, maximum(x_coords) + padding)
+                ylims!(p, minimum(y_coords) - padding, maximum(y_coords) + padding)
+            end
+        end
 end

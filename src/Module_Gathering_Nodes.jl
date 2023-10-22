@@ -96,7 +96,7 @@ module Gathering_Nodes
             
             # Initialize the node_count to track the number of nodes added to the circuit.
             node_count = 0
-            
+
             # Continuously prompt the user for node coordinates.
             while true  
 
@@ -105,11 +105,11 @@ module Gathering_Nodes
                 println("\nNumber of nodes already present in the Circuit: $node_count.")
                 println("\nProvide the coordinates of the next node (N$(node_count + 1)) or type 'break' or 'b' to finish adding nodes.")
                 println("Format: x,y (coordinates must be integers):")
-
+ 
                 # Read the input from the user.
                 input = readline()
 
-                # Handle special input (e.g. 'help', 'draw', 'exit', 'stop').
+                # Handle special input (e.g. 'exit', 'help', 'draw', 'save', 'break').
                 handle_result = handle_special_input_break(input, circuit)
 
                 # If the input was handled, continue to the next iteration.
@@ -118,7 +118,20 @@ module Gathering_Nodes
 
                 # If the input was to stop collecting nodes, break out of the loop.
                 elseif handle_result == :break
-                    break
+
+                    # If no nodes were added, print a message and continue to the next iteration.
+                    if node_count == 0
+
+                        # Provide feedback to the user and continue to the next iteration.
+                        println("\nYour circuit has no nodes so far.")
+                        println("You must add at least one node to the circuit to continue.")
+                        continue
+                    else    
+
+                        # Provide feedback to the user and break out of the loop.
+                        println("\nFinished adding nodes to the circuit.")
+                        break
+                    end
                 end
                 
                 # If the input isn't a special command, try adding the node to the circuit; increase count if successful.
