@@ -9,7 +9,7 @@
     Module: Main_Function
 
 Author: Michelangelo Dondi
-Date: 21-10-2023
+Date: 23-10-2023
 Description:
     Dedicated to housing the main function of the Circuit Visualization Tool.
     This module simplifies the main function definition process by providing a single file to call.
@@ -66,9 +66,13 @@ module Main_Function
         include("Module_Gathering_Edges_And_Components.jl")
         using .Gathering_Edges_And_Components: gather_edges_and_components # Collect edge details and component details from the user
 
-        # Module_Saving.jl provides functions for saving the current plot.
+        # Module_Plotting.jl provides functions for drawing the current circuit plot.
+        include("Module_Plotting.jl")
+        using .Plotting: draw_plot # Draw the current circuit plot
+        
+        # Module_Saving.jl provides functions for saving the plot displayed.
         include("Module_Saving.jl")
-        using .Saving: save_current_plot # Save the current plot
+        using .Saving: save_plot_displayed # Save the plot displayed
 
     # ==============================================================================
     # ============================== Main Function =================================
@@ -102,8 +106,11 @@ module Main_Function
             # Gather the particulars of the edges and of the components and provide feedback to the user.
             gather_edges_and_components(circuit, edge_info)
 
+            # Draw the circuit plot.
+            draw_plot(circuit)
+
             # Save the visual representation of the user-defined circuit.
-            save_current_plot()
+            save_plot_displayed(circuit)
 
             # Exit the program after the user presses Enter.
             println("Press Enter to exit...")

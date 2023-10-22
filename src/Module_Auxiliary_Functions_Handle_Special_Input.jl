@@ -44,9 +44,9 @@ module Auxiliary_Functions_Handle_Special_Input
         include("Module_Plotting.jl")
         using .Plotting: draw_plot # Draw the current circuit plot
 
-        # Module_Saving.jl provides functions for saving the current circuit plot.
+        # Module_Saving.jl provides functions for saving the plot displayed.
         include("Module_Saving.jl")
-        using .Saving: save_current_plot # Save the current circuit plot
+        using .Saving: save_plot_displayed # Save the plot displayed
         
     # ==============================================================================
     # =================== function handle_special_input_break ======================
@@ -165,7 +165,7 @@ module Auxiliary_Functions_Handle_Special_Input
             
             # If the user types 'save' or 's', save the current plot.
             elseif input == "save" || input == "s"
-                save_current_plot()
+                save_plot_displayed(circuit)
                 return :handled
             
             # If the input was not handled, return :not_common_special_input.

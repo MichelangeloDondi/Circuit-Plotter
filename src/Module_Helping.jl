@@ -135,7 +135,7 @@ module Helping
             - Enter 'exit' at any time to close the program.
             - Enter 'help' at any time to show the help.
             - Enter 'draw' at any time to render the circuit.
-            - Enter 'save' at any time to save the current plot.
+            - Enter 'save' at any time to save the plot displayed.
 
             Notes:
             - For more information, please refer to the documentation.

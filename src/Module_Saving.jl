@@ -17,7 +17,12 @@ Version: 2.7
 License: MIT License
 
 Exported functions:
-- `save_current_plot()`: Saves the current plot into an "Images" directory.
+- `save_plot_displayed(circuit)`: Saves the plot displayed into an "Images" directory. 
+If no plot is rendered, the plot is first drawn and then saved. The user is prompted 
+to provide a filename for the plot. If no filename is provided, a default filename 
+"circuit_plot.png" is used. If the provided filename does not have an extension, 
+".png" is appended to the filename. The plot is saved in the "Images" directory. 
+If the "Images" directory does not exist, it is created.
 """
 module Saving
 
@@ -25,8 +30,15 @@ module Saving
     # =========================== Exported Function ================================
     # ==============================================================================
         
-        # Invoke this function to export the save_current_plot function
-        export save_current_plot 
+        # Invoke this function to export the save_plot_displayed function
+        export save_plot_displayed
+
+    # ==============================================================================
+    # ========================= Imported Data Structure ============================
+    # ==============================================================================
+
+        # For housing the data structures used by the Circuit Plotter Program
+        import Main: Circuit
 
     # ==============================================================================
     # ============================ Required Packages ===============================
@@ -44,11 +56,11 @@ module Saving
         using .Plotting: draw_plot # Draw the current circuit plot
 
     # ==============================================================================
-    # ======================= function save_current_plot ===========================
+    # ====================== function save_plot_displayed ==========================
     # ==============================================================================
 
         """
-            save_current_plot() -> nothing
+        save_plot_displayed(circuit) -> nothing
 
         Saves the current plot into an "Images" directory. If no plot is rendered, 
         the plot is first drawn and then saved. The user is prompted to provide a
@@ -58,25 +70,15 @@ module Saving
         "Images" directory. If the "Images" directory does not exist, it is created.
 
         Parameters:
-        - None
+        - circuit: The circuit to draw and save.
 
         Returns:
         - nothing
         """
-        function save_current_plot(io::IO=stdin)
+        function save_plot_displayed(circuit::Circuit, io::IO=stdin)
 
             # Ensure that the plot is rendered
-            try
-
-                # Attempt to get the current plot
-                plot = Plots.current()
-
-            # If no plot is rendered, draw the plot
-            catch
-
-                # Draw the plot
-                draw_plot()
-            end
+            _ensure_plot_exists(circuit)
 
             # Determine paths
             project_dir = joinpath(@__DIR__, "..")   # Project root directory
@@ -94,6 +96,41 @@ module Saving
             Plots.savefig(filepath)
             println("Circuit plot saved as '$filepath'.")
             return filepath
+        end
+
+    # ==============================================================================
+    # ========================= function _ensure_plot_exists =======================
+    # ==============================================================================
+
+        """
+            _ensure_plot_exists(circuit) -> nothing
+
+        Ensures that a plot exists for the specified circuit. If no plot exists, 
+        a plot is drawn.
+
+        Parameters:
+        - circuit: The circuit to draw and save.
+
+        Returns:
+        - nothing
+        """
+        function _ensure_plot_exists(circuit::Circuit)
+
+            # Ensure that the plot is rendered
+            try
+
+                # Attempt to get the current plot
+                plot = Plots.current()
+
+            # If no plot is rendered, draw the plot
+            catch
+
+                # Provide feedback to user
+                println("\nNo plot is currently rendered. Drawing the plot now.")
+
+                # Draw the plot
+                draw_plot(circuit)
+            end
         end
 
     # ==============================================================================
@@ -137,7 +174,7 @@ module Saving
         - The generated filename.
         """
         function _generate_filename(io::IO=stdin)
-            println("Enter a filename for the circuit plot")
+            println("\nEnter a filename for the circuit plot")
             println("Otherwise, press Enter to use the default (default: circuit_plot.png).")
             filename = readline(io)
 
