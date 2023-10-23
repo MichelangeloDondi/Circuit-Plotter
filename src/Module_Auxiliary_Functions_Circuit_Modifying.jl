@@ -11,7 +11,7 @@ Author: Michelangelo Dondi
 Date: 23-10-2023
 Description: 
 
-Version: 3.0
+Version: 3.1
 License: MIT License
 
 Exported functions: 
@@ -34,7 +34,7 @@ module Auxiliary_Functions_Circuit_Modifying
     # ==============================================================================
 
         # For housing the data structures used by the Circuit Plotter Program
-        import Main: Circuit, Node, EdgeInfo
+        import Main: Circuit, EdgeInfo
 
     # ==============================================================================
     # ============================ Required Packages ===============================
@@ -46,23 +46,10 @@ module Auxiliary_Functions_Circuit_Modifying
     # ==============================================================================
     # ============================ Included Modules ================================
     # ==============================================================================
-#=
-        # Module_Helping.jl provides helper functions for the main program.
-        include("Module_Helping.jl")
-        using .Helping: show_help # Help and instructions
 
         # Module_Auxiliary_Functions_Circuit_Recap.jl provides auxiliary functions for recapping the circuit.
         include("Module_Auxiliary_Functions_Circuit_Recap.jl")
-        using .Auxiliary_Functions_Circuit_Recap: show_circuit_recap # Recap the circuit
-        
-        # Module_Plotting.jl provides functions for drawing the current circuit plot.
-        include("Module_Plotting.jl")
-        using .Plotting: draw_plot # Draw the current circuit plot
-
-        # Module_Saving.jl provides functions for saving the plot displayed.
-        include("Module_Saving.jl")
-        using .Saving: save_plot_displayed # Save the plot displayed
-        =#
+        using .Auxiliary_Functions_Circuit_Recap: show_circuit_recap # Recap the circuit    
 
     # ==============================================================================
     # ======================== function modify_existing_node =======================
@@ -71,27 +58,22 @@ module Auxiliary_Functions_Circuit_Modifying
         """
             modify_existing_node(circuit::Circuit) -> nothing
 
-        Modifies an existing node's coordinates in the circuit based on user input.
+        Modifies an existing nodes's coordinates in the circuit based on user input.
 
         # Parameters:
         - circuit: The primary data structure representing the circuit, including its nodes and components.
+        - edgeinfo: The data structure containing the edge information for the circuit.
 
         # Returns:
         - nothing
         """
-        function modify_existing_node(circuit::Circuit)
+        function modify_existing_node(circuit::Circuit, edgeinfo::EdgeInfo)
 
             # Continuously prompt the user for node coordinates to modify.
             while true
 
-                # Print the prompt message.
-                println("\n===================================================")
-                println("\nList of nodes in the circuit:")
-
-                # Print the list of nodes in the circuit.
-                for node in circuit.nodes
-                    println("Node N$(node.id) at position ($(node.x),$(node.y))")
-                end
+                # Show the circuit recap.
+                show_circuit_recap(circuit, edgeinfo)
 
                 # Prompt the user for the node ID.
                 println("\nEnter the ID of the node you want to modify or type 'break' or 'b' to finish modifying nodes:")
@@ -166,27 +148,24 @@ module Auxiliary_Functions_Circuit_Modifying
         """
             delete_node_from_circuit(circuit::Circuit) -> nothing
 
-        Deletes an existing node from the circuit based on user input.
+        Deletes an existing nodes from the circuit based on user input.
 
         # Parameters:
         - circuit: The primary data structure representing the circuit, including its nodes and components.
+        - edgeinfo: The data structure containing the edge information for the circuit.
 
         # Returns:
         - nothing
         """
-        function delete_node_from_circuit(node_count::Int, circuit::Circuit)
+        function delete_node_from_circuit(node_count::Int, circuit::Circuit, edgeinfo::EdgeInfo)
 
             # Continuously prompt the user for node coordinates to delete.
             while true
 
-                # Print the prompt message.
-                println("\n===================================================")
-                println("\nList of nodes in the circuit:")
+                # Show the circuit recap.
+                show_circuit_recap(circuit, edgeinfo)
 
-                for node in circuit.nodes
-                    println("Node N$(node.id) at position ($(node.x),$(node.y))")
-                end
-
+                # Prompt the user for the node ID.
                 println("\nEnter the ID of the node you want to delete or type 'break' or 'b' to finish deleting nodes:")
 
                 # Read the node ID from the user.

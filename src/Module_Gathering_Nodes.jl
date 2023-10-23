@@ -59,17 +59,18 @@ module Gathering_Nodes
         using .Auxiliary_Functions_Circuit_Modifying: delete_node_from_circuit # Delete existing nodes
 
     # ==============================================================================
-    # ====================== function _collect_nodes_from_cmd ======================
+    # ====================== function collect_nodes_from_cmd =======================
     # ==============================================================================
         
         """
-            _collect_nodes_from_cmd(circuit::Circuit, edgeinfo::EdgeInfo) -> nothing
+            collect_nodes_from_cmd(circuit::Circuit, edgeinfo::EdgeInfo) -> nothing
 
         Collects node coordinates from the user and adds them to the provided circuit.
         The user is prompted to input node coordinates or type 'stop' to end the node collection.
 
         # Parameters:
-        - circuit: The primary data structure representing the circuit, including its nodes and components.
+        - circuit: The primary data structure representing the circuit, including its nodes and components. 
+        - edgeinfo: The data structure representing the edges of the circuit.
 
         # Returns:
         - nothing
@@ -130,13 +131,13 @@ module Gathering_Nodes
                 if modify_node == "m"
 
                     # Modify the existing nodes.
-                    modify_existing_node(circuit)
+                    modify_existing_node(circuit, edgeinfo)
 
                 # If the user wants to cancel some existing nodes, delete them.
                 elseif modify_node == "c"
 
                     # If some nodes are deleted, update the node count.
-                    node_count = delete_node_from_circuit(node_count, circuit)
+                    node_count = delete_node_from_circuit(node_count, circuit, edgeinfo)
                 end
             end
         end

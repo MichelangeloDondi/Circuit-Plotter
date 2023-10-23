@@ -36,6 +36,13 @@ module Helping
         export show_final_greetings_asking_whether_to_save_plot_displayed
 
     # ==============================================================================
+    # ========================= Imported Data Structure ============================
+    # ==============================================================================
+
+        # For housing the data structures used by the Circuit Plotter Program
+        import Main: Circuit
+
+    # ==============================================================================
     # =========================== show_initial_greetings ===========================
     # ==============================================================================
             
@@ -141,11 +148,11 @@ module Helping
 
             General Usage:
             - Follow the prompts to create, visualize and save your circuit.
-            - Enter 'exit' or 'e' at any time to close the program.
-            - Enter 'help' or 'h' at any time to show the help.
-            - Enter 'recap' or 'r'at any time to show the circuit recap.
-            - Enter 'draw' or 'd' at any time to render the circuit.
-            - Enter 'save' or 's' at any time to save the plot displayed
+            - Enter 'exit'  or 'e' at any time to close the program.
+            - Enter 'help'  or 'h' at any time to show the help.
+            - Enter 'recap' or 'r' at any time to show the circuit recap.
+            - Enter 'draw'  or 'd' at any time to render the circuit.
+            - Enter 'save'  or 's' at any time to save the plot displayed
 
             Notes:
             - If there is an attempt to save a plot without displaying it first, the plot is displayed before saving.
