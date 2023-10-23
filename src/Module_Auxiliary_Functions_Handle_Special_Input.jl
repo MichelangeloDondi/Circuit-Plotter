@@ -8,19 +8,19 @@
     Module Auxiliary_Functions_Input_Handling
 
 Author: Michelangelo Dondi
-Date: 22-10-2023
+Date: 23-10-2023
 Description: 
     This module provides functions for handling special user input, such as
-    'exit', 'help', 'draw' and 'save'.
+    'exit', 'help', 'recap', 'draw' and 'save'.
 
-Version: 2.7
+Version: 2.8
 License: MIT License
 
 Exported functions: 
 - `handle_special_input_break(input::String)::Symbol`: Handles special input from the user. 
-    Special input includes commands such as 'exit', 'help', 'draw', 'save' and 'break'.
+    Special input includes commands such as 'exit', 'help', 'recap', 'draw', 'save' and 'break'.
 - `handle_special_input_yes_no(input::String)::Symbol`: Handles special input from the user.
-    Special input includes commands such as 'exit', 'help', 'draw', 'save', 'yes' and 'no'.
+    Special input includes commands such as 'exit', 'help', 'recap', 'draw', 'save', 'yes' and 'no'.
 """
 module Auxiliary_Functions_Handle_Special_Input
 
@@ -28,7 +28,7 @@ module Auxiliary_Functions_Handle_Special_Input
     # =========================== Exported Function ================================
     # ==============================================================================
         
-        # Handles special input from the user (e.g. 'exit, 'help', 'draw', 'save').
+        # Handles special input from the user (e.g. 'exit, 'help', 'recap', 'draw', 'save').
         export handle_special_input_break
         export handle_special_input_yes_no
 
@@ -40,6 +40,10 @@ module Auxiliary_Functions_Handle_Special_Input
         include("Module_Helping.jl")
         using .Helping: show_help # Help and instructions
 
+        # Module_Auxiliary_Functions_Circuit_Recap.jl provides auxiliary functions for recapping the circuit.
+        include("Module_Auxiliary_Functions_Circuit_Recap.jl")
+        using .Auxiliary_Functions_Circuit_Recap: show_circuit_recap # Recap the circuit
+        
         # Module_Plotting.jl provides functions for drawing the current circuit plot.
         include("Module_Plotting.jl")
         using .Plotting: draw_plot # Draw the current circuit plot
@@ -53,11 +57,11 @@ module Auxiliary_Functions_Handle_Special_Input
     # ==============================================================================
 
         """
-            handle_special_input_break(input::String)::Symbol
+            handle_special_input_break(input::String, circuit, edgeinfo)::Symbol
 
         Handles special input from the user. 
         Special input includes commands such as
-        'exit', 'help', 'draw', 'save' and 'break'.
+        'exit', 'help', 'recap', 'draw', 'save' and 'break'.
 
         Parameters:
         - input: The input provided by the user.
@@ -67,10 +71,10 @@ module Auxiliary_Functions_Handle_Special_Input
         - :break if the user types 'break' or 'b'.
         - :not_handled otherwise.
         """
-        function handle_special_input_break(input::String, circuit)::Symbol
+        function handle_special_input_break(input::String, circuit, edgeinfo)::Symbol
 
             # Checking if the input is a special input
-            result = _handle_special_input(input, circuit)
+            result = _handle_special_input(input, circuit, edgeinfo)
 
             # If the user types 'break' or 'b', return :break.
             if input == "break" || input == "b"
@@ -91,11 +95,11 @@ module Auxiliary_Functions_Handle_Special_Input
     # ==============================================================================
 
         """
-            handle_special_input_yes_no(input::String)::Symbol
+            handle_special_input_yes_no(input::String, circuit, edgeinfo)::Symbol
 
         Handles special input from the user. 
         Special input includes commands such as
-        'exit', 'help', 'draw', 'save' 'yes', and 'no'.
+        'exit', 'help', 'recap', 'draw', 'save' 'yes', and 'no'.
 
         Parameters:
         - input: The input provided by the user.
@@ -106,10 +110,10 @@ module Auxiliary_Functions_Handle_Special_Input
         - :no if the user types 'no' or 'n'.
         - :not_handled otherwise.
         """
-        function handle_special_input_yes_no(input::String, circuit)::Symbol
+        function handle_special_input_yes_no(input::String, circuit, edgeinfo)::Symbol
             
             # Checking if the input is a special input
-            result = _handle_special_input(input, circuit)
+            result = _handle_special_input(input, circuit, edgeinfo)
 
             # If the user types 'yes or 'y', return :yes.
             if input == "yes" || input == "y"
@@ -146,7 +150,7 @@ module Auxiliary_Functions_Handle_Special_Input
         - :handled if the input was handled.
         - :not_common_special_input otherwise.
         """
-        function _handle_special_input(input::String, circuit)
+        function _handle_special_input(input::String, circuit, edge_info)::Symbol
 
             # If the user types 'exit' or 'e', exit the program.
             if input == "exit" || input == "e"
@@ -158,6 +162,11 @@ module Auxiliary_Functions_Handle_Special_Input
                 show_help()
                 return :handled
             
+            # If the user types 'recap' or 'r', show the recap message.
+            elseif input == "recap" || input == "r"
+                show_circuit_recap(circuit, edge_info)
+                return :handled
+        
             # If the user types 'draw' or 'd', draw the current plot.
             elseif input == "draw" || input == "d"
                 draw_plot(circuit)

@@ -8,12 +8,12 @@
     Module: Helping 
 
 Author: Michelangelo Dondi
-Date: 21-10-2023
+Date: 23-10-2023
 Description:
     Dedicated to providing guidance to users interacting with the Circuit Visualization Tool.
     This module simplifies user interactions by offering clear instructions and comprehensive assistance.
 
-Version: 2.7
+Version: 2.8
 License: MIT License
 
 Exported functions:
@@ -134,8 +134,9 @@ module Helping
             - Follow the prompts to create, visualize and save your circuit.
             - Enter 'exit' at any time to close the program.
             - Enter 'help' at any time to show the help.
+            - Enter 'recap' at any time to show the circuit recap.
             - Enter 'draw' at any time to render the circuit.
-            - Enter 'save' at any time to save the plot displayed.
+            - Enter 'save' at any time to save the plot displayed
 
             Notes:
             - For more information, please refer to the documentation.

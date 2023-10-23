@@ -8,12 +8,12 @@
     Module: Gathering_Nodes
 
 Author: Michelangelo Dondi
-Date: 22-10-2023
+Date: 23-10-2023
 Description:    
     Dedicated to collecting nodes within the circuit.
     This module simplifies the collection process by providing a single function to call.
 
-Version: 2.7
+Version: 2.8
 License: MIT License
 
 Exported functions:
@@ -29,14 +29,14 @@ module Gathering_Nodes
     # ==============================================================================
 
         # Invoke this function to gather the nodes
-        export gather_nodes
+        export collect_nodes_from_cmd
 
     # ==============================================================================
     # ========================= Imported Data Structure ============================
     # ==============================================================================
 
         # For housing the data structures used by the Circuit Plotter Program
-        import Main: Circuit, Node
+        import Main: Circuit, Node, EdgeInfo
 
     # ==============================================================================
     # =========================== Required Packages ================================
@@ -51,37 +51,14 @@ module Gathering_Nodes
 
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
         include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
-        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input such as 'help', 'draw', 'exit', 'break'
-
-    # ==============================================================================
-    # ======================== function gather_nodes ===============================
-    # ==============================================================================
-
-        """
-            gather_nodes(circuit::Circuit) -> nothing
-
-        Systematically assembles information about the nodes present within the circuit,
-        utilizing direct inputs from the user. The accumulated data finds its place within
-        the `circuit` structure. Additionally, a recap of node particulars is presented.
-                
-        Parameters:
-        - circuit: The primary structure amalgamating nodes, components, and their 
-                illustrative representation within the circuit.
-                
-        Returns:
-        - nothing
-        """
-        function gather_nodes(circuit::Circuit)
-            _collect_nodes_from_cmd(circuit)
-            _nodes_recap(circuit)
-        end
+        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input such as 'help', 'recap', 'draw', 'exit', 'break'
 
     # ==============================================================================
     # ---------------------- function _collect_nodes_from_cmd ----------------------
     # ==============================================================================
         
         """
-            _collect_nodes_from_cmd(circuit::Circuit) -> nothing
+            _collect_nodes_from_cmd(circuit::Circuit, edgeinfo::EdgeInfo) -> nothing
 
         Collects node coordinates from the user and adds them to the provided circuit.
         The user is prompted to input node coordinates or type 'stop' to end the node collection.
@@ -92,7 +69,7 @@ module Gathering_Nodes
         # Returns:
         - nothing
         """
-        function _collect_nodes_from_cmd(circuit::Circuit)
+        function collect_nodes_from_cmd(circuit::Circuit, edgeinfo::EdgeInfo)
             
             # Initialize the node_count to track the number of nodes added to the circuit.
             node_count = 0
@@ -109,8 +86,8 @@ module Gathering_Nodes
                 # Read the input from the user.
                 input = readline()
 
-                # Handle special input (e.g. 'exit', 'help', 'draw', 'save', 'break').
-                handle_result = handle_special_input_break(input, circuit)
+                # Handle special input (e.g. 'exit', 'help', 'recap', 'draw', 'save', 'break').
+                handle_result = handle_special_input_break(input, circuit, edgeinfo)
 
                 # If the input was handled, continue to the next iteration.
                 if handle_result == :handled
@@ -195,44 +172,5 @@ module Gathering_Nodes
                 println("\nInvalid input. Enter integer coordinates as x,y.")
                 return false
             end
-        end
-        
-    # ==============================================================================
-    # ---------------------------- function _nodes_recap ---------------------------
-    # ==============================================================================
-
-        """
-            _nodes_recap(circuit::Circuit) -> nothing
-
-        Displays a recap of the nodes in the circuit.
-
-        Parameters:
-        - circuit: The primary structure amalgamating nodes, components, and their 
-                illustrative representation within the circuit.
-
-        Returns:
-        - nothing
-
-        Notes:
-        - The recap is displayed in the console in the following format:
-            - Ni at (xi,yi), where i is the index of the node.
-
-        Example:
-     
-        Nodes in the Circuit:
-        
-            - N1 at (0,0)
-            - N2 at (0,1)
-            - N3 at (1,0)
-            - N4 at (1,1)
-
-        ===================================================
-        """
-        function _nodes_recap(circuit::Circuit)
-            println("\nNodes in the Circuit:\n")
-            for node in circuit.nodes
-                println("   - N$(node.id) at ($(node.x),$(node.y))")
-            end
-            println("\n===================================================")
         end
     end

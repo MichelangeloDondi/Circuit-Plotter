@@ -14,7 +14,7 @@ Description:
     Dedicated to housing the main function of the Circuit Visualization Tool.
     This module simplifies the main function definition process by providing a single file to call.
 
-Version: 2.7
+Version: 2.8
 License: MIT License
         
 Exported functions:
@@ -60,12 +60,16 @@ module Main_Function
 
         # Module_Gathering_Nodes.jl provides functions for collecting node details.
         include("Module_Gathering_Nodes.jl")
-        using .Gathering_Nodes: gather_nodes # Collect node details from the user
+        using .Gathering_Nodes: collect_nodes_from_cmd # Collect node details from the user
 
         # Module_Gathering_Edges_And_Components.jl provides functions for collecting edge details and component details.
         include("Module_Gathering_Edges_And_Components.jl")
-        using .Gathering_Edges_And_Components: gather_edges_and_components # Collect edge details and component details from the user
+        using .Gathering_Edges_And_Components: collect_edges_and_components_from_cmd # Collect edge details and component details from the user
 
+        # Module_Auxiliary_Functions_Circuit_Recap.jl provides auxiliary functions for recapping the circuit.
+        include("Module_Auxiliary_Functions_Circuit_Recap.jl")
+        using .Auxiliary_Functions_Circuit_Recap: show_circuit_recap # Recap the circuit
+        
         # Module_Plotting.jl provides functions for drawing the current circuit plot.
         include("Module_Plotting.jl")
         using .Plotting: draw_plot # Draw the current circuit plot
@@ -100,11 +104,14 @@ module Main_Function
             circuit = Circuit([], [], SimpleGraph())
             edge_info = EdgeInfo([])
 
-            # Gather the particulars of the nodes and provide feedback to the user.
-            gather_nodes(circuit)
+            # Gather the particulars of the nodes.
+            collect_nodes_from_cmd(circuit, edge_info)
 
             # Gather the particulars of the edges and of the components and provide feedback to the user.
-            gather_edges_and_components(circuit, edge_info)
+            collect_edges_and_components_from_cmd(circuit, edge_info)
+
+            # Recap the circuit.
+            show_circuit_recap(circuit, edge_info)
 
             # Draw the circuit plot.
             draw_plot(circuit)
