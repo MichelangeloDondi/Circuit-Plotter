@@ -8,7 +8,7 @@
     Module: Helping 
 
 Author: Michelangelo Dondi
-Date: 3.1-10-2023
+Date: 23-10-2023
 Description:
     Dedicated to providing guidance to users interacting with the Circuit Plotter Program.
     This module simplifies user interactions by offering clear instructions and comprehensive assistance.
@@ -132,7 +132,7 @@ module Helping
             _show_instructions() -> nothing
 
         Displays the general instructions for the Circuit Plotter Program.
-        Includes general usage notes and common commands.
+        Includes common commands and general usage notes.
             
         Parameters:
         - nothing
@@ -168,34 +168,41 @@ module Helping
         """
         show_final_greetings_asking_whether_to_save_plot_displayed(circuit::Circuit) -> nothing
 
-        Displays the final greetings and ask the user whether to save the plot displayed before exiting the program.
+        Shows the final greetings and asks the user whether to save the plot displayed before exiting the program.
 
-            
         Parameters:
-        - circuit: The primary data structure representing the circuit, including its nodes and components.
-            
+        - circuit: The circuit object.
+
         Returns:
         - nothing
         """
         function show_final_greetings_asking_whether_to_save_plot_displayed(circuit::Circuit)
             
             # Ask the user whether to save the plot displayed before exiting the program.
-            println("Type 'save' or 's' to save the plot of your circuit before exiting the program.")
+            println("\nType 'save' or 's' to save the plot of your circuit before exiting the program.")
             println("If you do not want save if, press any other key to directly exit the program")
+
+            # Read the user input.
             input = readline()
-            if input == "save" || input == "s"
+
+            # If the user types 'save' or 's', save the current plot.
+            if input == "save" || input == "s"  
+
+                # Save the current plot.
                 save_plot_displayed(circuit)
             end
 
-            # Exit the program after the user presses Enter.
+            # Show the final greetings.
             println("""
             Thank you for having used the Circuit Plotter Program.
             We hope you have found it useful and that you will use it again in the future.
-            The program will now exit in 5 seconds.
+            The program will be quitted in 5 seconds.
             \n---------------------------------------------------
                                 END OF PROGRAM
             ---------------------------------------------------
             """)
+            
+            # Exit the program after 5 seconds.
             sleep(5)
         end
 end
