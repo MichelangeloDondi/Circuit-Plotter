@@ -108,7 +108,7 @@ module Gathering_Edges_And_Components
                 elseif handle_result == :break
 
                     # Provide feedback to the user.
-                    println("\nFinished adding edges to the circuit.")
+                    println("\nFinished adding edges and components to the circuit.")
                     break
                 end
 
@@ -119,7 +119,7 @@ module Gathering_Edges_And_Components
                 if length(edge_nodes) != 2
 
                     # Print an error message and continue to the next iteration.
-                    println("\nInvalid input. Provide two node indices separated by a comma.")
+                    println("\nInvalid input. Provide two node indixes separated by a comma (e.g. '3,2').")
                     continue
                 end
 
