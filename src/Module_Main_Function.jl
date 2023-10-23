@@ -57,6 +57,7 @@ module Main_Function
         # Module_Helping.jl provides helper functions for the main program.
         include("Module_Helping.jl")
         using .Helping: show_initial_greetings # Greetings and instructions
+        using .Helping: show_final_greetings_asking_whether_to_save_plot_displayed # Final greetings and whether to save the plot displayed before exiting the program
 
         # Module_Gathering_Nodes.jl provides functions for collecting node details.
         include("Module_Gathering_Nodes.jl")
@@ -116,11 +117,7 @@ module Main_Function
             # Draw the circuit plot.
             draw_plot(circuit)
 
-            # Save the visual representation of the user-defined circuit.
-            save_plot_displayed(circuit)
-
-            # Exit the program after the user presses Enter.
-            println("Press Enter to exit...")
-            readline()
+            # Ask the user whether to save the plot displayed before exiting the program.
+            show_final_greetings_asking_whether_to_save_plot_displayed(circuit)
         end
 end

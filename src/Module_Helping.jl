@@ -8,12 +8,12 @@
     Module: Helping 
 
 Author: Michelangelo Dondi
-Date: 23-10-2023
+Date: 3.1-10-2023
 Description:
-    Dedicated to providing guidance to users interacting with the Circuit Visualization Tool.
+    Dedicated to providing guidance to users interacting with the Circuit Plotter Program.
     This module simplifies user interactions by offering clear instructions and comprehensive assistance.
 
-Version: 2.8
+Version: 3.1
 License: MIT License
 
 Exported functions:
@@ -26,8 +26,14 @@ module Helping
     # ============================ Exported Functions ==============================
     # ==============================================================================
         
+        # Invoke these function to show greetings and instructions
+        export show_initial_greetings
+
         # Invoke these functions to obtain help and instructions
-        export show_initial_greetings, show_help
+        export show_help
+
+        # Invoke these function to show final greetings and whether to save the plot displayed before exiting the program
+        export show_final_greetings_asking_whether_to_save_plot_displayed
 
     # ==============================================================================
     # =========================== show_initial_greetings ===========================
@@ -47,7 +53,7 @@ module Helping
         function show_initial_greetings()
             println("""
             \n---------------------------------------------------
-            Welcome to the Electrical Circuit Visualization Tool!
+                  Welcome to the Circuit Plotter Program!
             ---------------------------------------------------
             """)
             _show_instructions()
@@ -61,7 +67,7 @@ module Helping
         """
             show_help() -> nothing
 
-        Provides an extensive guide detailing each aspect of the Circuit Visualization Tool.
+        Provides an extensive guide detailing each aspect of the Circuit Plotter Program.
 
         Parameters:
         - nothing
@@ -72,11 +78,14 @@ module Helping
         function show_help()
             println("""
             \n---------------------------------------------------
-                                HELP
+                                    HELP
             ---------------------------------------------------
 
             INTRODUCTION:
-            - Create visual representations of electrical circuits.
+            - Create visual representations of circuits.
+            - The program is interactive and user-friendly.
+            - The program is designed primary for electrical circuits.
+            - However, it can be used for any type of circuit.
             - Input nodes, edges, and component details following the prompts.
 
             NODE COORDINATES:
@@ -115,7 +124,7 @@ module Helping
         """
             _show_instructions() -> nothing
 
-        Displays the general instructions for the Circuit Visualization Tool.
+        Displays the general instructions for the Circuit Plotter Program.
         Includes general usage notes and common commands.
             
         Parameters:
@@ -139,9 +148,47 @@ module Helping
             - Enter 'save' or 's' at any time to save the plot displayed
 
             Notes:
-            - If the plot is not already displayed, it is displayed before saving.
+            - If there is an attempt to save a plot without displaying it first, the plot is displayed before saving.
             - For more information, please refer to the documentation.
             - For further issues, please contact support.
             """)
+        end
+    
+    # ==========================================================================
+    # --- function show_final_greetings_asking_whether_to_save_plot_displayed --
+    # ==========================================================================
+            
+        """
+        show_final_greetings_asking_whether_to_save_plot_displayed(circuit::Circuit) -> nothing
+
+        Displays the final greetings and ask the user whether to save the plot displayed before exiting the program.
+
+            
+        Parameters:
+        - circuit: The primary data structure representing the circuit, including its nodes and components.
+            
+        Returns:
+        - nothing
+        """
+        function show_final_greetings_asking_whether_to_save_plot_displayed(circuit::Circuit)
+            
+            # Ask the user whether to save the plot displayed before exiting the program.
+            println("Type 'save' or 's' to save the plot of your circuit before exiting the program.")
+            println("If you do not want save if, press any other key to directly exit the program")
+            input = readline()
+            if input == "save" || input == "s"
+                save_plot_displayed(circuit)
+            end
+
+            # Exit the program after the user presses Enter.
+            println("""
+            Thank you for having used the Circuit Plotter Program.
+            We hope you have found it useful and that you will use it again in the future.
+            The program will now exit in 5 seconds.
+            \n---------------------------------------------------
+                                END OF PROGRAM
+            ---------------------------------------------------
+            """)
+            sleep(5)
         end
 end
