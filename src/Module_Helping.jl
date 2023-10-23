@@ -36,11 +36,12 @@ module Helping
         export show_final_greetings_asking_whether_to_save_plot_displayed
 
     # ==============================================================================
-    # ========================= Imported Data Structure ============================
+    # ============================ Including Modules ===============================
     # ==============================================================================
 
-        # For housing the data structures used by the Circuit Plotter Program
-        import Main: Circuit
+        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
+        include("Module_Circuit_Structures.jl")
+        using .Circuit_Structures: Circuit # Access the data structures
 
     # ==============================================================================
     # =========================== show_initial_greetings ===========================
@@ -166,7 +167,7 @@ module Helping
     # ==========================================================================
             
         """
-        show_final_greetings_asking_whether_to_save_plot_displayed(circuit::Circuit) -> nothing
+        show_final_greetings_asking_whether_to_save_plot_displayed(circuit) -> nothing
 
         Shows the final greetings and asks the user whether to save the plot displayed before exiting the program.
 
@@ -176,7 +177,7 @@ module Helping
         Returns:
         - nothing
         """
-        function show_final_greetings_asking_whether_to_save_plot_displayed(circuit::Circuit)
+        function show_final_greetings_asking_whether_to_save_plot_displayed(circuit)
             
             # Ask the user whether to save the plot displayed before exiting the program.
             println("\nType 'save' or 's' to save the plot of your circuit before exiting the program.")

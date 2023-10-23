@@ -20,7 +20,7 @@ Description:
     file. The main module is Module_Main_Function.jl, which contains the main function
     of the program.
 
-Version: 3.1
+Version: 3.2
 License: MIT License
 """
 
@@ -60,10 +60,6 @@ License: MIT License
 # ============================== Included Modules ==============================
 # ==============================================================================
 
-    # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-    include("Module_Circuit_Structures.jl")
-    using .Circuit_Structures # Access the data structures
-
     # Module_Main_Function.jl provides the main function of the Circuit Plotter Program.
     include("Module_Main_Function.jl")
     using .Main_Function # Access the main function
@@ -73,4 +69,4 @@ License: MIT License
 # ==============================================================================
 
     # Run the main function.
-    main()
+    main(circuit, edge_info)

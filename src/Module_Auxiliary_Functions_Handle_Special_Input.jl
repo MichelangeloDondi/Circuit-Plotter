@@ -64,8 +64,7 @@ module Auxiliary_Functions_Handle_Special_Input
         """
             handle_special_input_break(input::String, circuit, edgeinfo)::Symbol
 
-        Handles special input from the user. 
-        Special input includes commands such as
+        Handles the following special input from the user:
         'exit', 'help', 'recap', 'draw', 'save' and 'break'.
 
         Parameters:

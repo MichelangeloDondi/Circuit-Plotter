@@ -14,11 +14,11 @@ Description:
     core functionalities for plotting the circuit components and its design. It integrates
     with the main Circuit Plotter to provide an end-to-end circuit visualization tool.
 
-Version: 2.7
+Version: 3.2
 License: MIT License
         
 Exported functions:
-- `draw_plot(circuit::Circuit)`: Invoke this function to visualize a given circuit.
+- `draw_plot(circuit)`: Invoke this function to visualize a given circuit.
 """
 module Plotting
 
@@ -30,11 +30,12 @@ module Plotting
         export draw_plot 
 
     # ==============================================================================
-    # =========================== Imported Data Structure ==========================
+    # ============================== Included Modules ==============================
     # ==============================================================================
 
-        # For housing the data structures used by the Circuit Plotter Program
-        import Main: Circuit, Node
+        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
+        include("Module_Circuit_Structures.jl")
+        using .Circuit_Structures: Node, Circuit # Access the data structures
         
     # ==============================================================================
     # ============================== Required Packages =============================
@@ -42,7 +43,7 @@ module Plotting
         
         # For plotting the circuit
         using PlotlyJS # Interactive plotting library
-        using Plots: scatter, scatter!, plotlyjs, plot, plot!, title!, xlabel!, ylabel!, xlims!, ylims!, annotate!, sizehint!, size, text # Scatter plots to represent nodes
+        using Plots: scatter, scatter!, plotlyjs, plot!, title!, xlabel!, ylabel!, xlims!, ylims!, annotate!, sizehint!, size, text # Scatter plots to represent nodes
         using LightGraphs     # Graph representation of the circuit
         using GraphRecipes    # For plotting graph structures
 
@@ -76,16 +77,16 @@ module Plotting
     # ==============================================================================
 
         """
-            draw_plot(circuit::Circuit) 
+            draw_plot(circuit) 
 
         Invoke this function to visualize a given circuit. This function sets up the basic
         visualization parameters and then integrates helper functions to plot nodes, edges,
         and components of the circuit.
             
         # Arguments
-        - `circuit::Circuit`: A representation of the circuit to visualize.
+        - `circuit`: A representation of the circuit to visualize.
         """
-        function draw_plot(circuit::Circuit)
+        function draw_plot(circuit)
 
             # Provide feedback to the user
             println("\nPlease wait while the circuit is being visualized...")
@@ -105,7 +106,7 @@ module Plotting
     # ==============================================================================
 
         """
-            _prepare_and_display_plot(p, circuit::Circuit)
+            _prepare_and_display_plot(p, circuit)
 
         This function prepares the plot object for visualization by configuring its
         properties and adding nodes, edges, and components to it. It then displays
@@ -113,9 +114,9 @@ module Plotting
 
         # Arguments
         - `p`: The plot object to be modified.
-        - `circuit::Circuit`: Data structure representing the circuit.
+        - `circuit`: Data structure representing the circuit.
         """
-        function _prepare_and_display_plot(p, circuit::Circuit)
+        function _prepare_and_display_plot(p, circuit)
             _set_plot_labels(p)
             _set_plot_title(p, circuit)
             _add_edges_to_plot(p, circuit)
@@ -131,13 +132,13 @@ module Plotting
     # ------------------------------------------------------------------------------
 
         """
-            _set_plot_labels(p, circuit::Circuit)
+            _set_plot_labels(p, circuit)
 
         Sets the labels of the plot object.
 
         # Arguments
         - `p`: The plot object to be modified.
-        - `circuit::Circuit`: Data structure representing the circuit.
+        - `circuit`: Data structure representing the circuit.
         """
         function _set_plot_labels(p)
             xlabel!(p, "X")
@@ -149,15 +150,15 @@ module Plotting
     # ------------------------------------------------------------------------------
 
         """
-            _set_plot_title(p, circuit::Circuit)
+            _set_plot_title(p, circuit)
 
         Sets the title of the plot object.
 
         # Arguments
         - `p`: The plot object to be modified.
-        - `circuit::Circuit`: Data structure representing the circuit.
+        - `circuit`: Data structure representing the circuit.
         """
-        function _set_plot_title(p, circuit::Circuit)
+        function _set_plot_title(p, circuit)
             N_n = nv(circuit.graph)
             N_e = ne(circuit.graph)
             N_c = length(circuit.components)
@@ -170,15 +171,15 @@ module Plotting
     # ------------------------------------------------------------------------------
 
         """
-            _add_edges_to_plot(p, circuit::Circuit)
+            _add_edges_to_plot(p, circuit)
 
         Adds edges to the plot object.
 
         # Arguments 
         - `p`: The plot object to be modified.
-        - `circuit::Circuit`: Data structure representing the circuit.
+        - `circuit`: Data structure representing the circuit.
         """
-        function _add_edges_to_plot(p, circuit::Circuit)
+        function _add_edges_to_plot(p, circuit)
             if hasfield(typeof(circuit), :graph) && ne(circuit.graph) > 0
                 adj_matrix = adjacency_matrix(circuit.graph)
                 graphplot!(p, adj_matrix,
@@ -197,15 +198,15 @@ module Plotting
     # ------------------------------------------------------------------------------
 
         """
-            _add_nodes_to_plot(p, circuit::Circuit)
+            _add_nodes_to_plot(p, circuit)
 
         Adds nodes to the plot object.
 
         # Arguments
         - `p`: The plot object to be modified.
-        - `circuit::Circuit`: Data structure representing the circuit.
+        - `circuit`: Data structure representing the circuit.
         """
-        function _add_nodes_to_plot(p, circuit::Circuit)
+        function _add_nodes_to_plot(p, circuit)
             scatter!(p, [node.x for node in circuit.nodes], [node.y for node in circuit.nodes],
                     markersize=NODE_SIZE, markercolor=NODE_COLOR, markeralpha=ALPHA, label=false)
         end
@@ -215,15 +216,15 @@ module Plotting
     # ------------------------------------------------------------------------------
 
         """
-            _annotate_nodes_on_plot(p, circuit::Circuit)
+            _annotate_nodes_on_plot(p, circuit)
 
         Adds annotations to the plot object for each node.
 
         # Arguments
         - `p`: The plot object to be modified.
-        - `circuit::Circuit`: Data structure representing the circuit.
+        - `circuit`: Data structure representing the circuit.
         """
-        function _annotate_nodes_on_plot(p, circuit::Circuit)
+        function _annotate_nodes_on_plot(p, circuit)
             for node in circuit.nodes
                 annotate!(p, node.x, node.y,
                         text("<b>N$(node.id)<br>($(node.x),$(node.y))</b>", NODE_FONT_SIZE, :center, :red, FONT))
@@ -235,15 +236,15 @@ module Plotting
     # ------------------------------------------------------------------------------
 
         """
-            _annotate_components_on_plot(p, circuit::Circuit)
+            _annotate_components_on_plot(p, circuit)
 
         Adds annotations to the plot object for each component.
 
         # Arguments
         - `p`: The plot object to be modified.
-        - `circuit::Circuit`: Data structure representing the circuit.
+        - `circuit`: Data structure representing the circuit.
         """
-        function _annotate_components_on_plot(p, circuit::Circuit)
+        function _annotate_components_on_plot(p, circuit)
             for component in circuit.components
                 _mark_component_position(p, circuit, component)
                 _label_component_details(p, circuit, component)
@@ -253,16 +254,16 @@ module Plotting
     # ===================== function _mark_component_position ======================
 
         """
-            _mark_component_position(p, circuit::Circuit, component)
+            _mark_component_position(p, circuit, component)
 
         Marks the midpoint of a component on the plot object.
 
         # Arguments
         - `p`: The plot object to be modified.
-        - `circuit::Circuit`: Data structure representing the circuit.
+        - `circuit`: Data structure representing the circuit.
         - `component`: The component to be marked.
         """
-        function _mark_component_position(p, circuit::Circuit, component)
+        function _mark_component_position(p, circuit, component)
             mid_x, mid_y = _calculate_midpoint_of_component(circuit, component)
             scatter!(p, [mid_x], [mid_y], markersize=COMPONENT_SIZE, markercolor=:white,
                     markerstrokecolor=:black, markeralpha=ALPHA, markerstrokewidth=2, label=false)
@@ -272,19 +273,19 @@ module Plotting
     # ----------------- function _calculate_midpoint_of_component ------------------
 
         """
-            _calculate_midpoint_of_component(circuit::Circuit, component)
+            _calculate_midpoint_of_component(circuit, component)
 
         Calculates the midpoint of a component.
 
         # Arguments
-        - `circuit::Circuit`: Data structure representing the circuit.
+        - `circuit`: Data structure representing the circuit.
         - `component`: The component to be marked.
 
         # Returns
         - `mid_x`: The X coordinate of the midpoint.
         - `mid_y`: The Y coordinate of the midpoint.
         """
-        function _calculate_midpoint_of_component(circuit::Circuit, component)
+        function _calculate_midpoint_of_component(circuit, component)
             mid_x = (circuit.nodes[component.start_node].x + circuit.nodes[component.end_node].x) / 2
             mid_y = (circuit.nodes[component.start_node].y + circuit.nodes[component.end_node].y) / 2
             return mid_x, mid_y
@@ -293,16 +294,16 @@ module Plotting
     # ===================== function _label_component_details ======================
 
         """
-            _label_component_details(p, circuit::Circuit, component)
+            _label_component_details(p, circuit, component)
 
         Adds annotations to the plot object for a component.
 
         # Arguments
         - `p`: The plot object to be modified.
-        - `circuit::Circuit`: Data structure representing the circuit.
+        - `circuit`: Data structure representing the circuit.
         - `component`: The component to be labeled.
         """
-        function _label_component_details(p, circuit::Circuit, component)
+        function _label_component_details(p, circuit, component)
             mid_x, mid_y = _calculate_midpoint_of_component(circuit, component)
             annotate!(p, mid_x, mid_y, text("<b>E$(component.id)<br><br>(N$(component.start_node)⟶N$(component.end_node))</b>", EDGE_FONT_SIZE, :center, :darkgreen, "Tahoma"))
             annotate!(p, mid_x, mid_y, text("<b>$(component.details)</b>", COMPONENT_FONT_SIZE, :center, :dodgerblue, FONT))
@@ -313,20 +314,21 @@ module Plotting
     # ------------------------------------------------------------------------------
 
         """
-            _optimize_plot_dimensions(p, circuit::Circuit)
+            _optimize_plot_dimensions(p, circuit)
 
         Optimizes the plot dimensions and axis limits based on the circuit's data for enhanced clarity.
 
         # Arguments
         - `p`: The plot object to be modified.
-        - `circuit::Circuit`: Data structure representing the circuit.
+        - `circuit`: Data structure representing the circuit.
 
         This function dynamically adjusts the dimensions of the plot and its axis limits.
         It calculates appropriate padding based on the circuit's nodes, ensuring no node
         is too close to the plot's border. Additionally, it checks the range of x and y coordinates
         to determine the plot's layout (portrait or landscape) for best fit.
         """
-        function _optimize_plot_dimensions(p, circuit::Circuit)
+        function _optimize_plot_dimensions(p, circuit)
+
             # Extract X and Y coordinates of nodes
             x_coords = [node.x for node in circuit.nodes]
             y_coords = [node.y for node in circuit.nodes]

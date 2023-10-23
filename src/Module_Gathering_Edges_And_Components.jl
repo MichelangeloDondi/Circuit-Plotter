@@ -13,11 +13,11 @@ Description:
     Dedicated to housing the functions for collecting edge details and component details.
     This module simplifies the main function definition process by providing a single function to call.
 
-Version: 3.1
+Version: 3.2
 License: MIT License
 
 Exported functions:
-- `gather_edges_and_components(circuit::Circuit, edge_info::EdgeInfo)`: Systematically 
+- `gather_edges_and_components(circuit, edge_info)`: Systematically 
     assembles information about the edges and the components present within the circuit,
     utilizing direct inputs from the user. The accumulated data finds its place within 
     the `circuit` structure. Additionally, a recap of edge particulars and of components
@@ -33,13 +33,6 @@ module Gathering_Edges_And_Components
         export collect_edges_and_components_from_cmd
 
     # ==============================================================================
-    # ========================= Imported Data Structure ============================
-    # ==============================================================================
-
-        # For housing the data structures used by the Circuit Plotter Program
-        import Main: Circuit, EdgeInfo, Component
-
-    # ==============================================================================
     # =========================== Required Packages ================================
     # ==============================================================================    
 
@@ -49,6 +42,10 @@ module Gathering_Edges_And_Components
     # ==============================================================================
     # =========================== Included Modules =================================
     # ==============================================================================    
+
+        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
+        include("Module_Circuit_Structures.jl")
+        using .Circuit_Structures: EdgeInfo, Component, Circuit # Access the data structures
 
         # Module_Auxiliary_Functions_Geometry.jl provides functions for validating user input.
         include("Module_Auxiliary_Functions_Geometry.jl")
@@ -64,7 +61,7 @@ module Gathering_Edges_And_Components
     # ==============================================================================
         
         """
-            collect_edges_and_components_from_cmd(node_count::Int, circuit::Circuit, edge_info::EdgeInfo) -> nothing  
+            collect_edges_and_components_from_cmd(node_count::Int, circuit, edge_info) -> nothing  
 
         Sequentially gathers edge details and component details from the user.
 
@@ -77,7 +74,7 @@ module Gathering_Edges_And_Components
         Returns:
         - nothing
         """
-        function collect_edges_and_components_from_cmd(circuit::Circuit, edge_info::EdgeInfo)
+        function collect_edges_and_components_from_cmd(circuit, edge_info)
 
             # Number of nodes in the circuit.
             node_count = nv(circuit.graph)
@@ -166,7 +163,7 @@ module Gathering_Edges_And_Components
                     edge_count += 1
 
                     # Print a confirmation message.
-                    println("\nEdge E$edge_count: N$node1 -> N$node2 added.")
+                    println("\nEdge E$edge_count: N$node1 -> N$node2 successfully added.")
                     
                     # Collect component for the edge if the edge is not a dummy edge.
                     collect_component_from_cmd(edge_count, circuit, edge_info)
@@ -182,7 +179,21 @@ module Gathering_Edges_And_Components
     # ---------------------- function collect_component_from_cmd -------------------
     # ==============================================================================
 
-        function collect_component_from_cmd(edge_count::Int, circuit::Circuit, edge_info::EdgeInfo)
+        """
+            collect_component_from_cmd(edge_count::Int, circuit, edge_info) -> nothing
+
+        Sequentially gathers component details from the user.
+
+        Parameters:
+        - edge_count: The number of edges in the circuit.
+        - circuit: The primary structure amalgamating nodes, components, and their illustrative
+                 representation within the circuit.
+        - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
+
+        Returns:
+        - nothing
+        """
+        function collect_component_from_cmd(edge_count::Int, circuit, edge_info)
 
             # Start collecting components for the edge.
             while true 
@@ -217,7 +228,7 @@ module Gathering_Edges_And_Components
                     push!(circuit.components, Main.Component(edge_count, edge_info.edges[edge_count][1], edge_info.edges[edge_count][2], component_details))
 
                     # Print a confirmation message.
-                    println("\nComponent \"$component_details\" added to edge E$edge_count.")  
+                    println("\nComponent \"$component_details\" successfully added to edge E$edge_count.")  
                     break
                     
                 # If the input was not handled, print an error message and continue to the next iteration.
@@ -232,7 +243,7 @@ module Gathering_Edges_And_Components
     # -------------------------------------------------------------------------------
 
         """
-            _edge_exists(node1::Int, node2::Int, edge_info::EdgeInfo) -> Bool
+            _edge_exists(node1::Int, node2::Int, edge_info) -> Bool
 
         Checks if an edge already exists between two nodes.
 
@@ -245,11 +256,13 @@ module Gathering_Edges_And_Components
         - true: if the edge already exists
         - false: otherwise
         """
-        function _edge_exists(node1::Int, node2::Int, edge_info::EdgeInfo)::Bool
+        function _edge_exists(node1::Int, node2::Int, edge_info)::Bool
             for (index, existing_edge) in enumerate(edge_info.edges)
 
                 # Check if the edge already exists
-                if (node1, node2) == existing_edge
+                if (node1, node2) == existing_edge  
+
+                    # Print an error message and return true.
                     println("\nThe edge cannot be added for the following reason:")
                     println("Edge between nodes N$node1 and N$node2 already exists as E$index(N$node1->N$node2).")
 
@@ -259,6 +272,8 @@ module Gathering_Edges_And_Components
                     
                 # Check if the edge already exists in the opposite direction
                 elseif (node2, node1) == existing_edge
+
+                    # Print an error message and return true to indicate that the edge already exists
                     println("\nThe edge cannot be added for the following reason:")
                     println("Edge between nodes N$node1 and N$node2 already exists as E$index(N$node2->N$node1).")
 

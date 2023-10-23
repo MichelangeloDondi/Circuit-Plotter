@@ -14,7 +14,7 @@ Description:
     Dedicated to housing the main function of the Circuit Visualization Tool.
     This module simplifies the main function definition process by providing a single file to call.
 
-Version: 2.8
+Version: 3.2
 License: MIT License
         
 Exported functions:
@@ -37,13 +37,6 @@ module Main_Function
         export circuit, edge_info
 
     # ==============================================================================
-    # ========================= Imported Data Structure ============================
-    # ==============================================================================
-        
-        # For housing the data structures used by the Circuit Plotter Program
-        import Main: Circuit, EdgeInfo
-    
-    # ==============================================================================
     # ============================ Required Packages ===============================
     # ==============================================================================
 
@@ -53,6 +46,10 @@ module Main_Function
     # ==============================================================================
     # ============================== Included Modules ==============================
     # ==============================================================================
+
+        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
+        include("Module_Circuit_Structures.jl")
+        using .Circuit_Structures: EdgeInfo, Circuit # Access the data structures
 
         # Module_Helping.jl provides helper functions for the main program.
         include("Module_Helping.jl")
@@ -78,9 +75,17 @@ module Main_Function
         # Module_Saving.jl provides functions for saving the plot displayed.
         include("Module_Saving.jl")
         using .Saving: save_plot_displayed # Save the plot displayed
+    
+    # ==============================================================================
+    # ========================= Initialize Data Structures =========================
+    # ==============================================================================
+
+        # Initialize the data structures that will house the circuit particulars.
+        circuit = Circuit([], [], SimpleGraph())
+        edge_info = EdgeInfo([])
 
     # ==============================================================================
-    # ============================== Main Function =================================
+    # =============================== Main Function ================================
     # ==============================================================================
 
         """
@@ -96,14 +101,10 @@ module Main_Function
         Returns:
         - nothing
         """
-        function main()
+        function main(circuit, edge_info)
             
             # Greet the user and provide any necessary instructions or information.
             show_initial_greetings()
-
-            # Initialize the data structures that will house the circuit particulars.
-            circuit = Circuit([], [], SimpleGraph())
-            edge_info = EdgeInfo([])
 
             # Gather the particulars of the nodes.
             collect_nodes_from_cmd(circuit, edge_info)

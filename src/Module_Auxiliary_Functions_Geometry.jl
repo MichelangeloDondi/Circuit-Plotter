@@ -8,12 +8,12 @@
     Module Auxiliary_Functions_Geometry
 
 Author: Michelangelo Dondi
-Date: 20-10-2023
+Date: 23-10-2023
 Description:
     Dedicated to housing the geometry functions used by the Circuit Visualization Tool.
     This module simplifies the geometry process by providing a single file to call.
 
-Version: 2.5
+Version: 3.2
 License: MIT License
 
 Exported functions:
@@ -52,7 +52,7 @@ module Auxiliary_Functions_Geometry
         end
 
     # ==============================================================================
-    # ----------------------------- function _do_overlap -----------------------------
+    # ---------------------------- function _do_overlap ----------------------------
     # ==============================================================================
             
         """
@@ -73,7 +73,7 @@ module Auxiliary_Functions_Geometry
         end
 
     # ------------------------------------------------------------------------------
-    # ---------------------------- function _orientation ----------------------------
+    # ---------------------------- function _orientation ---------------------------
     # ------------------------------------------------------------------------------
 
         """
@@ -91,7 +91,7 @@ module Auxiliary_Functions_Geometry
         end
 
     # ------------------------------------------------------------------------------
-    # ---------------------- function _strictly_internal_to_segment ---------------------
+    # ------------------- function _strictly_internal_to_segment -------------------
     # ------------------------------------------------------------------------------
 
         """

@@ -13,7 +13,7 @@ Description:
     Dedicated to collecting nodes within the circuit.
     This module simplifies the collection process by providing a single function to call.
 
-Version: 3.0
+Version: 3.2
 License: MIT License
 
 Exported functions:
@@ -32,13 +32,6 @@ module Gathering_Nodes
         export collect_nodes_from_cmd
 
     # ==============================================================================
-    # ========================= Imported Data Structure ============================
-    # ==============================================================================
-
-        # For housing the data structures used by the Circuit Plotter Program
-        import Main: Circuit, Node, EdgeInfo
-
-    # ==============================================================================
     # =========================== Required Packages ================================
     # ==============================================================================
 
@@ -48,6 +41,10 @@ module Gathering_Nodes
     # ==============================================================================
     # =========================== Included Modules =================================
     # ==============================================================================  
+
+        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
+        include("Module_Circuit_Structures.jl")
+        using .Circuit_Structures: Node, EdgeInfo, Circuit # Access the data structures
 
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
         include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
@@ -63,10 +60,10 @@ module Gathering_Nodes
     # ==============================================================================
         
         """
-            collect_nodes_from_cmd(circuit::Circuit, edgeinfo::EdgeInfo) -> nothing
+            collect_nodes_from_cmd(circuit, edgeinfo) -> nothing
 
         Collects node coordinates from the user and adds them to the provided circuit.
-        The user is prompted to input node coordinates or type 'stop' to end the node collection.
+        The user is prompted to input node coordinates or type 'break' or 'b' to end the node collection.
 
         # Parameters:
         - circuit: The primary data structure representing the circuit, including its nodes and components. 
@@ -75,7 +72,7 @@ module Gathering_Nodes
         # Returns:
         - nothing
         """
-        function collect_nodes_from_cmd(circuit::Circuit, edgeinfo::EdgeInfo)
+        function collect_nodes_from_cmd(circuit, edgeinfo)
             
             # Initialize the node_count to track the number of nodes added to the circuit.
             node_count = 0
@@ -85,7 +82,6 @@ module Gathering_Nodes
 
                 # Print the prompt message.
                 print(""" 
-                
                 ===================================================
 
                 Number of nodes already present in the Circuit: $node_count.
@@ -160,8 +156,22 @@ module Gathering_Nodes
     # ==============================================================================
     # --------------------- function _check_if_inupt_is_valid ----------------------
     # ==============================================================================
-        
-        function _check_if_inupt_is_valid(input::String, circuit::Circuit)::Bool
+
+        """
+            _check_if_inupt_is_valid(input::String, circuit)::Bool  
+
+        Checks if the input is valid. The input is valid if it is in the format 'integer x,y' (e.g. '1,-2') 
+        and if no node already exists at the provided coordinates.
+
+        # Parameters:
+        - input: The input provided by the user.
+        - circuit: The primary data structure representing the circuit, including its nodes and components.
+            
+        # Returns:
+        - true if the input is valid.
+        - false otherwise.
+        """
+        function _check_if_inupt_is_valid(input::String, circuit)::Bool
 
             # Split the input into its x and y coordinates.
             coords = split(input, ",")
@@ -179,7 +189,8 @@ module Gathering_Nodes
                     if node.x == x && node.y == y   
 
                         # Provide feedback to the user and return false.
-                        println("\nNode N",node.id," already exists at position ($x,$y).")
+                        println("\nThe node cannot be added for the following reason:")
+                        println("Node N",node.id," already exists at position ($x,$y).")
                         return false
                     end
                 end
@@ -199,7 +210,7 @@ module Gathering_Nodes
     # ==============================================================================
 
         """
-            _add_node_to_circuit(idx::Int, circuit::Circuit) -> nothing
+            _add_node_to_circuit(idx::Int, circuit) -> nothing
 
         Adds the node to the circuit.
 
@@ -214,7 +225,7 @@ module Gathering_Nodes
         - This function is called by `collect_nodes_from_cmd`.
         - This function is called after the node has been checked for validity by `_check_if_node_can_be_added`.
         """
-        function _add_node_to_circuit(input::String, idx::Int, circuit::Circuit)
+        function _add_node_to_circuit(input::String, idx::Int, circuit)
 
             # Split the input into its x and y coordinates.
             coords = split(input, ",")
@@ -223,10 +234,10 @@ module Gathering_Nodes
             x, y = parse(Int, coords[1]), parse(Int, coords[2])
                 
             # Add the node to the circuit if it doesn't already exist.
-            push!(circuit.nodes, Main.Node(idx, x, y))
+            push!(circuit.nodes, Main.Main_Function.Circuit_Structures.Node(idx, x, y))
             add_vertex!(circuit.graph)
 
             # Provide feedback to the user and return true.
-            println("\nNode N$idx added at position ($x,$y).")
+            println("\nNode N$idx successfully added at position ($x,$y).")
     end
     end

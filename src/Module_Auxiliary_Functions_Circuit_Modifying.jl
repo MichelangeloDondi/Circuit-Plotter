@@ -10,12 +10,15 @@
 Author: Michelangelo Dondi
 Date: 23-10-2023
 Description: 
+    This module provides functions for modifying an existing node's coordinates in 
+    the circuit and for deleting an existing node from the circuit.
 
-Version: 3.1
+Version: 3.2
 License: MIT License
 
 Exported functions: 
-
+- `modify_existing_node(circuit)`: Modifies an existing nodes's coordinates in the circuit based on user input.
+- `delete_node_from_circuit(circuit)`: Deletes an existing nodes from the circuit based on user input.
 """
 module Auxiliary_Functions_Circuit_Modifying
 
@@ -30,13 +33,6 @@ module Auxiliary_Functions_Circuit_Modifying
         export delete_node_from_circuit
 
     # ==============================================================================
-    # ========================= Imported Data Structure ============================
-    # ==============================================================================
-
-        # For housing the data structures used by the Circuit Plotter Program
-        import Main: Circuit, EdgeInfo
-
-    # ==============================================================================
     # ============================ Required Packages ===============================
     # ==============================================================================
 
@@ -46,6 +42,10 @@ module Auxiliary_Functions_Circuit_Modifying
     # ==============================================================================
     # ============================ Included Modules ================================
     # ==============================================================================
+
+        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
+        include("Module_Circuit_Structures.jl")
+        using .Circuit_Structures: EdgeInfo, Circuit # Access the data structures
 
         # Module_Auxiliary_Functions_Circuit_Recap.jl provides auxiliary functions for recapping the circuit.
         include("Module_Auxiliary_Functions_Circuit_Recap.jl")
@@ -60,7 +60,7 @@ module Auxiliary_Functions_Circuit_Modifying
     # ==============================================================================
 
         """
-            modify_existing_node(circuit::Circuit) -> nothing
+            modify_existing_node(circuit) -> nothing
 
         Modifies an existing nodes's coordinates in the circuit based on user input.
 
@@ -71,25 +71,28 @@ module Auxiliary_Functions_Circuit_Modifying
         # Returns:
         - nothing
         """
-        function modify_existing_node(circuit::Circuit, edgeinfo::EdgeInfo)
+        function modify_existing_node(circuit, edgeinfo)
 
             # Continuously prompt the user for node coordinates to modify.
             while true
 
                 # Provide instructions to the user.
-                println("\nYou can modify the coordinates of an existing node by typing its ID and providing the new coordinates.")
-                println("Here there is a recap of the current circuit for you convenience:")
+                println("""
+                You can modify the coordinates of an existing node 
+                by typing its ID and providing the new coordinates.
+                
+                Here there is a recap of the current circuit for you convenience:""")
 
                 # Show the circuit recap.
                 show_circuit_recap(circuit, edgeinfo)
 
                 # Prompt the user for the node ID.
-                println("\nEnter the ID (e.g. 2) of the node you want to modify or type 'break' or 'b' to finish modifying nodes:")
+                println("\nEnter the ID (e.g. '2') of the node you want to modify or type 'break' or 'b' to finish modifying nodes:")
 
                 # Read the input from the user.
                 input = readline()
 
-                # Handle special input (e.g. 'exit', 'help', 'recap', 'draw', 'save', 'break').
+                # Handle special input ('exit', 'help', 'recap', 'draw', 'save', 'break').
                 handle_result = handle_special_input_break(input, circuit, edgeinfo)
 
                 # If the input was handled, continue to the next iteration.
@@ -104,8 +107,6 @@ module Auxiliary_Functions_Circuit_Modifying
                     break
                 end
 
-                # If the input is not a special command, try to parse it as an integer.
-                #if _modify_node
                 # Try to parse the node ID as an integer.
                 try
 
@@ -139,7 +140,7 @@ module Auxiliary_Functions_Circuit_Modifying
                     end
 
                     # Prompt user for new coordinates.
-                    println("\nProvide the new coordinates for Node N$node_id in the format x,y (coordinates must be integers):")
+                    println("\nProvide the new coordinates for node N$node_id in the format 'x,y' (coordinates must be integers):")
                     input_coords = readline()
 
                     # Split the input and parse coordinates.
@@ -151,11 +152,11 @@ module Auxiliary_Functions_Circuit_Modifying
                     found_node.y = y
 
                     # Provide feedback to the user.
-                    println("\nNode N$node_id modified to position ($x,$y).")
+                    println("\nNode N$node_id successfully modified to position ($x,$y).")
                 catch e
 
-                    # If the node ID couldn't be parsed as an integer, print an error message and continue to the next iteration.
-                    println("\nInvalid input: $e. Please retry with a valid node ID.")
+                    # If the node ID could not be parsed as an integer, print an error message and continue to the next iteration.
+                    println("\nInvalid input: $e. Please retry with a valid integer number.")
                     continue
                 end
             end
@@ -166,10 +167,10 @@ module Auxiliary_Functions_Circuit_Modifying
     # ==============================================================================
 
         """
-            _check_if_inupt_is_valid(input::String, circuit::Circuit)::Bool
+            _check_if_inupt_is_valid(input::String, circuit)::Bool
 
         Checks if the input provided by the user is valid. The input is the coordinates of a new node. 
-        The input is valid if it is in the format x,y (e.g. '1-2') and if no node already exists at the provided coordinates.
+        The input is valid if it is in the format 'x,y' (e.g. '1-2') and if no node already exists at the provided coordinates.
 
         # Parameters:
         - input: The input provided by the user.
@@ -182,7 +183,7 @@ module Auxiliary_Functions_Circuit_Modifying
         # Notes:
         - The function is used by the collect_nodes_from_cmd function to check if the input provided by the user is valid.
         """
-        function _check_if_inupt_is_valid(input::String, circuit::Circuit)::Bool
+        function _check_if_inupt_is_valid(input::String, circuit)::Bool
 
             # Split the input into its x and y coordinates.
             coords = split(input, ",")
@@ -210,7 +211,7 @@ module Auxiliary_Functions_Circuit_Modifying
             catch
 
                 # If the coordinates could not be parsed as integers, print an error message and return false.
-                println("\nInvalid input. Enter integer coordinates as x,y (e.g. '1,-2').")
+                println("\nInvalid input. Enter integer coordinates as 'x,y' (e.g. '1,-2').")
                 return false
             end
         end
@@ -220,7 +221,7 @@ module Auxiliary_Functions_Circuit_Modifying
     # ==============================================================================
 
         """
-            delete_node_from_circuit(circuit::Circuit) -> nothing
+            delete_node_from_circuit(circuit) -> nothing
 
         Deletes an existing nodes from the circuit based on user input.
 
@@ -231,7 +232,7 @@ module Auxiliary_Functions_Circuit_Modifying
         # Returns:
         - nothing
         """
-        function delete_node_from_circuit(node_count::Int, circuit::Circuit, edgeinfo::EdgeInfo)
+        function delete_node_from_circuit(node_count::Int, circuit, edgeinfo)
 
             # Continuously prompt the user for node coordinates to delete.
             while true
@@ -263,13 +264,16 @@ module Auxiliary_Functions_Circuit_Modifying
                     if found_node_idx === nothing   
 
                         # If the node wasn't found, print an error message and continue to the next iteration.
-                        println("\nNode with ID N$node_id not found.")
+                        println("""\nNode with ID N$node_id not found. 
+                        Please consider that node IDs must be integers and that the node must exist in the circuit.
+                        The circuit recap is shown below for your convenience.
+                        """)
                         continue
                     end
         
                     # Delete the node from the circuit and provide feedback to the user.
                     deleteat!(circuit.nodes, found_node_idx)
-                    println("\nNode N$node_id deleted.")
+                    println("\nNode N$node_id successfully deleted.")
         
                     # Update the node_count.
                     node_count -= 1
@@ -283,7 +287,9 @@ module Auxiliary_Functions_Circuit_Modifying
                     circuit.graph = SimpleGraph(length(circuit.nodes))
 
                 catch e
-                    println("\nInvalid input: $e")
+
+                    # If the node ID could not be parsed as an integer, print an error message and continue to the next iteration.
+                    println("\nInvalid input: $e. Please retry with a valid integer number.")
                     continue
                 end
             end

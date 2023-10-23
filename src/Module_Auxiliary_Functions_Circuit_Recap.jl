@@ -13,11 +13,11 @@ Description:
     Dedicated to providing auxiliary functions for recapping the circuit. 
     This module simplifies the recap process by providing a single file to call.    
  
-Version: 2.8
+Version: 3.2
 License: MIT License
 
 Exported functions: 
-- `show_circuit_recap(circuit::Circuit, edge_info::EdgeInfo)`: Displays a recap 
+- `show_circuit_recap(circuit, edge_info)`: Displays a recap 
 of the circuit in the console. The recap includes a summary of the nodes, edges,
 and components present within the circuit.
 
@@ -77,17 +77,18 @@ module Auxiliary_Functions_Circuit_Recap
         export show_circuit_recap
 
     # ==============================================================================
-    # =========================== Imported Data Structure ==========================
+    # ============================== Included Modules ==============================
     # ==============================================================================
 
-        # For housing the data structures used by the Circuit Plotter Program
-        import Main: Circuit, EdgeInfo
+        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
+        include("Module_Circuit_Structures.jl")
+        using .Circuit_Structures: EdgeInfo, Circuit # Access the data structures
 
     # ==============================================================================
     # ======================== function show_circuit_recap =========================
     # ==============================================================================
         
-        function show_circuit_recap(circuit::Circuit, edge_info::EdgeInfo)
+        function show_circuit_recap(circuit, edge_info)
 
             println("\n---------------------------------------------------")
             println("            BEGIN OF CIRCUIT RECAP")
@@ -112,7 +113,7 @@ module Auxiliary_Functions_Circuit_Recap
     # ==============================================================================
 
         """
-            _nodes_recap(circuit::Circuit) -> nothing
+            _nodes_recap(circuit) -> nothing
 
         Displays a recap of the nodes in the circuit.
 
@@ -126,7 +127,8 @@ module Auxiliary_Functions_Circuit_Recap
         Notes:
         - If there are no nodes in the circuit, a message to that effect is displayed.
         - The recap is displayed in the console in the following format:
-            - Ni at (xi,yi), where i is the index of the node.
+        - Ni at (xi,yi), where i is the index of the node.
+
         Example:
 
         There are 4 nodes in the circuit:
@@ -138,7 +140,7 @@ module Auxiliary_Functions_Circuit_Recap
 
         ---------------------------------------------------
         """
-        function _nodes_recap(circuit::Circuit)
+        function _nodes_recap(circuit)
 
             # Display a recap of the nodes in the circuit
             if isempty(circuit.nodes)   
@@ -165,7 +167,7 @@ module Auxiliary_Functions_Circuit_Recap
     # ==============================================================================
 
         """
-            _edges_recap(edge_info::EdgeInfo) -> nothing
+            _edges_recap(edge_info) -> nothing
 
         Displays a recap of the edges in the circuit.
 
@@ -190,7 +192,7 @@ module Auxiliary_Functions_Circuit_Recap
 
         ---------------------------------------------------
         """ 
-        function _edges_recap(edge_info::EdgeInfo)
+        function _edges_recap(edge_info)
             
             # Display a recap of the edges in the circuit
             if isempty(edge_info.edges)
@@ -217,7 +219,7 @@ module Auxiliary_Functions_Circuit_Recap
     # ==============================================================================
 
         """
-            _components_recap(circuit::Circuit) -> nothing
+            _components_recap(circuit) -> nothing
 
         Displays a recap of the components in the circuit.
 
@@ -242,7 +244,7 @@ module Auxiliary_Functions_Circuit_Recap
             - "R3 = 30 [Ω]" on edge E3 (N3 -> N4)
             - "R4 = 40 [Ω]" on edge E4 (N4 -> N1)
         """
-        function _components_recap(circuit::Circuit)
+        function _components_recap(circuit)
                 
             # Display a recap of the components in the circuit
             if isempty(circuit.components)  
