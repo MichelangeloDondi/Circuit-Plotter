@@ -37,7 +37,7 @@ module Circuit_Structures
     # ==============================================================================
 
         """
-            struct: Node
+            mutable struct: Node
 
         A structure that encapsulates the details of a node.
 
@@ -46,7 +46,7 @@ module Circuit_Structures
         - `x`: The x-coordinate of the node.
         - `y`: The y-coordinate of the node.
         """
-        struct Node
+        mutable struct Node
             id::Int
             x::Int
             y::Int
