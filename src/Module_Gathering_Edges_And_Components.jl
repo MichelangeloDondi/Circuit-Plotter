@@ -8,12 +8,12 @@
     Module: Gathering_Edges_And_Components
 
 Author: Michelangelo Dondi
-Date: 23-10-2023
+Date: 24-10-2023
 Description:
     Dedicated to housing the functions for collecting edge details and component details.
     This module simplifies the main function definition process by providing a single function to call.
 
-Version: 3.2
+Version: 3.4
 License: MIT License
 
 Exported functions:
@@ -22,6 +22,14 @@ Exported functions:
     utilizing direct inputs from the user. The accumulated data finds its place within 
     the `circuit` structure. Additionally, a recap of edge particulars and of components
     particulars is presented, followed by the graphical portrayal of the updated circuit.
+
+Notes:
+- The module is included in Module_Main_Function.jl.
+- The module requires the following modules to be included:
+    - Module_Circuit_Structures.jl
+    - Module_Auxiliary_Functions_Geometry.jl
+    - Module_Auxiliary_Functions_Handle_Special_Input.jl
+    - Module_Gathering_Edges_And_Components.jl
 """
 module Gathering_Edges_And_Components
 
@@ -57,22 +65,45 @@ module Gathering_Edges_And_Components
         using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_yes_no # Handle special input such as 'help', 'recap', 'draw', 'exit' 'yes', 'no'
 
     # ==============================================================================
-    # --------------- function collect_edges_and_components_from_cmd --------------
+    # =============== function collect_edges_and_components_from_cmd ===============
     # ==============================================================================
-        
+
         """
-            collect_edges_and_components_from_cmd(node_count::Int, circuit, edge_info) -> nothing  
+            collect_edges_and_components_from_cmd(circuit, edge_info) -> nothing
 
         Sequentially gathers edge details and component details from the user.
+        The function aims to achieve the following: 
+
+            1. Prompt the user for the next edge.
+            2. Handle special input ('help', 'recap', 'draw', 'exit', 'save', 'break').
+            3. Split the input into the node indices.
+            4. Validate the input.  
+            5. Parse the node indices.
+            6. Try adding the edge to the circuit.
+            7. If the edge was added successfully, prompt the user for the component details.
+            8. Handle special input ('help', 'recap', 'draw', 'exit', 'stop').
+            9. If the input was to not add a component, break out of the loop.
+            10. If the input was to add a component, prompt the user for the component details.
+            11. Add the component to the circuit.
+            12. Print a confirmation message.
 
         Parameters:
-        - node_count: The number of nodes in the circuit.
         - circuit: The primary structure amalgamating nodes, components, and their illustrative
                  representation within the circuit.
         - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
 
         Returns:
         - nothing
+
+        Notes:  
+        The function is called by the main function.
+        The function calls the following functions:
+        - `_get_edge_input(edge_count::Int)::String`: Prompt the user for the next edge.
+        - `_validate_edge_input(edge_nodes::Vector{String}, node_count::Int, edge_info, circuit) -> Bool`: Validate user-provided input for defining an edge in the circuit.
+        - `_add_edge_to_circuit(node1::Int, node2::Int, edge_info, circuit) -> Bool`: Add an edge between two nodes in the circuit.
+        - `_collect_component_from_cmd(edge_count::Int, circuit, edge_info) -> nothing`: Sequentially gathers component details from the user.
+        - `handle_special_input_break(input, circuit, edge_info)`: Handle special input ('help', 'recap', 'draw', 'exit', 'save', 'break').
+        - `handle_special_input_yes_no(input, circuit, edge_info)`: Handle special input ('help', 'recap', 'draw', 'exit', 'yes', 'no').      
         """
         function collect_edges_and_components_from_cmd(circuit, edge_info)
 
@@ -83,28 +114,20 @@ module Gathering_Edges_And_Components
             edge_count = 0
 
             # Start collecting edges and components.
-            while true
+            while true  
 
                 # Prompt the user for the next edge.
-                println("\n===================================================")
-                println("\nNumber of edges already present in the Circuit: $edge_count.")
-                println("\nProvide the node indexes for the next edge (E$(edge_count + 1)) or type 'break' or 'b' to stop adding edges.")
-                println("Format: i,j (Direction: Ni->Nj)")
-                
-                # Read the input from the user.
-                input = readline()
-
-                # Handle special input (e.g. 'help', 'recap', 'draw', 'exit', 'save', 'break').
+                input = _get_edge_input(edge_count)
+                    
+                # Handle special input ('help', 'recap', 'draw', 'exit', 'save', 'break').
                 handle_result = handle_special_input_break(input, circuit, edge_info)
 
                 # If the input was handled, continue to the next iteration.
                 if handle_result == :handled
-                    continue
+                    continue    
 
                 # If the input was to stop collecting edges, break out of the loop.
                 elseif handle_result == :break
-
-                    # Provide feedback to the user.
                     println("\nFinished adding edges and components to the circuit.")
                     break
                 end
@@ -113,74 +136,171 @@ module Gathering_Edges_And_Components
                 edge_nodes = split(input, ",")
 
                 # Check if the input is valid.
-                if length(edge_nodes) != 2
-
-                    # Print an error message and continue to the next iteration.
-                    println("\nInvalid input. Provide two node indixes separated by a comma (e.g. '3,2').")
-                    continue
-                end
-
-                # Try adding the edge to the circuit.
-                try
+                if _validate_edge_input(edge_nodes, node_count, edge_info, circuit)
 
                     # Parse the node indices.
-                    node1, node2 = parse(Int, edge_nodes[1]), parse(Int, edge_nodes[2])
+                    node1, node2 = parse(Int, edge_nodes[1]), parse(Int, edge_nodes[2]) 
 
-                    # Check if the edge already exists.
-                    if _edge_exists(node1, node2, edge_info)
-                        continue
+                    # Try adding the edge to the circuit.
+                    if add_edge_to_circuit(node1, node2, edge_info, circuit)
 
-                    # Check if the edge tries to connect a node to itself.
-                    elseif node1 == node2
-                        println("\nThe edge cannot be added for the following reason:")
-                        println("Self-loops are not allowed.")
-                        continue
+                        # Update the edge count and print a confirmation message.
+                        edge_count += 1
+                        println("\nEdge E$edge_count: N$node1 -> N$node2 successfully added.")
+
+                        # Collect component for the edge if the edge is not a dummy edge.
+                        _collect_component_from_cmd(edge_count, circuit, edge_info)
                     end
-
-                    # Check if the edge tries to connect a node to a non-existent node.
-                    if node1 < 1 || node1 > node_count || node2 < 1 || node2 > node_count
-                        println("\nThe edge cannot be added for the following reason:")
-                        println("Invalid node indices. Range: [1, $node_count].")
-                        continue
-                    end
-
-                    # Check if the edge overlaps with existing edges
-                    overlapping = overlapping_edges((node1, node2), edge_info.edges, circuit.nodes)
-                    
-                    # If the edge overlaps with existing edges, print the overlapping edges and continue to the next iteration.
-                    if !isempty(overlapping)
-                        overlaps_str = join(["E$(index)(N$(edge[1])->N$(edge[2]))" for (index, edge) in overlapping], ", ")
-                        println("\nThe edge cannot be added for the following reason:")
-                        println("Overlap detected with: $overlaps_str.")
-                        continue
-                    end
-
-                    # Add the edge to the circuit.
-                    push!(edge_info.edges, (node1, node2))
-                    add_edge!(circuit.graph, node1, node2)
-
-                    # Increase the edge count.
-                    edge_count += 1
-
-                    # Print a confirmation message.
-                    println("\nEdge E$edge_count: N$node1 -> N$node2 successfully added.")
-                    
-                    # Collect component for the edge if the edge is not a dummy edge.
-                    collect_component_from_cmd(edge_count, circuit, edge_info)
-
-                # Catch any errors.
-                catch e
-                    println("\nError: ", e)
                 end
             end
         end
-    
+
     # ==============================================================================
-    # ---------------------- function collect_component_from_cmd -------------------
+    # ------------------------- function _get_edge_input ----------------------------
     # ==============================================================================
 
         """
-            collect_component_from_cmd(edge_count::Int, circuit, edge_info) -> nothing
+            _get_edge_input(edge_count::Int)::String
+
+        Prompt the user for the next edge.
+
+        Parameters:
+        - edge_count: The number of edges in the circuit.
+            
+        Returns:
+        - The user's input as a string.
+        """
+        function _get_edge_input(edge_count::Int)::String
+            println("\n===================================================")
+            println("\nNumber of edges already present in the Circuit: $edge_count.")
+            println("\nProvide the node indexes for the next edge (E$(edge_count + 1)) or type 'break' or 'b' to stop adding edges.")
+            println("Format: i,j (Direction: Ni->Nj)")
+            return readline()
+        end
+
+    # ==============================================================================
+    # ------------------------- function _validate_edge_input ----------------------
+    # ==============================================================================
+
+        """
+            _validate_edge_input(edge_nodes::Vector{String}, node_count::Int, edge_info, circuit) -> Bool
+
+        Validate user-provided input for defining an edge in the circuit.
+
+        # Parameters:
+
+        - `edge_nodes`: A vector containing the two nodes (as strings) defining the edge.
+        - `node_count`: The total number of nodes in the circuit.
+        - `edge_info`: A data structure containing information about the circuit's edges.
+        - `circuit`: The primary data structure representing the circuit's nodes and components.
+
+        # Returns:
+
+        - `true` if the input is valid. However, this does not imply that the edge can be added to the circuit 
+            (e.g., it may overlap with existing edges or be a self-loop). This is checked in the `add_edge_to_circuit` function.
+        - `false` otherwise, indicating an invalid input
+
+        # Notes:
+        The function checks the following:
+        - If the input contains exactly two nodes.
+        - If the provided node indices are valid integers within the circuit's node range.
+        """
+        function _validate_edge_input(edge_nodes::Vector{SubString{String}}, node_count::Int, edge_info, circuit)::Bool
+
+            # Ensure there are only two nodes in the input.
+            if length(edge_nodes) != 2
+                println("\nInvalid input. Provide two node indices separated by a comma (e.g. '3,2').")
+                return false
+            end
+
+            # Parse the node indices and ensure they are valid integers.
+            try
+                node1, node2 = parse(Int, edge_nodes[1]), parse(Int, edge_nodes[2])
+            catch e
+                println("\nError while parsing node indices: $e")
+                return false
+            end
+            
+            # Rertun true if the input is valid.
+            return true
+        end
+
+    # ==============================================================================
+    # ------------------------- function add_edge_to_circuit -----------------------
+    # ==============================================================================
+
+        """
+            add_edge_to_circuit(node1::Int, node2::Int, edge_info, circuit) -> Bool
+
+        Add an edge between two nodes in the circuit.
+
+        # Parameters:
+
+        - `node1`: The starting node of the edge (as an integer).
+        - `node2`: The ending node of the edge (as an integer).
+        - `edge_info`: A data structure containing information about the circuit's edges.
+        - `circuit`: The primary data structure representing the circuit's nodes and components.
+
+        # Returns:
+
+        - `true` if the edge is successfully added to the circuit.
+        - `false` otherwise, indicating that the edge could not be added.
+
+        # Notes:
+
+        The function aims to achieve the following:
+
+        1. Verify if the edge can be added (e.g., it does not already exist, does npt overlap, is not a self-loop, etc.).
+        2. Add the edge to the relevant data structures.
+        3. Update any counters or other related data.
+        """
+        function add_edge_to_circuit(node1::Int, node2::Int, edge_info, circuit)::Bool
+
+            # Number of nodes in the circuit.
+            node_count = nv(circuit.graph)
+
+            # Check if the edge already exists.
+            if _edge_exists(node1, node2, edge_info)
+                return false
+            end
+
+            # Check if the edge tries to connect a node to itself.
+            if node1 == node2
+                println("\nThe edge cannot be added for the following reason:")
+                println("Self-loops are not allowed.")
+                return false
+            end
+
+            # Check if the edge tries to connect a node to a non-existent node.
+            if node1 < 1 || node1 > node_count || node2 < 1 || node2 > node_count
+                println("\nThe edge cannot be added for the following reason:")
+                println("Invalid node indices. Range: [1, $node_count].")
+                return false
+            end
+
+            # Check if the edge overlaps with existing edges.
+            overlapping = overlapping_edges((node1, node2), edge_info.edges, circuit.nodes)
+            if !isempty(overlapping)
+                overlaps_str = join(["E$(index)(N$(edge[1])->N$(edge[2]))" for (index, edge) in overlapping], ", ")
+                println("\nThe edge cannot be added for the following reason:")
+                println("Overlap detected with: $overlaps_str.")
+                return false
+            end
+
+            # Add the edge to the circuit.
+            push!(edge_info.edges, (node1, node2))
+            add_edge!(circuit.graph, node1, node2)
+
+            # Return true to indicate that the edge was successfully added.
+            return true
+        end
+
+    # ==============================================================================
+    # ---------------------- function _collect_component_from_cmd -------------------
+    # ==============================================================================
+
+        """
+            _collect_component_from_cmd(edge_count::Int, circuit, edge_info) -> nothing
 
         Sequentially gathers component details from the user.
 
@@ -193,7 +313,7 @@ module Gathering_Edges_And_Components
         Returns:
         - nothing
         """
-        function collect_component_from_cmd(edge_count::Int, circuit, edge_info)
+        function _collect_component_from_cmd(edge_count::Int, circuit, edge_info)
 
             # Start collecting components for the edge.
             while true 
@@ -225,7 +345,7 @@ module Gathering_Edges_And_Components
                     component_details = readline()
 
                     # Add the component to the circuit 
-                    push!(circuit.components, Main.Component(edge_count, edge_info.edges[edge_count][1], edge_info.edges[edge_count][2], component_details))
+                    push!(circuit.components, Main.Main_Function.Circuit_Structures.Component(edge_count, edge_info.edges[edge_count][1], edge_info.edges[edge_count][2], component_details))
 
                     # Print a confirmation message.
                     println("\nComponent \"$component_details\" successfully added to edge E$edge_count.")  
@@ -266,7 +386,7 @@ module Gathering_Edges_And_Components
                     println("\nThe edge cannot be added for the following reason:")
                     println("Edge between nodes N$node1 and N$node2 already exists as E$index(N$node1->N$node2).")
 
-                    # Return true to indicate that the edge already exists
+                    # Return true to indicate that the edge already exists and break the loop
                     return true
                     break
                     
@@ -277,7 +397,7 @@ module Gathering_Edges_And_Components
                     println("\nThe edge cannot be added for the following reason:")
                     println("Edge between nodes N$node1 and N$node2 already exists as E$index(N$node2->N$node1).")
 
-                    # Return true to indicate that the edge already exists
+                    # Return true to indicate that the edge already exists and break the loop
                     return true
                     break
                 end
