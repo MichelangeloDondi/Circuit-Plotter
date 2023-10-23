@@ -13,7 +13,7 @@ Description:
     Dedicated to housing the functions for collecting edge details and component details.
     This module simplifies the main function definition process by providing a single function to call.
 
-Version: 2.8
+Version: 3.1
 License: MIT License
 
 Exported functions:
@@ -58,10 +58,6 @@ module Gathering_Edges_And_Components
         include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
         using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input such as 'help', 'recap', 'draw', 'exit', 'break'
         using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_yes_no # Handle special input such as 'help', 'recap', 'draw', 'exit' 'yes', 'no'
-
-        # Module_Plotting.jl provides functions for drawing the current circuit plot.
-        include("Module_Plotting.jl")
-        using .Plotting: draw_plot # Draw the current circuit plot
 
     # ==============================================================================
     # --------------- function collect_edges_and_components_from_cmd --------------
