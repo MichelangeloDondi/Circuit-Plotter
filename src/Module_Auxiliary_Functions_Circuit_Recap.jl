@@ -35,7 +35,7 @@ Notes:
 Example:
 
 ---------------------------------------------------
-Begin of circuit recap
+              BEGIN OF CIRCUIT RECAP
 ---------------------------------------------------
 
 There are 4 nodes in the circuit:
@@ -64,7 +64,7 @@ There are 4 components in the circuit:
     - "R4 = 40 [Ω]" on edge E4 (N4 -> N1)
 
 ---------------------------------------------------
-End of circuit recap
+              END OF CIRCUIT RECAP
 ---------------------------------------------------
 """
 module Auxiliary_Functions_Circuit_Recap
@@ -90,7 +90,7 @@ module Auxiliary_Functions_Circuit_Recap
         function show_circuit_recap(circuit::Circuit, edge_info::EdgeInfo)
 
             println("\n---------------------------------------------------")
-            println("BEGIN OF CIRCUIT RECAP")
+            println("            BEGIN OF CIRCUIT RECAP")
             println("---------------------------------------------------\n")
 
             # Display a recap of the nodes in the circuit
@@ -103,7 +103,7 @@ module Auxiliary_Functions_Circuit_Recap
             _components_recap(circuit)  
 
             println("\n---------------------------------------------------")
-            println("ENE OF CIRCUIT RECAP")
+            println("             END OF CIRCUIT RECAP")
             println("---------------------------------------------------\n")
         end
         
