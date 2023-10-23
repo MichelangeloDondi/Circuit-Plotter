@@ -132,13 +132,14 @@ module Helping
 
             General Usage:
             - Follow the prompts to create, visualize and save your circuit.
-            - Enter 'exit' at any time to close the program.
-            - Enter 'help' at any time to show the help.
-            - Enter 'recap' at any time to show the circuit recap.
-            - Enter 'draw' at any time to render the circuit.
-            - Enter 'save' at any time to save the plot displayed
+            - Enter 'exit' or 'e' at any time to close the program.
+            - Enter 'help' or 'h' at any time to show the help.
+            - Enter 'recap' or 'r'at any time to show the circuit recap.
+            - Enter 'draw' or 'd' at any time to render the circuit.
+            - Enter 'save' or 's' at any time to save the plot displayed
 
             Notes:
+            - If the plot is not already displayed, it is displayed before saving.
             - For more information, please refer to the documentation.
             - For further issues, please contact support.
             """)
