@@ -28,8 +28,13 @@ module Auxiliary_Functions_Handle_Special_Input
     # =========================== Exported Function ================================
     # ==============================================================================
         
-        # Handles special input from the user (e.g. 'exit, 'help', 'recap', 'draw', 'save').
+        # Handles special input from the user ('exit, 'help', 'recap', 'draw', 'save', 'break')
         export handle_special_input_break
+
+        # Handles special input from the user ('exit, 'help', 'recap', 'draw', 'save', 'break', 'modify', 'cancel')
+        export handle_special_input_break_modify_cancel
+
+        # Handles special input from the user ('exit, 'help', 'recap', 'draw', 'save', 'yes', 'no')
         export handle_special_input_yes_no
 
     # ==============================================================================
@@ -75,21 +80,68 @@ module Auxiliary_Functions_Handle_Special_Input
 
             # Checking if the input is a special input
             result = _handle_special_input(input, circuit, edgeinfo)
+            
+            # If the input was handled, return the result.
+            if result == :handled
+                return :handled
 
             # If the user types 'break' or 'b', return :break.
-            if input == "break" || input == "b"
+            elseif input == "break" || input == "b"
                 return :break
-                
+                    
+            # If the input was not handled, return :not_handled.
+            else
+                return :not_handled
+            end
+        end
+        
+    # ==============================================================================
+    # ============ function handle_special_input_break_modify_cancel ===============
+    # ==============================================================================
+
+        """
+            handle_special_input_break_modify_cancel(input::String, circuit, edgeinfo)::Symbol
+
+        Handles the following special input from the user:
+        'exit', 'help', 'recap', 'draw', 'save', 'break', 'modify', 'cancel'.
+
+        Parameters:
+        - input: The input provided by the user.
+
+        Returns:
+        - :handled if the input was handled.
+        - :break if the user types 'break' or 'b'.
+        - :modify if the user types 'modify' or 'm'.
+        - :cancel if the user types 'cancel' or 'c'.
+        - :not_handled otherwise.
+        """
+        function handle_special_input_break_modify_cancel(input::String, circuit, edgeinfo)::Symbol
+
+            # Checking if the input is a special input
+            result = _handle_special_input(input, circuit, edgeinfo)
+
             # If the input was handled, return the result.
-            elseif result == :handled
+            if result == :handled
                 return :handled
+                
+            # If the user types 'break' or 'b', return :break.
+            elseif input == "break" || input == "b"
+                return :break   
+                
+            # If the user types 'modify' or 'm', return :modify.
+            elseif input == "modify" || input == "m"
+                return :modify
+
+            # If the user types 'cancel' or 'c', return :cancel.
+            elseif input == "cancel" || input == "c"
+                return :cancel
             
             # If the input was not handled, return :not_handled.
             else
                 return :not_handled
             end
         end
-    
+
     # ==============================================================================
     # ================== function handle_special_input_yes_no ======================
     # ==============================================================================
@@ -97,9 +149,8 @@ module Auxiliary_Functions_Handle_Special_Input
         """
             handle_special_input_yes_no(input::String, circuit, edgeinfo)::Symbol
 
-        Handles special input from the user. 
-        Special input includes commands such as
-        'exit', 'help', 'recap', 'draw', 'save' 'yes', and 'no'.
+        Handles the following special input from the user:
+        'exit', 'help', 'recap', 'draw', 'save', 'break', 'yes', 'no'.    
 
         Parameters:
         - input: The input provided by the user.
@@ -115,17 +166,17 @@ module Auxiliary_Functions_Handle_Special_Input
             # Checking if the input is a special input
             result = _handle_special_input(input, circuit, edgeinfo)
 
+            # If the input was handled, return :handled.
+            if result == :handled
+                return :handled
+
             # If the user types 'yes or 'y', return :yes.
-            if input == "yes" || input == "y"
+            elseif input == "yes" || input == "y"
                 return :yes
             
             # If the user types 'no' or 'n', return :no.
             elseif input == "no" || input == "n"
                 return :no
-            
-            # If the input was handled, return :handled.
-            elseif result == :handled
-                return :handled
         
             # If the input was not handled, return :not_handled.
             else
@@ -140,7 +191,8 @@ module Auxiliary_Functions_Handle_Special_Input
         """
             _handle_special_input(input::String, circuit)
 
-        Handles the common special input commands shared between multiple functions.
+        Handles the following special input from the user:
+        'exit', 'help', 'recap', 'draw', 'save'.
 
         Parameters:
         - input: The input provided by the user.

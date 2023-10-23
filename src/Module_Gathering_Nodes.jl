@@ -51,7 +51,7 @@ module Gathering_Nodes
 
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
         include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
-        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input such as 'help', 'recap', 'draw', 'exit', 'break'
+        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break_modify_cancel # Handle the following special input: 'exit', 'help', 'recap', 'draw', 'save', 'break', 'modify', 'cancel'
 
         # Module_Auxiliary_Functions_Circuit_Modifying.jl provides auxiliary functions for modifying the circuit.
         include("Module_Auxiliary_Functions_Circuit_Modifying.jl")
@@ -84,16 +84,31 @@ module Gathering_Nodes
             while true  
 
                 # Print the prompt message.
-                println("\n===================================================")
-                println("\nNumber of nodes already present in the Circuit: $node_count.")
-                println("\nProvide the coordinates of the next node (N$(node_count + 1)) or type 'break' or 'b' to finish adding nodes.")
-                println("Format: x,y (coordinates must be integers):")
+                print(""" 
+                
+                ===================================================
+
+                Number of nodes already present in the Circuit: $node_count.
+
+                Provide the coordinates of the next node (N$(node_count + 1))
+                Format: integer x,y (e.g. '1,-2')
+                
+                Otherwise, you can call a general command (type 'help' or 'h' for more info)
+                or one among of the following:
+
+                - 'break'  or 'b' to stop collecting nodes.
+                - 'modify' or 'm' to modify existing nodes.
+                - 'cancel' or 'c' to cancel existing nodes.
+
+                ===================================================
+
+                Coordinates of the next node (N$(node_count + 1)) or ther command: """)
  
                 # Read the input from the user.
                 input = readline()
 
-                # Handle special input (e.g. 'exit', 'help', 'recap', 'draw', 'save', 'break').
-                handle_result = handle_special_input_break(input, circuit, edgeinfo)
+                # Handle special input ('exit', 'help', 'recap', 'draw', 'save', 'break', 'modify', 'cancel').
+                handle_result = handle_special_input_break_modify_cancel(input, circuit, edgeinfo)
 
                 # If the input was handled, continue to the next iteration.
                 if handle_result == :handled
@@ -109,36 +124,73 @@ module Gathering_Nodes
                         println("\nYour circuit has no nodes so far.")
                         println("You must add at least one node to the circuit to continue.")
                         continue
+
+                    # If at least one node was added, break out of the loop.
                     else    
 
                         # Provide feedback to the user and break out of the loop.
                         println("\nFinished adding nodes to the circuit.")
                         break
                     end
-                end
                 
-                # If the input isn't a special command, try adding the node to the circuit; increase count if successful.
-                if _add_node_to_circuit(input, node_count + 1, circuit)
+                # If the input was to modify existing nodes, modify them.
+                elseif handle_result == :modify 
+
+                    # Modify the existing nodes.
+                    modify_existing_node(circuit, edgeinfo)
+                    
+                # If the input was to cancel existing nodes, delete them.
+                elseif handle_result == :cancel
+
+                    # Delete the nodes and update the node count.
+                    node_count = delete_node_from_circuit(node_count, circuit, edgeinfo)
+                
+                # Check if the node can be added to the circuit.
+                elseif _check_if_inupt_is_valid(input, circuit)
+
+                    # Add the node to the circuit.
+                    _add_node_to_circuit(input, node_count + 1, circuit)
                     
                     # If the node was added, increase the node count.
                     node_count += 1
                 end
+            end
+        end
 
-                println("Do you want to modify or to cancel an existing node (default: no)? Type 'm' or 'c' to modify or cancel an existing node.")
-                modify_node = readline()
+    # ==============================================================================
+    # --------------------- function _check_if_inupt_is_valid ----------------------
+    # ==============================================================================
+        
+        function _check_if_inupt_is_valid(input::String, circuit::Circuit)::Bool
 
-                # If the user wants to modify some existing nodes, modify them.
-                if modify_node == "m"
+            # Split the input into its x and y coordinates.
+            coords = split(input, ",")
 
-                    # Modify the existing nodes.
-                    modify_existing_node(circuit, edgeinfo)
+            # Try to parse the coordinates as integers.
+            try 
 
-                # If the user wants to cancel some existing nodes, delete them.
-                elseif modify_node == "c"
+                # Parse the coordinates as integers.
+                x, y = parse(Int, coords[1]), parse(Int, coords[2])
 
-                    # If some nodes are deleted, update the node count.
-                    node_count = delete_node_from_circuit(node_count, circuit, edgeinfo)
+                # Check if a node already exists at the provided coordinates.
+                for node in circuit.nodes
+
+                    # If a node already exists at the provided coordinates, print an error message and return false.
+                    if node.x == x && node.y == y   
+
+                        # Provide feedback to the user and return false.
+                        println("\nNode N",node.id," already exists at position ($x,$y).")
+                        return false
+                    end
                 end
+
+                # If no node already exists at the provided coordinates, return true.
+                return true
+            catch
+
+                # If the coordinates couldn't be parsed as integers, print an error message and return false.
+                println("\nInvalid input. Enter integer coordinates as x,y (e.g. '1,-2').")
+                return false
             end
         end
 
@@ -147,56 +199,34 @@ module Gathering_Nodes
     # ==============================================================================
 
         """
-            _add_node_to_circuit(input::String, idx::Int, circuit::Circuit)::Bool
+            _add_node_to_circuit(idx::Int, circuit::Circuit) -> nothing
 
-        Adds a node to the circuit.
+        Adds the node to the circuit.
 
-        Parameters:
-        - input: The input provided by the user.
-        - idx: The index of the node.
-        - circuit: The primary structure amalgamating nodes, components, and their 
-                illustrative representation within the circuit.
-
-        Returns:
-        - true if the node was added, false otherwise.
-
-        Raises:
-        - Invalid input: If the input provided by the user is invalid.
-
-        Notes:
-        - The input is expected to be in the format x,y.
-        """
-        function _add_node_to_circuit(input::String, idx::Int, circuit::Circuit)::Bool
+        # Parameters:
+        - idx: The index of the node to add.
+        - circuit: The primary data structure representing the circuit, including its nodes and components.
             
+        # Returns:
+        - nothing
+            
+        # Notes:
+        - This function is called by `collect_nodes_from_cmd`.
+        - This function is called after the node has been checked for validity by `_check_if_node_can_be_added`.
+        """
+        function _add_node_to_circuit(input::String, idx::Int, circuit::Circuit)
+
             # Split the input into its x and y coordinates.
             coords = split(input, ",")
 
-            # Try to parse the coordinates as integers.
-            try
-                x, y = parse(Int, coords[1]), parse(Int, coords[2])
+            # Paese the coordinates as integers.
+            x, y = parse(Int, coords[1]), parse(Int, coords[2])
+                
+            # Add the node to the circuit if it doesn't already exist.
+            push!(circuit.nodes, Main.Node(idx, x, y))
+            add_vertex!(circuit.graph)
 
-                # Check if a node already exists at the provided coordinates.
-                for node in circuit.nodes
-
-                    # If a node already exists at the provided coordinates, print an error message and return false.
-                    if node.x == x && node.y == y
-                        println("\nNode N",node.id," already exists at position ($x,$y).")
-                        return false
-                    end
-                end
-
-                # Add the node to the circuit if it doesn't already exist.
-                push!(circuit.nodes, Main.Node(idx, x, y))
-                add_vertex!(circuit.graph)
-
-                # Provide feedback to the user and return true.
-                println("\nNode N$idx added at position ($x,$y).")
-                return true
-            catch
-
-                # If the coordinates couldn't be parsed as integers, print an error message and return false.
-                println("\nInvalid input. Enter integer coordinates as x,y.")
-                return false
-            end
-        end
+            # Provide feedback to the user and return true.
+            println("\nNode N$idx added at position ($x,$y).")
+    end
     end

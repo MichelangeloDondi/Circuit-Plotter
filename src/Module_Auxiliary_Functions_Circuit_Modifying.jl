@@ -51,6 +51,10 @@ module Auxiliary_Functions_Circuit_Modifying
         include("Module_Auxiliary_Functions_Circuit_Recap.jl")
         using .Auxiliary_Functions_Circuit_Recap: show_circuit_recap # Recap the circuit    
 
+        # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
+        include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
+        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input such as 'help', 'recap', 'draw', 'exit', 'break'
+        
     # ==============================================================================
     # ======================== function modify_existing_node =======================
     # ==============================================================================
@@ -72,28 +76,41 @@ module Auxiliary_Functions_Circuit_Modifying
             # Continuously prompt the user for node coordinates to modify.
             while true
 
+                # Provide instructions to the user.
+                println("\nYou can modify the coordinates of an existing node by typing its ID and providing the new coordinates.")
+                println("Here there is a recap of the current circuit for you convenience:")
+
                 # Show the circuit recap.
                 show_circuit_recap(circuit, edgeinfo)
 
                 # Prompt the user for the node ID.
-                println("\nEnter the ID of the node you want to modify or type 'break' or 'b' to finish modifying nodes:")
-                
-                # Read the node ID from the user.
-                node_id_input = readline()
+                println("\nEnter the ID (e.g. 2) of the node you want to modify or type 'break' or 'b' to finish modifying nodes:")
+
+                # Read the input from the user.
+                input = readline()
 
                 # Handle special input (e.g. 'exit', 'help', 'recap', 'draw', 'save', 'break').
-                if node_id_input == "break" || node_id_input == "b"
+                handle_result = handle_special_input_break(input, circuit, edgeinfo)
+
+                # If the input was handled, continue to the next iteration.
+                if handle_result == :handled
+                    continue
+
+                # If the input was to stop collecting nodes, break out of the loop.
+                elseif handle_result == :break
 
                     # Provide feedback to the user and break out of the loop.
-                    println("\nFinished modifying nodes.")
+                    println("\nFinished modifying nodes.")                
                     break
                 end
 
+                # If the input is not a special command, try to parse it as an integer.
+                #if _modify_node
                 # Try to parse the node ID as an integer.
                 try
 
                     # Convert node ID to integer.
-                    node_id = parse(Int, node_id_input)
+                    node_id = parse(Int, input)
 
                     # Initialize the found_node to track the node with the given ID.
                     found_node = nothing
@@ -114,7 +131,10 @@ module Auxiliary_Functions_Circuit_Modifying
                     if found_node === nothing
 
                         # If the node wasn't found, print an error message and continue to the next iteration.
-                        println("\nNode with ID N$node_id not found.")
+                        println("""\nNode with ID N$node_id not found. 
+                        Please consider that node IDs must be integers and that the node must exist in the circuit.
+                        The circuit recap is shown below for your convenience.
+                        """)
                         continue
                     end
 
@@ -135,12 +155,66 @@ module Auxiliary_Functions_Circuit_Modifying
                 catch e
 
                     # If the node ID couldn't be parsed as an integer, print an error message and continue to the next iteration.
-                    println("\nInvalid input: $e")
+                    println("\nInvalid input: $e. Please retry with a valid node ID.")
                     continue
                 end
             end
         end
 
+    # ==============================================================================
+    # --------------------- function _check_if_inupt_is_valid ----------------------
+    # ==============================================================================
+
+        """
+            _check_if_inupt_is_valid(input::String, circuit::Circuit)::Bool
+
+        Checks if the input provided by the user is valid. The input is the coordinates of a new node. 
+        The input is valid if it is in the format x,y (e.g. '1-2') and if no node already exists at the provided coordinates.
+
+        # Parameters:
+        - input: The input provided by the user.
+        - circuit: The primary data structure representing the circuit, including its nodes and components.
+            
+        # Returns:
+        - true if the input is valid.
+        - false otherwise.
+
+        # Notes:
+        - The function is used by the collect_nodes_from_cmd function to check if the input provided by the user is valid.
+        """
+        function _check_if_inupt_is_valid(input::String, circuit::Circuit)::Bool
+
+            # Split the input into its x and y coordinates.
+            coords = split(input, ",")
+
+            # Try to parse the coordinates as integers.
+            try 
+
+                # Parse the coordinates as integers.
+                x, y = parse(Int, coords[1]), parse(Int, coords[2])
+
+                # Check if a node already exists at the provided coordinates.
+                for node in circuit.nodes
+
+                    # If a node already exists at the provided coordinates, print an error message and return false.
+                    if node.x == x && node.y == y   
+
+                        # Provide feedback to the user and return false.
+                        println("\nNode N",node.id," already exists at position ($x,$y).")
+                        return false
+                    end
+                end
+
+                # If no node already exists at the provided coordinates, return true.
+                return true
+            catch
+
+                # If the coordinates could not be parsed as integers, print an error message and return false.
+                println("\nInvalid input. Enter integer coordinates as x,y (e.g. '1,-2').")
+                return false
+            end
+        end
+        
     # ==============================================================================
     # ====================== function delete_node_from_circuit =====================
     # ==============================================================================
