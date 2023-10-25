@@ -47,9 +47,12 @@ module Main_Function
     # ============================== Included Modules ==============================
     # ==============================================================================
 
+        # config.txt provides the configuration of the program.
+        #include("config.txt")
+
         # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
         include("Module_Circuit_Structures.jl")
-        using .Circuit_Structures: EdgeInfo, Circuit # Access the data structures
+        using .Circuit_Structures: Node, EdgeInfo, Circuit, Component # Access the data structures
 
         # Module_Helping.jl provides helper functions for the main program.
         include("Module_Helping.jl")
@@ -83,6 +86,70 @@ module Main_Function
         # Initialize the data structures that will house the circuit particulars.
         circuit = Circuit([], [], SimpleGraph())
         edge_info = EdgeInfo([])
+           
+    # ==============================================================================
+    # =========================== Auxiliary Functions ==============================
+    # ==============================================================================
+
+        """
+            read_configuration(file_path::String) -> Tuple{Node[], Tuple{Int, Int}[], Component[]}
+            
+        Reads the configuration from the file specified by the file path.
+
+        Parameters:
+        - file_path: The path to the file from which to read the configuration.
+
+        Returns:
+        - nodes: The nodes of the circuit.
+        - edges: The edges of the circuit.
+        - components: The components of the circuit.
+        
+        # Example:
+        ```
+        nodes, edges, components = read_configuration("config.txt")
+        ```
+        
+        # Notes:
+        - The file must be formatted as follows:
+            - The first line must be "NODES".
+            - The second line must be "EDGES".
+            - The third line must be "COMPONENTS".
+            - The fourth line must be "ID,X,Y".
+            - The fifth line must be "StartNode,EndNode".
+            - The sixth line must be "ID,StartNode,EndNode,Details".
+            - The seventh line onwards must contain the node, edge, and component details, respectively.
+        """
+
+        function read_configuration(file_path::String)
+            nodes = Node[]
+            components = Component[]
+            edges = Tuple{Int, Int}[]
+        
+            mode = nothing
+            open(file_path, "r") do file
+                for line in eachline(file)
+                    line = strip(line)
+                    if line == "NODES"
+                        mode = :node
+                    elseif line == "EDGES"
+                        mode = :edge
+                    elseif line == "COMPONENTS"
+                        mode = :component
+                    elseif mode == :node && line != "ID,X,Y"
+                        id, x, y = split(line, ",")
+                        push!(nodes, Node(parse(Int, id), parse(Int, x), parse(Int, y)))
+                    elseif mode == :edge && line != "StartNode,EndNode"
+                        start_node, end_node = split(line, ",")
+                        push!(edges, (parse(Int, start_node), parse(Int, end_node)))
+                    elseif mode == :component && line != "ID,StartNode,EndNode,Details"
+                        id, start_node, end_node, details = split(line, ",")
+                        push!(components, Component(parse(Int, id), parse(Int, start_node), parse(Int, end_node), details))
+                    end
+                end
+            end
+        
+            return nodes, edges, components
+        end
 
     # ==============================================================================
     # =============================== Main Function ================================
@@ -106,11 +173,26 @@ module Main_Function
             # Greet the user and provide any necessary instructions or information.
             show_initial_greetings()
 
-            # Gather the particulars of the nodes.
-            collect_nodes_from_cmd(circuit, edge_info)
+            print("Print working directory: ", pwd())
 
-            # Gather the particulars of the edges and of the components and provide feedback to the user.
-            collect_edges_and_components_from_cmd(circuit, edge_info)
+            config_path = joinpath(dirname(@__FILE__), "config.txt")
+            nodes, edges, components = read_configuration(config_path)
+
+            # Add nodes to the circuit
+            circuit.nodes = nodes
+
+            # Add edges to the edge_info
+            edge_info.edges = edges
+
+            # Add components to the circuit
+            circuit.components = components
+
+            # Construct the SimpleGraph based on the edges
+            g = SimpleGraph(maximum(edge for edge in edges))
+            for edge in edges
+                add_edge!(g, edge[1], edge[2])
+            end
+            circuit.graph = g
 
             # Recap the circuit.
             show_circuit_recap(circuit, edge_info)
@@ -121,4 +203,56 @@ module Main_Function
             # Ask the user whether to save the plot displayed before exiting the program.
             show_final_greetings_asking_whether_to_save_plot_displayed(circuit)
         end
+
+        #=
+        function main(circuit, edge_info)
+            
+            # Greet the user and provide any necessary instructions or information.
+            show_initial_greetings()
+
+            # Initialize the file path to nothing.
+            file_path = nothing 
+
+            # Prompt the user for the file path if they want to read the configuration from a file.
+            while true
+
+                # Prompt the user for whether they want to read the configuration from a file.
+                print("Do you want to read the configuration from a file? (y/n): ")
+                input = readline()
+                    
+                # If the user wants to read the configuration from a file, prompt them for the file path.    
+                if input == "y"
+                    print("Enter the file path: ")
+                    file_path = readline()
+                    break
+
+                # If the user does not want to read the configuration from a file, collect the nodes and edges from command line.
+                elseif input == "n"
+
+                    # Collect the nodes from the user.
+                    collect_nodes_from_cmd(circuit)
+
+                    # Collect the edges and components from the user.
+                    collect_edges_and_components_from_cmd(circuit, edge_info)
+                    break
+                end
+            end
+
+            # If the user wants to read the configuration from a file, read the configuration from the file.
+            if file_path !== nothing
+                nodes, edges = read_configuration(file_path)
+                circuit.nodes = nodes
+                circuit.edges = edges
+            end
+
+            # Recap the circuit.
+            show_circuit_recap(circuit, edge_info)
+
+            # Draw the circuit plot.
+            draw_plot(circuit)
+
+            # Ask the user whether to save the plot displayed before exiting the program.
+            show_final_greetings_asking_whether_to_save_plot_displayed(circuit)
+        end
+        =#
 end

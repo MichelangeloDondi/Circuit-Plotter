@@ -8,7 +8,7 @@
     Module Auxiliary_Functions_Circuit_Deleting
 
 Author: Michelangelo Dondi
-Date: 24-10-2023
+Date: 24                -10-2023
 Description: 
     This module provides functions for modifying an existing node's coordinates in 
     the circuit and for deleting an existing node from the circuit.

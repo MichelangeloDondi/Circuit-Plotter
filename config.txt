@@ -1,0 +1,11 @@
+NODES
+ID,X,Y
+1,10,10
+2,20,20
+EDGES
+StartNode,EndNode
+1,2
+COMPONENTS
+ID,StartNode,EndNode,Details
+1,1,2,"Resistor"
+
