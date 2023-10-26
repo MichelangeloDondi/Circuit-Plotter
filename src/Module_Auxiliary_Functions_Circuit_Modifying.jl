@@ -8,7 +8,7 @@
     Module Auxiliary_Functions_Circuit_Modifying
 
 Author: Michelangelo Dondi
-Date: 24-10-2023
+Date: 26-10-2023
 Description: 
     This module provides functions for modifying an existing node's coordinates in 
     the circuit.
@@ -117,6 +117,7 @@ module Auxiliary_Functions_Circuit_Modifying
 
             # Display the instructions for the user.
             println("""
+
             You can modify the coordinates of an existing node 
             by typing its ID and providing the new coordinates.
 
@@ -126,7 +127,7 @@ module Auxiliary_Functions_Circuit_Modifying
             show_circuit_recap(circuit, edgeinfo)
 
             # Ask the user for the ID of the node they wish to modify.
-            println("\nEnter the ID (e.g. '2') of the node you want to modify or type 'break' or 'b' to finish modifying nodes:")
+            print("\nEnter the ID (e.g. '2') of the node you want to modify or type 'break' or 'b' to finish modifying nodes:")
             
             # Return the user's input.
             return readline()
@@ -178,7 +179,7 @@ module Auxiliary_Functions_Circuit_Modifying
 
             # Handle potential errors (e.g., invalid input format).
             catch e
-                println("\nInvalid input: $e. Please retry.\n")
+                println("\nInvalid input: $e. Please retry.")
                 return :continue
             end
         end
@@ -210,8 +211,7 @@ module Auxiliary_Functions_Circuit_Modifying
             # If no such node exists, inform the user.
             if found_node === nothing
                 println("""\nNode with ID N$node_id not found. 
-                Please ensure node IDs are integers and the node exists in the circuit.
-                Here's the circuit recap for reference.""")
+                Please ensure node IDs are integers and the node exists in the circuit.""")
                 return :continue
             end
 

@@ -8,7 +8,7 @@
     Module: Gathering_Nodes
 
 Author: Michelangelo Dondi
-Date: 24-10-2023
+Date: 26-10-2023
 Description:    
     Dedicated to housing the functions for collecting node details from the user.
     This module simplifies the main function definition process by providing a single file to call.
@@ -97,10 +97,10 @@ module Gathering_Nodes
             while true
 
                 # Prompt the user for node coordinates.
-                input = prompt_for_coordinates(node_count)
+                input = _prompt_for_coordinates(node_count)
 
                 # Process the input.
-                node_count, action = process_input(input, node_count, circuit, edgeinfo)
+                node_count, action = _process_input(input, node_count, circuit, edgeinfo)
 
                 # If the action is to break, break out of the loop.
                 if action == :break
@@ -110,11 +110,11 @@ module Gathering_Nodes
         end
 
     # ==============================================================================
-    # ---------------------- function prompt_for_coordinates -----------------------
+    # ---------------------- function _prompt_for_coordinates ----------------------
     # ==============================================================================
 
         """
-            prompt_for_coordinates(node_count::Int) -> String
+            _prompt_for_coordinates(node_count::Int) -> String
         
         Prompt the user for node coordinates or a special command.
         
@@ -127,7 +127,7 @@ module Gathering_Nodes
         # Notes:
         - This function is called by `collect_nodes_from_cmd`.
         """
-        function prompt_for_coordinates(node_count::Int)
+        function _prompt_for_coordinates(node_count::Int)
 
             # Print the prompt message.
             print(""" 
@@ -153,11 +153,11 @@ module Gathering_Nodes
         end
     
     # ==============================================================================
-    # ------------------------ function process_input ------------------------------
+    # ------------------------ function _process_input ------------------------------
     # ==============================================================================
         
         """
-            process_input(input::String, node_count::Int, circuit, edgeinfo) -> Int, Symbol
+            _process_input(input::String, node_count::Int, circuit, edgeinfo) -> Int, Symbol
         
         Process the user input to either add, modify, or delete nodes.
         
@@ -174,7 +174,7 @@ module Gathering_Nodes
         # Notes:
         - This function is called by `collect_nodes_from_cmd`.
         """
-        function process_input(input::String, node_count::Int, circuit, edgeinfo)
+        function _process_input(input::String, node_count::Int, circuit, edgeinfo)
 
             # Handle special input ('exit', 'help', 'recap', 'draw', 'save', 'break', 'modify', 'cancel').
             handle_result = handle_special_input_break_modify_cancel(input, circuit, edgeinfo)
@@ -286,7 +286,7 @@ module Gathering_Nodes
             catch
 
                 # If the coordinates couldn't be parsed as integers, print an error message and return false.
-                println("\nInvalid input. Enter integer coordinates as x,y (e.g. '1,-2').")
+                println("\nInvalid input. Enter integer coordinates as 'x,y' (e.g. '1,-2').")
                 return false
             end
         end
