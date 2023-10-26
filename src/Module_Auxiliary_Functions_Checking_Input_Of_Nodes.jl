@@ -8,10 +8,10 @@
     Module: Auxiliary_Functions_Checking_Input_Of_Nodes  
 
 Author: Michelangelo Dondi
-Date: 26-10-2023
+Date: 27-10-2023
 Description: This module contains the function for checking if the input aimed to add a new node is valid.
 
-Version: 3.4
+Version: 3.5
 License: MIT License 
 
 Exported functions:
@@ -33,6 +33,14 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
         # Invoke the function to check if the input is valid.
         export check_if_inupt_is_valid
     
+    # ==============================================================================
+    # ============================ Included Modules ================================
+    # ==============================================================================
+
+        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
+        include("Module_Circuit_Structures.jl")
+        using .Circuit_Structures: Node # Access the data structures
+
     # ==============================================================================
     # ====================== function check_if_inupt_is_valid ======================
     # ==============================================================================
@@ -62,15 +70,15 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
         """
         function check_if_inupt_is_valid(input::String, circuit)::Bool
 
-            # Split the input into its x and y coordinates.
-            coords = split(input, ",")
-
             # Try to parse the coordinates as integers.
             try 
+                            
+                # Split the input into its x and y coordinates.
+                coords = split(input, ",")
 
                 # Parse the coordinates as integers.
                 x, y = parse(Int, coords[1]), parse(Int, coords[2])
-
+                
                 # Check if a node already exists at the provided coordinates.
                 for node in circuit.nodes
 
@@ -78,7 +86,7 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
                     if node.x == x && node.y == y   
 
                         # Provide feedback to the user and return false.
-                        println("\nThe node cannot be added for the following reason:")
+                        println("\nThe node coordinates you have inserted cannot be accepted for the following reason:")
                         println("Node N",node.id," already exists at position ($x,$y).")
                         return false
                     end

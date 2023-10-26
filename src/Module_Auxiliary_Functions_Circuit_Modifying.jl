@@ -8,12 +8,12 @@
     Module Auxiliary_Functions_Circuit_Modifying
 
 Author: Michelangelo Dondi
-Date: 26-10-2023
+Date: 27-10-2023
 Description: 
     This module provides functions for modifying an existing node's coordinates in 
     the circuit.
 
-Version: 3.4
+Version: 3.5
 License: MIT License
 
 Exported functions: 
@@ -58,6 +58,10 @@ module Auxiliary_Functions_Circuit_Modifying
         include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
         using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input ('help', 'recap', 'draw', 'exit', 'break')
 
+        # Module_Auxiliary_Functions_Checking_Input_Of_Nodes provides auxiliary functions for checking the input of nodes.
+        include("Module_Auxiliary_Functions_Checking_Input_Of_Nodes.jl")
+        using .Auxiliary_Functions_Checking_Input_Of_Nodes: check_if_inupt_is_valid # Check if the node can be added to the circuit.
+        
     # ==============================================================================
     # ======================== function modify_existing_node =======================
     # ==============================================================================
@@ -127,7 +131,7 @@ module Auxiliary_Functions_Circuit_Modifying
             show_circuit_recap(circuit, edgeinfo)
 
             # Ask the user for the ID of the node they wish to modify.
-            print("\nEnter the ID (e.g. '2') of the node you want to modify or type 'break' or 'b' to finish modifying nodes:")
+            print("\nEnter the ID (e.g. '2') of the node you want to modify or type 'break' or 'b' to finish modifying nodes: ")
             
             # Return the user's input.
             return readline()
@@ -216,19 +220,28 @@ module Auxiliary_Functions_Circuit_Modifying
             end
 
             # Ask the user for the new coordinates.
-            println("\nProvide the new coordinates for node N$node_id in the format 'x,y' (coordinates must be integers):")
-            input_coords = readline()
+            println("\nProvide the new coordinates for node N$node_id in the format 'x,y' (coordinates must be integers): ")
 
-            # Extract the x and y values from the user's input.
-            coords = split(input_coords, ",")
-            x, y = parse(Int, coords[1]), parse(Int, coords[2])
+            # Get the user's input.
+            input = readline()
 
-            # Update the node's coordinates with the new values.
-            _update_node_coordinates(found_node, x, y)
+            # Check if the new coordinates are valid.
+            if check_if_inupt_is_valid(input, circuit)
 
-            # Confirm to the user that the node's coordinates were successfully modified.
-            println("\nNode N$node_id successfully modified to position ($x,$y).")
+                # Split the input into its x and y coordinates.
+                coords = split(input, ",")
 
+                # Parse the coordinates as integers.
+                x, y = parse(Int, coords[1]), parse(Int, coords[2])
+                
+                # Update the node's coordinates with the new values.
+                _update_node_coordinates(found_node, x, y)
+
+                # Confirm to the user that the node's coordinates were successfully modified.
+                println("\nNode N$node_id successfully modified to position ($x,$y).")
+                return :continue
+
+            end
         end
 
     # ------------------------- function _get_node_by_id ---------------------------
