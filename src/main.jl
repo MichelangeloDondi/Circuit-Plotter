@@ -1,3 +1,4 @@
+
 # ==============================================================================
 # ==============================================================================
 # ==============================================================================
@@ -10,18 +11,19 @@
     Circuit Plotter Program
 
 Author: Michelangelo Dondi
-Date: 23-10-2023
+Date: 27-10-2023
 Description:
     A user-friendly tool that allows the creation and visualization of electrical circuits.
     Users can define nodes, components, and their connections, with an end visualization
-    rendered using the PlotlyJS backend for interactivity. The program is written in Julia,
-    a high-level, high-performance, dynamic programming language for numerical computing.
-    The program is structured in modules, each of which is described in the corresponding
-    file. The main module is Module_Main_Function.jl, which contains the main function
-    of the program.
+    rendered using the PlotlyJS backend for interactivity.
 
-Version: 3.2
+Version: 3.5
 License: MIT License
+
+Notes:
+- The program is structured in modules, each of which is described in the corresponding file.
+- The main module is Module_Main_Function.jl, which contains the main function of the program.
+- The program is written in Julia, a high-level, high-performance, dynamic programming language for numerical computing.
 """
 
 # ==============================================================================
