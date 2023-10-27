@@ -2,12 +2,12 @@
     module Circuit_Structures
 
 Author: Michelangelo Dondi
-Date: 20-10-2023
+Date: 27-10-2023
 Description:
     Dedicated to housing the data structures used by the Circuit Visualization Tool.
     This module simplifies the data structure definition process by providing a single file to call.
 
-Version: 2.5
+Version: 3.5
 License: MIT License
 
 Exported data structures:
@@ -32,6 +32,9 @@ module Circuit_Structures
         # For graph data structures
         using LightGraphs
 
+        # For defining data structures (e.g. 'Node(id=1, x=1, y=1)' instead of 'Node(1, 1, 1)')
+        using Parameters
+
     # ==============================================================================
     # =============================== Data Structure Node ==========================
     # ==============================================================================
@@ -46,7 +49,7 @@ module Circuit_Structures
         - `x`: The x-coordinate of the node.
         - `y`: The y-coordinate of the node.
         """
-        mutable struct Node
+        @with_kw mutable struct Node
             id::Int
             x::Int
             y::Int
