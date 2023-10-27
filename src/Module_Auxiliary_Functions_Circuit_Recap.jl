@@ -76,6 +76,9 @@ module Auxiliary_Functions_Circuit_Recap
         # Invoke this function to export the recap function
         export show_circuit_recap
 
+        # Invoke this function to export the nodes recap function
+        export show_nodes_recap
+
     # ==============================================================================
     # ============================== Included Modules ==============================
     # ==============================================================================
@@ -87,27 +90,133 @@ module Auxiliary_Functions_Circuit_Recap
     # ==============================================================================
     # ======================== function show_circuit_recap =========================
     # ==============================================================================
-        
+
+        """
+            show_circuit_recap(circuit, edge_info) -> nothing
+
+        Displays a recap of the circuit in the console. The recap includes a summary of the nodes, edges,
+        and components present within the circuit.
+
+        Parameters:
+        - circuit: The primary structure amalgamating nodes, components, and their 
+                illustrative representation within the circuit.
+        - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
+
+        Returns:
+        - nothing
+
+        Notes:
+
+        Example:
+
+        ---------------------------------------------------
+                        BEGIN OF CIRCUIT RECAP
+        ---------------------------------------------------
+
+        There are 4 nodes in the circuit:
+
+            - N1 at (0,0)
+            - N2 at (0,1)
+            - N3 at (1,0)
+            - N4 at (1,1)
+
+        ---------------------------------------------------
+
+        There are 4 edges in the circuit:
+
+            - E1: N1 -> N2
+            - E2: N2 -> N3
+            - E3: N3 -> N4
+            - E4: N4 -> N1
+
+        ---------------------------------------------------
+
+        There are 4 components in the circuit:
+
+            - "R1 = 10 [Ω]" on edge E1 (N1 -> N2)
+            - "R2 = 20 [Ω]" on edge E2 (N2 -> N3)
+            - "R3 = 30 [Ω]" on edge E3 (N3 -> N4)
+            - "R4 = 40 [Ω]" on edge E4 (N4 -> N1)
+
+        ---------------------------------------------------
+                        END OF CIRCUIT RECAP
+        ---------------------------------------------------
+        """
         function show_circuit_recap(circuit, edge_info)
 
             println("\n---------------------------------------------------")
-            println("            BEGIN OF CIRCUIT RECAP")
+            println("               BEGIN OF CIRCUIT RECAP")
             println("---------------------------------------------------\n")
 
             # Display a recap of the nodes in the circuit
             _nodes_recap(circuit)
-                
+            println("\n---------------------------------------------------")    
+
             # Display a recap of the edges in the circuit
             _edges_recap(edge_info)
+            println("\n---------------------------------------------------")
 
             # Display a recap of the components in the circuit
             _components_recap(circuit)  
 
             println("\n---------------------------------------------------")
-            println("             END OF CIRCUIT RECAP")
+            println("               END OF CIRCUIT RECAP")
             println("---------------------------------------------------\n")
         end
         
+    # ==============================================================================
+    # ========================= function show_nodes_recap ==========================
+    # ==============================================================================
+        
+        """
+            show_nodes_recap(circuit) -> nothing
+
+        Displays a recap of the nodes in the circuit.
+
+        Parameters:
+        - circuit: The primary structure amalgamating nodes, components, and their 
+                illustrative representation within the circuit.
+
+        Returns:
+        - nothing
+
+        Notes:
+        - If there are no nodes in the circuit, a message to that effect is displayed.
+        - The recap is displayed in the console in the following format:
+        - Ni at (xi,yi), where i is the index of the node.
+
+        Example:
+
+        ---------------------------------------------------
+                        BEGIN OF NODES RECAP
+        ---------------------------------------------------
+
+        There are 4 nodes in the circuit:
+
+            - N1 at (0,0)
+            - N2 at (0,1)
+            - N3 at (1,0)
+            - N4 at (1,1)
+
+        ---------------------------------------------------
+                        END OF NODES RECAP
+        ---------------------------------------------------
+
+        """
+        function show_nodes_recap(circuit)
+
+            println("\n---------------------------------------------------")
+            println("                BEGIN OF NODES RECAP")
+            println("---------------------------------------------------\n")
+
+            # Display a recap of the nodes in the circuit
+            _nodes_recap(circuit)
+
+            println("\n---------------------------------------------------")
+            println("               END OF NODES RECAP")
+            println("---------------------------------------------------\n")
+        end    
+
     # ==============================================================================
     # ---------------------------- function _nodes_recap ---------------------------
     # ==============================================================================
@@ -137,8 +246,6 @@ module Auxiliary_Functions_Circuit_Recap
             - N2 at (0,1)
             - N3 at (1,0)
             - N4 at (1,1)
-
-        ---------------------------------------------------
         """
         function _nodes_recap(circuit)
 
@@ -146,11 +253,11 @@ module Auxiliary_Functions_Circuit_Recap
             if isempty(circuit.nodes)   
 
                 # If there are no nodes in the circuit, display a message to that effect.
-                println("\nThere are no nodes in the circuit.")
+                println("There are no nodes in the circuit.")
             else    
 
                 # Otherwise, display the number of nodes in the circuit.
-                println("\nThere are $(length(circuit.nodes)) nodes in the circuit:\n")
+                println("There are $(length(circuit.nodes)) nodes in the circuit:\n")
 
                 # Display the details of each node in the circuit
                 for node in circuit.nodes
@@ -159,7 +266,6 @@ module Auxiliary_Functions_Circuit_Recap
                     println("   - N$(node.id) at ($(node.x),$(node.y))")
                 end
             end
-            println("\n---------------------------------------------------")
         end
     
     # ==============================================================================
@@ -189,8 +295,6 @@ module Auxiliary_Functions_Circuit_Recap
             - E2: N2 -> N3
             - E3: N3 -> N4
             - E4: N4 -> N1
-
-        ---------------------------------------------------
         """ 
         function _edges_recap(edge_info)
             
@@ -211,7 +315,6 @@ module Auxiliary_Functions_Circuit_Recap
                     println("   - E$i: N$(edge_info.edges[i][1]) -> N$(edge_info.edges[i][2])")
                 end
             end
-            println("\n---------------------------------------------------")
         end
 
     # ==============================================================================
