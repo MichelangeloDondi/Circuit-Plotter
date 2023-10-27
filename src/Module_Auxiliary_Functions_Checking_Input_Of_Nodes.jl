@@ -31,7 +31,7 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
     # ==============================================================================
         
         # Invoke the function to check if the input is valid.
-        export check_if_inupt_is_valid
+        export check_if_input_is_valid
     
     # ==============================================================================
     # ============================ Included Modules ================================
@@ -42,11 +42,11 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
         using .Circuit_Structures: Node # Access the data structures
 
     # ==============================================================================
-    # ====================== function check_if_inupt_is_valid ======================
+    # ====================== function check_if_input_is_valid ======================
     # ==============================================================================
 
         """
-            check_if_inupt_is_valid(input::String, circuit)::Bool  
+            check_if_input_is_valid(input::String, circuit)::Bool  
 
         Checks if the input is valid. The input is valid if it is in the format 'integer x,y' (e.g. '1,-2') 
         and if no node already exists at the provided coordinates.
@@ -68,7 +68,7 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
         julia> _check_if_inupt_is_valid("1,-2", circuit)
         true
         """
-        function check_if_inupt_is_valid(input::String, circuit)::Bool
+        function check_if_input_is_valid(input::String, circuit)::Bool
 
             # Try to parse the coordinates as integers.
             try 
