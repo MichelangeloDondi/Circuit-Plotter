@@ -7,13 +7,13 @@
 # ==============================================================================
 
 """
-    File runtests.jl
+    File: runtests.jl
 
 Author: Michelangelo Dondi
 Date: 27-10-2023
 Description: This file runs the tests for the Circuit Plotter Program.
 
-Version: 3.7
+Version: 4.0
 License: MIT License
 """
 # ==============================================================================
@@ -64,11 +64,11 @@ License: MIT License
     using .Test_check_if_input_is_valid: test_is_valid_format # Access the function
 
     # Module_Test_image_name.jl provides the function 'test_save_plot_displayed()'.
-    include("Module_Test_save_plot_displayed.jl")
-    using .Test_save_plot_displayed: test_save_plot_displayed # Access the function
+    #include("Module_Test_save_plot_displayed.jl")
+    #using .Test_save_plot_displayed: test_save_plot_displayed # Access the function
     
 # ==============================================================================
-# ============================ Test Functions ==================================
+# ========================== Hard-Coded Circuit ================================
 # ==============================================================================
 
     # Create a circuit hard-coded
@@ -81,17 +81,21 @@ License: MIT License
         ], [], SimpleGraph())
 
 # ==============================================================================
-# ============================ Test Functions ==================================
+# ========= Testing Module Auxiliary_Functions_Checking_Input_Of_Nodes =========
 # ==============================================================================
 
     # Test module 'Module_Test_check_if_input_is_valid.jl'
     println("\nRunning tests for Module_Test_check_if_input_is_valid...")
 
-    # Test 'is_valid_format()'
-    #test_is_valid_format()
+    # Test 'is_valid_format()' of Module Auxiliary_Functions_Checking_Input_Of_Nodes
+    test_is_valid_format()
 
-    # Test 'is_coordinate_available(circuit)'
+    # Test 'is_coordinate_available(circuit)' of Module Auxiliary_Functions_Checking_Input_Of_Nodes
     test_is_coordinate_available(circuit)
+
+# ==============================================================================
+# ========================== Testing Module_Saving =============================
+# ==============================================================================
 
     # Test 'save_plot_displayed()'
     #test_save_plot_displayed()
