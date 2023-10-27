@@ -111,7 +111,7 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
     module Input_Format_Check
 
         # ==============================================================================
-        # =========================== Exported function ================================
+        # =========================== Exported Function ================================
         # ==============================================================================
             
             # Invoke the function to check if the input is in the format 'integer x,y' (e.g. '1,-2').
@@ -145,11 +145,20 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
                     # Split the input into its x and y coordinates.
                     coords = split(input, ",")
 
-                    # Parse the coordinates as integers.
-                    x, y = parse(Int, coords[1]), parse(Int, coords[2])
-                    
-                    # Check if a node already exists at the provided coordinates.
-                    return true
+                    # Check if the input is in the format 'integer x,y' (e.g. '1,-2').
+                    if length(coords) != 2
+
+                        # If the input is not in the format 'integer x,y' (e.g. '1,-2'), print an error message and return false.
+                        println("\nInvalid input: you are not providing a pair of numbers. Enter integer coordinates as 'x,y' (e.g. '1,-2').")
+                        return false
+                    else
+
+                        # Parse the coordinates as integers.
+                        x, y = parse(Int, coords[1]), parse(Int, coords[2])
+                        
+                        # Check if a node already exists at the provided coordinates.
+                        return true
+                    end
                 catch
 
                     # If the coordinates couldn't be parsed as integers, print an error message and return false.
