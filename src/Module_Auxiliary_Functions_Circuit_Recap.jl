@@ -8,64 +8,29 @@
     Module Auxiliary_Functions_Recap
 
 Author: Michelangelo Dondi
-Date: 23-10-2023
+Date: 27-10-2023
 Description: 
     Dedicated to providing auxiliary functions for recapping the circuit. 
     This module simplifies the recap process by providing a single file to call.    
  
-Version: 3.2
+Version: 3.6
 License: MIT License
 
 Exported functions: 
 - `show_circuit_recap(circuit, edge_info)`: Displays a recap 
 of the circuit in the console. The recap includes a summary of the nodes, edges,
 and components present within the circuit.
+- `show_nodes_recap(circuit)`: Displays a recap of the nodes in the circuit.
 
 Notes:
-- The recap is displayed in the console in the following format:
-    - Nodes in the Circuit:
-        - Ni at (xi,yi), where i is the index of the node.
-    - Edges in the Circuit:
-        - Ei: Nj -> Nk, where i is the edge index, j is the index of the first node, 
-        and k is the index of the second node.
-    - Components in the Circuit:
-        - "Component details" on edge Ei (Nj -> Nk), where i is the edge index, 
-        j is the index of the first node, and k is the index of the second node.
-
-Example:
-
----------------------------------------------------
-              BEGIN OF CIRCUIT RECAP
----------------------------------------------------
-
-There are 4 nodes in the circuit:
-
-    - N1 at (0,0)
-    - N2 at (0,1)
-    - N3 at (1,0)
-    - N4 at (1,1)
-    
----------------------------------------------------
-
-There are 4 edges in the circuit:
-    
-    - E1: N1 -> N2
-    - E2: N2 -> N3
-    - E3: N3 -> N4
-    - E4: N4 -> N1
-
----------------------------------------------------
-
-There are 4 components in the circuit:
-    
-    - "R1 = 10 [Ω]" on edge E1 (N1 -> N2)
-    - "R2 = 20 [Ω]" on edge E2 (N2 -> N3)
-    - "R3 = 30 [Ω]" on edge E3 (N3 -> N4)
-    - "R4 = 40 [Ω]" on edge E4 (N4 -> N1)
-
----------------------------------------------------
-              END OF CIRCUIT RECAP
----------------------------------------------------
+- The nodes recap is displayed in the console in the following format:
+    - 'Ni at (xi,yi)', where i is the index of the node.
+- The edges  recap is displayed in the console in the following format:
+    - 'Ei: Nj -> Nk', where i is the edge index, j is the index of the first node, 
+    and k is the index of the second node.
+- The components recap is displayed in the console in the following format:
+    - '"Component details" on edge Ei (Nj -> Nk)', where i is the edge index, 
+    j is the index of the first node, and k is the index of the second node.
 """
 module Auxiliary_Functions_Circuit_Recap
 
