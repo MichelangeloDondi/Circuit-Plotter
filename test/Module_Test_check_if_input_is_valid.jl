@@ -92,7 +92,7 @@ module Test_check_if_input_is_valid
                 println("""
                 ---------------------------------------------------
 
-                Test 1a: trying to add a node in a position where there is no node already
+                \033[96mTest 1a\033[0m: trying to add a node in a position where there is no node already
 
                     - Input: '$input1a'
                     - Expected Output: true
@@ -106,7 +106,7 @@ module Test_check_if_input_is_valid
                 println("""
                 ---------------------------------------------------
 
-                Test 2a: trying to add a node with a negative coordinate in a position where there is no node already
+                \033[96mTest 2a\033[0m: trying to add a node with a negative coordinate in a position where there is no node already
 
                     - Input: '$input2a'
                     - Expected Output: true
@@ -120,7 +120,7 @@ module Test_check_if_input_is_valid
                 println("""
                 ---------------------------------------------------
 
-                Test 3a: trying to add a node with a coordinate greater than 1000 in a position where there is no node already
+                \033[96mTest 3a\033[0m: trying to add a node with a coordinate greater than 1000 in a position where there is no node already
 
                     - Input: '$input3a'
                     - Expected Output: true
@@ -137,7 +137,7 @@ module Test_check_if_input_is_valid
                 println("""
                 ---------------------------------------------------
 
-                Test 1b: trying to add a node in a position where there is already a node
+                \033[96mTest 1b\033[0m: trying to add a node in a position where there is already a node
 
                     - Input: '$input1b'
                     - Expected Output: false
@@ -151,7 +151,7 @@ module Test_check_if_input_is_valid
                 println("""
                 ---------------------------------------------------
 
-                Test 2b: trying to add a node in a position where there is already a node
+                \033[96mTest 2b\033[0m: trying to add a node in a position where there is already a node
 
                     - Input: '$input2b'
                     - Expected Output: false
@@ -165,7 +165,7 @@ module Test_check_if_input_is_valid
                 println("""
                 ---------------------------------------------------
 
-                Test 3b: trying to add a node in a position where there is already a node
+                \033[96mTest 3b\033[0m: trying to add a node in a position where there is already a node
 
                     - Input: '$input3b'
                     - Expected Output: false
