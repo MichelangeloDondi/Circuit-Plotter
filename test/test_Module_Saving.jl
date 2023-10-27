@@ -10,28 +10,6 @@ Version: 2.3
 License: MIT License
 """
 module Saving_Tests
-            
-    # ==============================================================================
-    # =========================== Required Packages ================================
-    # ==============================================================================
-    using Pkg
-
-    # Ensure necessary packages are added and used.
-    for package in ["Test", "Plots"]
-        try
-            eval(Meta.parse("using $package"))
-        catch
-            Pkg.add(package)
-            eval(Meta.parse("using $package"))
-        end
-    end
-
-    # Import the `save_current_plot` function.
-    include("../src/Module_Saving.jl")
-    using .Saving
-
-    include("Module_Test_Utils.jl")
-    using .Test_Utils: TestResult
 
     # ==============================================================================
     # ============================ Exported Functions ==============================
@@ -83,7 +61,7 @@ module Saving_Tests
         println("$description \n$status \n  - Input:     \033[32m$input\033[0m\n  - Expected:  \033[32m$expected\033[0m\n  - Got:       \033[32m$got\033[0m\n")
     end
 
-    @testset "save_current_plot" begin
+    @testset "save_plot_displayed" begin
 
         println("\n=====================================================\n")
         println("Starting tests for 'save_current_plot'...\n")
@@ -133,7 +111,7 @@ module Saving_Tests
                 # Test 7 expected output
                 "this_is_an_extremely_long_filename_that_might_cause_issues_for_some_file_systems_or_software_libraries.png"),
             
-                ("Test 8: No file extension provided",
+            ("Test 8: No file extension provided",
                 # Test 8 input
                 IOBuffer("myplot\n"),
                 # Test 8 expected output
