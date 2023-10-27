@@ -60,7 +60,7 @@ module Auxiliary_Functions_Circuit_Modifying
 
         # Module_Auxiliary_Functions_Checking_Input_Of_Nodes provides auxiliary functions for checking the input of nodes.
         include("Module_Auxiliary_Functions_Checking_Input_Of_Nodes.jl")
-        using .Auxiliary_Functions_Checking_Input_Of_Nodes: check_if_inupt_is_valid # Check if the node can be added to the circuit.
+        using .Auxiliary_Functions_Checking_Input_Of_Nodes: check_if_input_is_valid # Check if the node can be added to the circuit.
         
     # ==============================================================================
     # ======================== function modify_existing_node =======================
@@ -226,7 +226,7 @@ module Auxiliary_Functions_Circuit_Modifying
             input = readline()
 
             # Check if the new coordinates are valid.
-            if check_if_inupt_is_valid(input, circuit)
+            if check_if_input_is_valid(input, circuit)
 
                 # Split the input into its x and y coordinates.
                 coords = split(input, ",")
