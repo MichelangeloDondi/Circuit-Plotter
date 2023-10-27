@@ -61,7 +61,7 @@ module Gathering_Nodes
 
         # Module_Auxiliary_Functions_Checking_Input_Of_Nodes provides auxiliary functions for checking the input of nodes.
         include("Module_Auxiliary_Functions_Checking_Input_Of_Nodes.jl")
-        using .Auxiliary_Functions_Checking_Input_Of_Nodes: check_if_inupt_is_valid # Check if the node can be added to the circuit.
+        using .Auxiliary_Functions_Checking_Input_Of_Nodes: check_if_input_is_valid # Check if the node can be added to the circuit.
 
         # Module_Auxiliary_Functions_Circuit_Modifying.jl provides auxiliary functions for modifying the circuit.
         include("Module_Auxiliary_Functions_Circuit_Modifying.jl")
@@ -221,7 +221,7 @@ module Gathering_Nodes
                 return delete_node_from_circuit(node_count, circuit, edgeinfo), :continue
             
             # Check if the node can be added to the circuit.
-            elseif check_if_inupt_is_valid(input, circuit)
+            elseif check_if_input_is_valid(input, circuit)
 
                 # Add the node to the circuit.
                 _add_node_to_circuit(input, node_count + 1, circuit)
