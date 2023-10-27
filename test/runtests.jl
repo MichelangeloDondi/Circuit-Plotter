@@ -9,9 +9,13 @@
 """
     File runtests.jl
 
-From this file all tests can be managed
-"""
+Author: Michelangelo Dondi
+Date: 27-10-2023
+Description: This file runs the tests for the Circuit Plotter Program.
 
+Version: 3.7
+License: MIT License
+"""
 # ==============================================================================
 # ============================ Required Packages ===============================
 # ==============================================================================
@@ -56,27 +60,41 @@ From this file all tests can be managed
 
     # Module_Test_check_if_input_is_valid.jl provides the function 'check_if_input_is_valid()'.
     include("Module_Test_check_if_input_is_valid.jl")
-    using .Test_check_if_input_is_valid: test_check_if_input_is_valid
+    using .Test_check_if_input_is_valid: test_is_coordinate_available # Access the function
+    using .Test_check_if_input_is_valid: test_is_valid_format # Access the function
 
+    # Module_Test_image_name.jl provides the function 'test_save_plot_displayed()'.
+    include("Module_Test_save_plot_displayed.jl")
+    using .Test_save_plot_displayed: test_save_plot_displayed # Access the function
+    
 # ==============================================================================
 # ============================ Test Functions ==================================
 # ==============================================================================
 
     # Create a circuit hard-coded
     circuit = Circuit([
-        Node(id=1, x=0, y=0), # Node N1 at (0,0)
-        Node(id=2, x=1, y=0), # Node N2 at (1,0)
-        Node(id=3, x=2, y=0), # Node N3 at (2,0)
-        Node(id=4, x=1, y=1), # Node N4 at (1,1)
-        Node(id=5, x=0, y=2)  # Node N5 at (0,2)
+        Node(id=1, x=0, y=0),  # Node N1 at ( 0,0)
+        Node(id=2, x=-1, y=0), # Node N2 at (-1,0)
+        Node(id=3, x=2, y=0),  # Node N3 at ( 2,0)
+        Node(id=4, x=1, y=1),  # Node N4 at ( 1,1)
+        Node(id=5, x=0, y=2)   # Node N5 at ( 0,2)
         ], [], SimpleGraph())
 
 # ==============================================================================
 # ============================ Test Functions ==================================
 # ==============================================================================
 
-    # Test 'check_if_input_is_valid()'
-    test_check_if_input_is_valid(circuit)
+    # Test module 'Module_Test_check_if_input_is_valid.jl'
+    println("\nRunning tests for Module_Test_check_if_input_is_valid...")
+
+    # Test 'is_valid_format()'
+    #test_is_valid_format()
+
+    # Test 'is_coordinate_available(circuit)'
+    test_is_coordinate_available(circuit)
+
+    # Test 'save_plot_displayed()'
+    #test_save_plot_displayed()
 
 #=
     @testset "Module_Saving Tests" begin
