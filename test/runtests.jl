@@ -13,11 +13,14 @@ Author: Michelangelo Dondi
 Date: 28-10-2023
 Description: This file runs the tests for the Circuit Plotter Program.
 
-Version: 4.2
+Version: 4.5
 License: MIT License
+
+Notes:
+- The program is structured in modules, each of which is described in the corresponding file.
 """
 # ==============================================================================
-# ============================ Required Packages ===============================
+# ============================= Required Packages ==============================
 # ==============================================================================
 
     # Ensure necessary packages are added and used.
@@ -54,16 +57,16 @@ License: MIT License
 # ============================ Including Modules ===============================
 # ==============================================================================
 
-    # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
+    # Module DataStructure provides the data structures used by the Circuit Plotter Program.
     include("../src/datastructure.jl")
     using .DataStructure: Node, Circuit # Access the data structures
 
-    # Module_Test_check_if_input_is_valid.jl provides the function 'check_if_input_is_valid()'.
-    include("Module_Test_check_if_input_is_valid.jl")
-    using .Test_check_if_input_is_valid: test_is_coordinate_available # Access the function
-    using .Test_check_if_input_is_valid: test_is_valid_format # Access the function
+    # Module TestCheckIfInputIsValid.jl provides the function 'check_if_input_is_valid()'.
+    include("test_check_if input_is_valid.jl")
+    using .TestCheckIfInputIsValid: test_is_coordinate_available # Access the function
+    using .TestCheckIfInputIsValid: test_is_valid_format # Access the function
 
-    # Module_Test_image_name.jl provides the function 'test_save_plot_displayed()'.
+    # Module Test_image_name.jl provides the function 'test_save_plot_displayed()'.
     #include("Module_Test_save_plot_displayed.jl")
     #using .Test_save_plot_displayed: test_save_plot_displayed # Access the function
     

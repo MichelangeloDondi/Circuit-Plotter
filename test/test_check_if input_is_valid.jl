@@ -1,11 +1,11 @@
 # ==============================================================================
 # ==============================================================================
-# ================== Module: Test_check_if_input_is_valid ======================
+# ====================== Module: TestCheckIfInputIsValid =======================
 # ==============================================================================
 # ==============================================================================
 
 """
-    Module: Test_check_if_input_is_valid
+    Module: TestCheckIfInputIsValid
 
 Author: Michelangelo Dondi
 Date: 28-10-2023
@@ -16,14 +16,14 @@ Description: This module provides a function to test the function check_if_input
     already in that position. The function check_if_input_is_valid() returns true if the
     input is valid, false otherwise.
 
-Version: 4.2
+Version: 4.5
 Licence: MIT Licence
 
 Exported Function(s):
     test_is_valid_format()
     test_is_coordinate_available(circuit)
 """
-module Test_check_if_input_is_valid
+module TestCheckIfInputIsValid
 
     # ==============================================================================
     # =========================== Exported Functions ===============================
@@ -45,19 +45,58 @@ module Test_check_if_input_is_valid
     # ============================ Including Modules ===============================
     # ==============================================================================
 
-        # Module_Auxiliary_Functions_Checking_Input_Of_Nodes provides auxiliary functions for checking the input of nodes.
-        include("../src/Module_Auxiliary_Functions_Checking_Input_Of_Nodes.jl")
-        using .Auxiliary_Functions_Checking_Input_Of_Nodes.Coordinate_Availability_Check # Check if the node can be added to the circuit.
-        using .Auxiliary_Functions_Checking_Input_Of_Nodes.Input_Format_Check # Check if the input is in the correct format.
+        # Module CheckingNodesInput provides functions to check if the input provided by the user can be used to add a node to the circuit.
+        include("../src/nodes_management/helper_functions_collecting_nodes/checking_nodes_input.jl")
+        using .CheckingNodesInput.CoordinateAvailabilityCheck # Check if the node can be added to the circuit.
+        using .CheckingNodesInput.InputFormatCheck # Check if the input is in the correct format.
 
         # Module_Auxiliary_Functions_Circuit_Recap.jl provides auxiliary functions for recapping the circuit.
-        include("../src/Module_Auxiliary_Functions_Circuit_Recap.jl")
-        using .Auxiliary_Functions_Circuit_Recap: show_nodes_recap # Recap the nodes in the circuit    
+        include("../src/functions_always_callable/circuit_recap.jl")
+        using .CircuitRecap: show_nodes_recap # Recap the nodes in the circuit    
 
     # ==============================================================================
     # ======================= Function: test_is_valid_format() =====================
     # ==============================================================================
 
+        """
+            test_is_valid_format()
+
+        Test if the input is in valid format (a pair of integers).
+
+        Parameters:
+        None
+            
+        Returns:
+        None
+            
+        Notes:
+        The function is_valid_format(input) is tested in the following cases:
+
+        Cases 'A' where the input is a pair of valid integers:
+            - Test 1A: pair of small integers
+            - Test 2A: pair of large positive integers
+            - Test 3A: pair of large integers with opposite signs
+            - Test 4A: pair of integers with a space in front
+            - Test 5A: pair of integers with a space at the end
+            - Test 6A: pair of integers with a space in the middle after the comma
+            - Test 7A: pair of integers with a space in the middle before the comma
+
+        Cases 'B' where the input is composed of integer numbers but is not in the format 'x,y':
+            - Test 1B: single integer
+            - Test 2B: pair of integers with a double comma
+            - Test 3B: triple integer
+            - Test 4B: pair of integers with a negative sign in the middle
+            - Test 5B: pair of integers with a negative sign at the end
+            - Test 6B: pair of integers with a comma at the beginning
+            - Test 7B: pair of integers with a comma at the end
+
+        Cases 'C' where the input is not composed of integer numbers:
+            - Test 1C: pair of an integer with a letter
+            - Test 2C: pair of an integer with a special character
+            - Test 3C: empty string
+            - Test 4C: pair of an integer with a space
+            - Test 5C: pair of an integer with a space
+        """
         function test_is_valid_format()
 
             @testset "Check if the input is in valid format (a pair of integers)" begin
