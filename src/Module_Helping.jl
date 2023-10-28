@@ -60,7 +60,7 @@ module Helping
         """
         function show_initial_greetings()
             println("""
-            \n---------------------------------------------------
+            ---------------------------------------------------
                   Welcome to the Circuit Plotter Program!
             ---------------------------------------------------
             """)
@@ -143,7 +143,7 @@ module Helping
         """
         function _show_instructions()
             println("""\033[33m
-            \n---------------------------------------------------
+            ---------------------------------------------------
                                 INSTRUCTIONS
             ---------------------------------------------------
 
@@ -200,12 +200,14 @@ module Helping
             # Show the final greetings.
             println("""
             Thank you for having used the Circuit Plotter Program.
-            We hope you have found it useful and that you will use it again in the future.
+            We hope you have found it useful and that you will use it again in the future. 
+            \033[33m
             The program will be quitted in 5 seconds.
-            \n---------------------------------------------------
+            
+            ---------------------------------------------------
                                 END OF PROGRAM
             ---------------------------------------------------
-            """)
+            \033[0m""")
             
             # Exit the program after 5 seconds.
             sleep(5)
