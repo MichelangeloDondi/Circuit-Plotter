@@ -1,6 +1,6 @@
 # ==============================================================================
 # ==============================================================================
-# ========================== Module_Plotting.jl ================================
+# =========================== Module: Plotting =================================
 # ==============================================================================
 # ==============================================================================
 
@@ -14,7 +14,7 @@ Description:
     core functionalities for plotting the circuit components and its design. It integrates
     with the main Circuit Plotter to provide an end-to-end circuit visualization tool.
 
-Version: 4.1
+Version: 4.2
 License: MIT License
         
 Exported functions:
@@ -34,8 +34,8 @@ module Plotting
     # ==============================================================================
 
         # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("Module_Circuit_Structures.jl")
-        using .Circuit_Structures: Node, Circuit # Access the data structures
+        include("datastructure.jl")
+        using .DataStructure: Node, Circuit # Access the data structures
         
     # ==============================================================================
     # ============================== Required Packages =============================
@@ -98,7 +98,8 @@ module Plotting
             _prepare_and_display_plot(p, circuit)
 
             # Provide feedback to the user
-            println("\033[32mCircuit visualization complete. You can now interact with the plot.\033[0m")
+            println("\033[32mCircuit visualization complete. ")
+            println("\033[33mYou can now interact with the plot.\033[0m")
         end
 
     # ==============================================================================

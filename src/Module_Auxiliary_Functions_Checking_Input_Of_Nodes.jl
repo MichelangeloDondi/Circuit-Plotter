@@ -41,8 +41,8 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
     # ==============================================================================
 
         # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("Module_Circuit_Structures.jl")
-        using .Circuit_Structures: Node, Circuit # Access the data structures
+        include("datastructure.jl")
+        using .DataStructure: Node, Circuit # Access the data structures
 
     # ==============================================================================
     # ====================== Function: check_if_input_is_valid =====================
@@ -203,8 +203,8 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
         # ==============================================================================
 
             # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-            include("Module_Circuit_Structures.jl")
-            using .Circuit_Structures: Node, Circuit # Access the data structures
+            include("datastructure.jl")
+            using .DataStructure: Node, Circuit # Access the data structures
 
         # ==============================================================================
         # ===================== Function: _is_coordinate_available =====================

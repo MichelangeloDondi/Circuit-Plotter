@@ -5,10 +5,10 @@
 # ==============================================================================
 
 """
-    Module: Test_check_if_input_is_valid()
+    Module: Test_check_if_input_is_valid
 
 Author: Michelangelo Dondi
-Date: 27-10-2023
+Date: 28-10-2023
 Description: This module provides a function to test the function check_if_input_is_valid(). 
     The function check_if_input_is_valid() checks if the input provided by the user can 
     be used to add a node to the circuit. The input is valid if it is in the format 'x,y'
@@ -16,7 +16,7 @@ Description: This module provides a function to test the function check_if_input
     already in that position. The function check_if_input_is_valid() returns true if the
     input is valid, false otherwise.
 
-Version: 4.0
+Version: 4.2
 Licence: MIT Licence
 
 Exported Function(s):

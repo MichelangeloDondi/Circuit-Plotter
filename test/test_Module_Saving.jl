@@ -1,13 +1,22 @@
+# ==============================================================================
+# ==============================================================================
+# ============================ Module: Saving_Tests ============================
+# ==============================================================================
+# ==============================================================================
+
 """
     test_Module_Saving.jl
 
 Author: Michelangelo Dondi
-Date: 20-10-2023
+Date: 28-10-2023
 Description:
     A test suite for the `save_current_plot` function from the `Saving` module.
 
-Version: 2.3
+Version: 4.2
 License: MIT License
+
+Exported functions:
+- `recap_test_Module_Saving()`: Displays a summary of the test results.
 """
 module Saving_Tests
 

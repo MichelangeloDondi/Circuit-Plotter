@@ -1,19 +1,19 @@
 # ==============================================================================
 # ==============================================================================
-# =================== Module_Auxiliary_Functions_Recap.jl ======================
+# ==================== Module: Auxiliary_Functions_Recap =======================
 # ==============================================================================
 # ==============================================================================
 
 """
-    Module Auxiliary_Functions_Recap
+    Module: Auxiliary_Functions_Recap
 
 Author: Michelangelo Dondi
-Date: 27-10-2023
+Date: 28-10-2023
 Description: 
     Dedicated to providing auxiliary functions for recapping the circuit. 
     This module simplifies the recap process by providing a single file to call.    
  
-Version: 3.6
+Version: 4.2
 License: MIT License
 
 Exported functions: 
@@ -48,9 +48,9 @@ module Auxiliary_Functions_Circuit_Recap
     # ============================== Included Modules ==============================
     # ==============================================================================
 
-        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("Module_Circuit_Structures.jl")
-        using .Circuit_Structures: EdgeInfo, Circuit # Access the data structures
+        # datastructure.jl provides the data structures used by the Circuit Plotter Program.
+        include("datastructure.jl")
+        using .DataStructure: EdgeInfo, Circuit # Access the data structures
 
     # ==============================================================================
     # ======================== function show_circuit_recap =========================
@@ -164,13 +164,13 @@ module Auxiliary_Functions_Circuit_Recap
             - N4 at (1,1)
 
         ---------------------------------------------------
-                         END OF NODES RECAP
+                          END OF NODES RECAP
         ---------------------------------------------------
 
         """
         function show_nodes_recap(circuit)
 
-            println("\n\033[36m---------------------------------------------------")
+            println("\n\033[33m---------------------------------------------------")
             println("                   NODES RECAP")
             println("---------------------------------------------------\n")
 
@@ -178,7 +178,7 @@ module Auxiliary_Functions_Circuit_Recap
             _nodes_recap(circuit)
 
             println("\n---------------------------------------------------")
-            println("                END OF NODES RECAP")
+            println("                 END OF NODES RECAP")
             println("---------------------------------------------------\033[0m\n")
         end    
 

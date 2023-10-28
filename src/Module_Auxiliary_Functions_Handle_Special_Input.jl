@@ -1,6 +1,6 @@
 # ==============================================================================
 # ==============================================================================
-# =============== Module_Auxiliary_Functions_Input_Handling.jl =================
+# ================ Module: Auxiliary_Functions_Input_Handling ==================
 # ==============================================================================
 # ==============================================================================
 
@@ -8,12 +8,12 @@
     Module Auxiliary_Functions_Input_Handling
 
 Author: Michelangelo Dondi
-Date: 23-10-2023
+Date: 28-10-2023
 Description: 
     This module provides functions for handling special user input, such as
     'exit', 'help', 'recap', 'draw' and 'save'.
 
-Version: 2.8
+Version: 4.2
 License: MIT License
 
 Exported functions: 

@@ -1,26 +1,27 @@
 
 # ==============================================================================
 # ==============================================================================
-# ========================== Module_Main_Function.jl ===========================
+# =========================== Module: MainFunction =============================
 # ==============================================================================
 # ==============================================================================
 
 """
-    Module: Main_Function
+    Module: MainFunction
 
 Author: Michelangelo Dondi
-Date: 23-10-2023
+Date: 28-10-2023
 Description:
     Dedicated to housing the main function of the Circuit Visualization Tool.
-    This module simplifies the main function definition process by providing a single file to call.
+    This module orchestrates the execution of the various modules that comprise the program,
+    and provides the user with feedback and instructions as necessary.
 
-Version: 3.2
+Version: 4.2
 License: MIT License
         
 Exported functions:
 - `main()`: The main function of the program. It orchestrates the execution of the various modules that comprise the program, and provides the user with feedback and instructions as necessary.
 """
-module Main_Function
+module MainFunction
 
     # ==============================================================================
     # ============================ Exported Function ===============================
@@ -48,8 +49,8 @@ module Main_Function
     # ==============================================================================
 
         # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("Module_Circuit_Structures.jl")
-        using .Circuit_Structures: EdgeInfo, Circuit # Access the data structures
+        include("datastructure.jl")
+        using .DataStructure: EdgeInfo, Circuit # Access the data structures
 
         # Module_Helping.jl provides helper functions for the main program.
         include("Module_Helping.jl")

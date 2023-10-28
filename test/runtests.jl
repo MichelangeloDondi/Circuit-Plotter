@@ -1,7 +1,7 @@
 # ==============================================================================
 # ==============================================================================
 # ==============================================================================
-# =========================== Tests Circuit Plotter ============================
+# ============================= File: runtests.jl ==============================
 # ==============================================================================
 # ==============================================================================
 # ==============================================================================
@@ -10,10 +10,10 @@
     File: runtests.jl
 
 Author: Michelangelo Dondi
-Date: 27-10-2023
+Date: 28-10-2023
 Description: This file runs the tests for the Circuit Plotter Program.
 
-Version: 4.0
+Version: 4.2
 License: MIT License
 """
 # ==============================================================================
@@ -55,8 +55,8 @@ License: MIT License
 # ==============================================================================
 
     # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-    include("../src/Module_Circuit_Structures.jl")
-    using .Circuit_Structures: Node, Circuit # Access the data structures
+    include("../src/datastructure.jl")
+    using .DataStructure: Node, Circuit # Access the data structures
 
     # Module_Test_check_if_input_is_valid.jl provides the function 'check_if_input_is_valid()'.
     include("Module_Test_check_if_input_is_valid.jl")

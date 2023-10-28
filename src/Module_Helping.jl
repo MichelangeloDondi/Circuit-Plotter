@@ -1,6 +1,6 @@
 # =================================================================================
 # =================================================================================
-# =============================== Helping_Module.jl ===============================
+# ================================ Module: Helping ================================
 # =================================================================================
 # =================================================================================
 
@@ -13,7 +13,7 @@ Description:
     Dedicated to providing guidance to users interacting with the Circuit Plotter Program.
     This module simplifies user interactions by offering clear instructions and comprehensive assistance.
 
-Version: 4.1
+Version: 4.2
 License: MIT License
 
 Exported functions:
@@ -40,8 +40,8 @@ module Helping
     # ==============================================================================
 
         # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("Module_Circuit_Structures.jl")
-        using .Circuit_Structures: Circuit # Access the data structures
+        include("datastructure.jl")
+        using .DataStructure: Circuit # Access the data structures
 
     # ==============================================================================
     # =========================== show_initial_greetings ===========================
@@ -59,10 +59,10 @@ module Helping
         - nothing
         """
         function show_initial_greetings()
-            println("""
+            println("""\033[33m
             ---------------------------------------------------
                   Welcome to the Circuit Plotter Program!
-            ---------------------------------------------------
+            ---------------------------------------------------\033[0m
             """)
             _show_instructions()
             println("Start creating your circuit now!")
@@ -188,7 +188,7 @@ module Helping
             
             # Ask the user whether to save the plot displayed before exiting the program.
             println("\n\033[36mType 'save' or 's' to save the plot of your circuit before exiting the program.")
-            println("If you do not want save if, press any other key to directly exit the program\033[0m")
+            println("If you do not want save, press Enter or provide any other input to directly exit the program\033[0m")
 
             # Read the user input.
             input = readline()

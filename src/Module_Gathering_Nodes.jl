@@ -1,6 +1,6 @@
 # ==============================================================================
 # ==============================================================================
-# ======================= Module_Gathering_Nodes.jl ============================
+# ======================== Module: Gathering_Nodes =============================
 # ==============================================================================
 # ==============================================================================
 
@@ -13,7 +13,7 @@ Description:
     Dedicated to housing the functions for collecting node details from the user.
     This module simplifies the main function definition process by providing a single file to call.
 
-Version: 4.1
+Version: 4.2
 License: MIT License
 
 Exported functions:
@@ -52,8 +52,8 @@ module Gathering_Nodes
     # ==============================================================================  
 
         # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("Module_Circuit_Structures.jl")
-        using .Circuit_Structures: Node, EdgeInfo, Circuit # Access the data structures
+        include("datastructure.jl")
+        using .DataStructure: Node, EdgeInfo, Circuit # Access the data structures
 
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
         include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
@@ -263,7 +263,7 @@ module Gathering_Nodes
             x, y = parse(Int, coords[1]), parse(Int, coords[2])
                 
             # Add the node to the circuit if it doesn't already exist.
-            push!(circuit.nodes, Main.Main_Function.Circuit_Structures.Node(idx, x, y))
+            push!(circuit.nodes, Main.MainFunction.DataStructure.Node(idx, x, y))
             add_vertex!(circuit.graph)
 
             # Provide feedback to the user and return true.

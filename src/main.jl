@@ -2,13 +2,13 @@
 # ==============================================================================
 # ==============================================================================
 # ==============================================================================
-# ========================== Program Circuit Plotter ===========================
+# ========================= Program: Circuit Plotter ===========================
 # ==============================================================================
 # ==============================================================================
 # ==============================================================================
 
 """
-    Circuit Plotter Program
+Program: Circuit Plotter
 
 Author: Michelangelo Dondi
 Date: 28-10-2023
@@ -17,7 +17,7 @@ Description:
     Users can define nodes, components, and their connections, with an end visualization
     rendered using the PlotlyJS backend for interactivity.
 
-Version: 4.1
+Version: 4.2
 License: MIT License
 
 Notes:
@@ -68,9 +68,9 @@ Notes:
 # ============================== Included Modules ==============================
 # ==============================================================================
 
-    # Module_Main_Function.jl provides the main function of the Circuit Plotter Program.
-    include("Module_Main_Function.jl")
-    using .Main_Function # Access the main function
+    # mainfunction.jl provides the main function of the Circuit Plotter Program.
+    include("mainfunction.jl")
+    using .MainFunction # Access the main function
 
 # ==============================================================================
 # ================================== Run Main ==================================

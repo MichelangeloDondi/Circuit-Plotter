@@ -1,6 +1,6 @@
 # ==============================================================================
 # ==============================================================================
-# ================= Module_Auxiliary_Functions_Geometry.jl =====================
+# ================== Module: Auxiliary_Functions_Geometry ======================
 # ==============================================================================
 # ==============================================================================
 
@@ -8,12 +8,12 @@
     Module Auxiliary_Functions_Geometry
 
 Author: Michelangelo Dondi
-Date: 23-10-2023
+Date: 28-10-2023
 Description:
     Dedicated to housing the geometry functions used by the Circuit Visualization Tool.
     This module simplifies the geometry process by providing a single file to call.
 
-Version: 3.2
+Version: 4.2
 License: MIT License
 
 Exported functions:

@@ -1,5 +1,11 @@
+# =============================================================================
+# =============================================================================
+# =========================== Module: DataStructure ===========================
+# =============================================================================
+# =============================================================================
+
 """
-    module Circuit_Structures
+    Module: DataStructure
 
 Author: Michelangelo Dondi
 Date: 27-10-2023
@@ -7,7 +13,7 @@ Description:
     Dedicated to housing the data structures used by the Circuit Visualization Tool.
     This module simplifies the data structure definition process by providing a single file to call.
 
-Version: 3.5
+Version: 4.2
 License: MIT License
 
 Exported data structures:
@@ -16,10 +22,10 @@ Exported data structures:
 - `Component`: A structure that encapsulates the details of a component.
 - `Circuit`: A structure that encapsulates the nodes, components, and their pictorial representation within the circuit.
 """
-module Circuit_Structures
+module DataStructure
 
     # ==============================================================================
-    # ============================ Exported Data Structures ========================
+    # ============================ Exported Data Structure =========================
     # ==============================================================================
 
         # For housing the data structures used by the Circuit Plotter Program

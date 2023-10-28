@@ -1,11 +1,11 @@
 # ==============================================================================
 # ==============================================================================
-# ============= Module_Auxiliary_Functions_Circuit_Deleting.jl ================
+# ============= Module: Auxiliary_Functions_Circuit_Deleting.jl ================
 # ==============================================================================
 # ==============================================================================
 
 """
-    Module Auxiliary_Functions_Circuit_Deleting
+    Module: Auxiliary_Functions_Circuit_Deleting
 
 Author: Michelangelo Dondi
 Date: 28-10-2023
@@ -13,7 +13,7 @@ Description:
     This module provides functions for modifying an existing node's coordinates in 
     the circuit and for deleting an existing node from the circuit.
 
-Version: 4.1
+Version: 4.2
 License: MIT License
 
 Exported functions: 
@@ -46,9 +46,9 @@ module Auxiliary_Functions_Circuit_Deleting
     # ============================ Included Modules ================================
     # ==============================================================================
 
-        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("Module_Circuit_Structures.jl")
-        using .Circuit_Structures: EdgeInfo, Circuit # Access the data structures
+        # datastructure.jl provides the data structures used by the Circuit Plotter Program.
+        include("datastructure.jl")
+        using .DataStructure: EdgeInfo, Circuit # Access the data structures
 
         # Module_Auxiliary_Functions_Circuit_Recap.jl provides auxiliary functions for recapping the circuit.
         include("Module_Auxiliary_Functions_Circuit_Recap.jl")
@@ -59,7 +59,7 @@ module Auxiliary_Functions_Circuit_Deleting
         using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input ('help', 'recap', 'draw', 'exit', 'break')
 
     # ==============================================================================
-    # ====================== function delete_node_from_circuit =====================
+    # ===================== Function: delete_node_from_circuit =====================
     # ==============================================================================
 
         """
@@ -96,7 +96,7 @@ module Auxiliary_Functions_Circuit_Deleting
         end
 
     # ==============================================================================
-    # ----------------- function _prompt_deleting_node_instructions ----------------
+    # ---------------- Function: _prompt_deleting_node_instructions ----------------
     # ==============================================================================
 
         function _prompt_deleting_node_instructions(circuit, edgeinfo)
@@ -108,7 +108,7 @@ module Auxiliary_Functions_Circuit_Deleting
             Here there is a recap of the nodes in the circuit for your convenience: \033[0m""")
 
             # Show the circuit recap.
-            show_nodes_recap(circuit, edgeinfo)
+            show_nodes_recap(circuit)
 
             # Prompt the user for the node ID.
             print("\n\033[36mEnter the ID (e.g. '2') of the node you want to delete or type 'break' or 'b' to finish deleting nodes: \033[0m")
@@ -120,7 +120,7 @@ module Auxiliary_Functions_Circuit_Deleting
         end
 
     # ==============================================================================
-    # --------------------- function _process_user_input ---------------------------
+    # -------------------- Function: _process_user_input ---------------------------
     # ==============================================================================
 
         """

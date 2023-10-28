@@ -1,6 +1,6 @@
 # ==============================================================================
 # ==============================================================================
-# ================= Module_Gathering_Edges_And_Components.jl ===================
+# ================== Module: Gathering_Edges_And_Components ====================
 # ==============================================================================
 # ==============================================================================
 
@@ -52,8 +52,8 @@ module Gathering_Edges_And_Components
     # ==============================================================================    
 
         # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("Module_Circuit_Structures.jl")
-        using .Circuit_Structures: EdgeInfo, Component, Circuit # Access the data structures
+        include("datastructure.jl")
+        using .DataStructure: EdgeInfo, Component, Circuit # Access the data structures
 
         # Module_Auxiliary_Functions_Geometry.jl provides functions for validating user input.
         include("Module_Auxiliary_Functions_Geometry.jl")
@@ -171,13 +171,12 @@ module Gathering_Edges_And_Components
         - The user's input as a string.
         """
         function _get_edge_input(edge_count::Int)::String
-            println("""\n===================================================
+            print("""\n===================================================
             \033[33m
             Number of edges already present in the Circuit: $edge_count.
             \033[36m
             Provide the node indexes for the next edge (E$(edge_count + 1)) or type 'break' or 'b' to stop adding edges.
-            Format: i,j (Direction: Ni->Nj) \033[0m
-            """)
+            Format: i,j (Direction: Ni->Nj) \033[0m""")
             return readline()
         end
 
@@ -350,7 +349,7 @@ module Gathering_Edges_And_Components
                     component_details = readline()
 
                     # Add the component to the circuit 
-                    push!(circuit.components, Main.Main_Function.Circuit_Structures.Component(edge_count, edge_info.edges[edge_count][1], edge_info.edges[edge_count][2], component_details))
+                    push!(circuit.components, Main.MainFunction.DataStructure.Component(edge_count, edge_info.edges[edge_count][1], edge_info.edges[edge_count][2], component_details))
 
                     # Print a confirmation message.
                     println("\n\033[32mComponent \"$component_details\" successfully added to edge E$edge_count.\033[0m")  
