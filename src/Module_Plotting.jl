@@ -98,7 +98,7 @@ module Plotting
             _prepare_and_display_plot(p, circuit)
 
             # Provide feedback to the user
-            println("\033[36mCircuit visualization complete. You can now interact with the plot.\033[0m")
+            println("\033[32mCircuit visualization complete. You can now interact with the plot.\033[0m")
         end
 
     # ==============================================================================
