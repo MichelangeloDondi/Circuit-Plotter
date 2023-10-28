@@ -13,7 +13,7 @@ Description:
     This module provides functions for modifying an existing node's coordinates in 
     the circuit.
 
-Version: 4.2
+Version: 4.3
 License: MIT License
 
 Exported functions: 
@@ -46,13 +46,13 @@ module Auxiliary_Functions_Circuit_Modifying
     # ============================ Included Modules ================================
     # ==============================================================================
 
-        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
+        # Module DataStructure provides the data structures used by the Circuit Plotter Program.
         include("datastructure.jl")
         using .DataStructure: EdgeInfo, Circuit # Access the data structures
 
-        # Module_Auxiliary_Functions_Circuit_Recap.jl provides auxiliary functions for recapping the circuit.
-        include("Module_Auxiliary_Functions_Circuit_Recap.jl")
-        using .Auxiliary_Functions_Circuit_Recap: show_nodes_recap # Recap the circuit    
+        # Module CircuitRecap provides auxiliary functions for recapping the circuit.
+        include("functions_always_callable/circuit_recap.jl")
+        using .CircuitRecap: show_nodes_recap # Recap the circuit    
 
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
         include("Module_Auxiliary_Functions_Handle_Special_Input.jl")

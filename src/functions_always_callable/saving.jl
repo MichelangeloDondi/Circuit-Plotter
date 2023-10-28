@@ -44,12 +44,12 @@ module Saving
     # =========================== Included Modules =================================
     # ==============================================================================  
 
-        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("datastructure.jl")
+        # Module DataStructure provides the data structures used by the Circuit Plotter Program.
+        include("../datastructure.jl")
         using .DataStructure: Circuit # Access the data structures
 
-        # Module_Plotting.jl provides functions for drawing the current circuit plot.
-        include("Module_Plotting.jl")
+        # Module Plotting provides functions for drawing the current circuit plot.
+        include("plotting.jl")
         using .Plotting: draw_plot # Draw the current circuit plot
 
     # ==============================================================================

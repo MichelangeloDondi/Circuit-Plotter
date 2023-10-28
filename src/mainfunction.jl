@@ -15,7 +15,7 @@ Description:
     This module orchestrates the execution of the various modules that comprise the program,
     and provides the user with feedback and instructions as necessary.
 
-Version: 4.2
+Version: 4.3
 License: MIT License
         
 Exported functions:
@@ -52,8 +52,8 @@ module MainFunction
         include("datastructure.jl")
         using .DataStructure: EdgeInfo, Circuit # Access the data structures
 
-        # Module_Helping.jl provides helper functions for the main program.
-        include("Module_Helping.jl")
+        # Module Helping provides helper functions for the main program.
+        include("functions_always_callable/helping.jl")
         using .Helping: show_initial_greetings # Greetings and instructions
         using .Helping: show_final_greetings_asking_whether_to_save_plot_displayed # Final greetings and whether to save the plot displayed before exiting the program
 
@@ -66,15 +66,15 @@ module MainFunction
         using .Gathering_Edges_And_Components: collect_edges_and_components_from_cmd # Collect edge details and component details from the user
 
         # Module_Auxiliary_Functions_Circuit_Recap.jl provides auxiliary functions for recapping the circuit.
-        include("Module_Auxiliary_Functions_Circuit_Recap.jl")
-        using .Auxiliary_Functions_Circuit_Recap: show_circuit_recap # Recap the circuit
+        include("functions_always_callable/circuit_recap.jl")
+        using .CircuitRecap: show_circuit_recap # Recap the circuit
         
-        # Module_Plotting.jl provides functions for drawing the current circuit plot.
-        include("Module_Plotting.jl")
+        # Module Plotting provides functions for drawing the current circuit plot.
+        include("functions_always_callable/plotting.jl")
         using .Plotting: draw_plot # Draw the current circuit plot
         
-        # Module_Saving.jl provides functions for saving the plot displayed.
-        include("Module_Saving.jl")
+        # Module Saving provides functions for saving the plot displayed.
+        include("functions_always_callable/saving.jl")
         using .Saving: save_plot_displayed # Save the plot displayed
     
     # ==============================================================================

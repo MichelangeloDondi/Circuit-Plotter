@@ -14,7 +14,7 @@ Description:
     core functionalities for plotting the circuit components and its design. It integrates
     with the main Circuit Plotter to provide an end-to-end circuit visualization tool.
 
-Version: 4.2
+Version: 4.3
 License: MIT License
         
 Exported functions:
@@ -34,7 +34,7 @@ module Plotting
     # ==============================================================================
 
         # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("datastructure.jl")
+        include("../datastructure.jl")
         using .DataStructure: Node, Circuit # Access the data structures
         
     # ==============================================================================

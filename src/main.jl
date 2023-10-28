@@ -17,7 +17,7 @@ Description:
     Users can define nodes, components, and their connections, with an end visualization
     rendered using the PlotlyJS backend for interactivity.
 
-Version: 4.2
+Version: 4.3
 License: MIT License
 
 Notes:
@@ -73,7 +73,7 @@ Notes:
     using .MainFunction # Access the main function
 
 # ==============================================================================
-# ================================== Run Main ==================================
+# ===================== Function: main(circuit, edge_info) =====================
 # ==============================================================================
 
     # Run the main function.

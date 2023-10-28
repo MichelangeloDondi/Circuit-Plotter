@@ -39,9 +39,13 @@ module Helping
     # ============================ Including Modules ===============================
     # ==============================================================================
 
-        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("datastructure.jl")
+        # Module DataStructure provides the data structures used by the Circuit Plotter Program.
+        include("../datastructure.jl")
         using .DataStructure: Circuit # Access the data structures
+
+        # Module Saving provides functions for plotting the circuit.
+        include("saving.jl")
+        using .Saving: save_plot_displayed # Save the plot displayed
 
     # ==============================================================================
     # ===================== Function: show_initial_greetings() =====================

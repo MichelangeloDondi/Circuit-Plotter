@@ -5,7 +5,7 @@
 # ==============================================================================
 
 """
-    Module Auxiliary_Functions_Input_Handling
+    Module: Auxiliary_Functions_Input_Handling
 
 Author: Michelangelo Dondi
 Date: 28-10-2023
@@ -13,7 +13,7 @@ Description:
     This module provides functions for handling special user input, such as
     'exit', 'help', 'recap', 'draw' and 'save'.
 
-Version: 4.2
+Version: 4.3
 License: MIT License
 
 Exported functions: 
@@ -41,24 +41,24 @@ module Auxiliary_Functions_Handle_Special_Input
     # ============================ Included Modules ================================
     # ==============================================================================
 
-        # Module_Helping.jl provides helper functions for the main program.
-        include("Module_Helping.jl")
+        # Module Helping provides helper functions for the main program.
+        include("functions_always_callable/helping.jl")
         using .Helping: show_help # Help and instructions
 
-        # Module_Auxiliary_Functions_Circuit_Recap.jl provides auxiliary functions for recapping the circuit.
-        include("Module_Auxiliary_Functions_Circuit_Recap.jl")
-        using .Auxiliary_Functions_Circuit_Recap: show_circuit_recap # Recap the circuit
+        # Module CircuitRecap provides auxiliary functions for recapping the circuit.
+        include("functions_always_callable/circuit_recap.jl")
+        using .CircuitRecap: show_circuit_recap # Recap the circuit
         
-        # Module_Plotting.jl provides functions for drawing the current circuit plot.
-        include("Module_Plotting.jl")
+        # Module Plotting provides functions for drawing the current circuit plot.
+        include("functions_always_callable/plotting.jl")
         using .Plotting: draw_plot # Draw the current circuit plot
 
-        # Module_Saving.jl provides functions for saving the plot displayed.
-        include("Module_Saving.jl")
+        # Module Saving provides functions for saving the plot displayed.
+        include("functions_always_callable/saving.jl")
         using .Saving: save_plot_displayed # Save the plot displayed
         
     # ==============================================================================
-    # =================== function handle_special_input_break ======================
+    # === Function: handle_special_input_break(input::String, circuit, edgeinfo)::Symbol ===
     # ==============================================================================
 
         """
@@ -95,7 +95,7 @@ module Auxiliary_Functions_Handle_Special_Input
         end
         
     # ==============================================================================
-    # ============ function handle_special_input_break_modify_cancel ===============
+    # === Function: handle_special_input_break_modify_cancel(input::String, circuit, edgeinfo)::Symbol ===
     # ==============================================================================
 
         """
@@ -142,7 +142,7 @@ module Auxiliary_Functions_Handle_Special_Input
         end
 
     # ==============================================================================
-    # ================== function handle_special_input_yes_no ======================
+    # === Function handle_special_input_yes_no(input::String, circuit, edgeinfo)::Symbol ===
     # ==============================================================================
 
         """

@@ -1,6 +1,6 @@
 # ==============================================================================
 # ==============================================================================
-# ============= Module: Auxiliary_Functions_Circuit_Deleting.jl ================
+# ============== Module: Auxiliary_Functions_Circuit_Deleting ==================
 # ==============================================================================
 # ==============================================================================
 
@@ -13,7 +13,7 @@ Description:
     This module provides functions for modifying an existing node's coordinates in 
     the circuit and for deleting an existing node from the circuit.
 
-Version: 4.2
+Version: 4.3
 License: MIT License
 
 Exported functions: 
@@ -46,20 +46,20 @@ module Auxiliary_Functions_Circuit_Deleting
     # ============================ Included Modules ================================
     # ==============================================================================
 
-        # datastructure.jl provides the data structures used by the Circuit Plotter Program.
+        # Module DataStructure provides the data structures used by the Circuit Plotter Program.
         include("datastructure.jl")
         using .DataStructure: EdgeInfo, Circuit # Access the data structures
 
-        # Module_Auxiliary_Functions_Circuit_Recap.jl provides auxiliary functions for recapping the circuit.
-        include("Module_Auxiliary_Functions_Circuit_Recap.jl")
-        using .Auxiliary_Functions_Circuit_Recap: show_nodes_recap # Recap the circuit    
+        # Module CircuitRecap provides auxiliary functions for recapping the circuit.
+        include("functions_always_callable/circuit_recap.jl")
+        using .CircuitRecap: show_nodes_recap # Recap the circuit    
 
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
         include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
         using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input ('help', 'recap', 'draw', 'exit', 'break')
 
     # ==============================================================================
-    # ===================== Function: delete_node_from_circuit =====================
+    # ================ Function: delete_node_from_circuit(circuit) =================
     # ==============================================================================
 
         """
@@ -80,7 +80,7 @@ module Auxiliary_Functions_Circuit_Deleting
             while true
 
                 # Display instructions for the user.
-                input = _prompt_deleting_node_instructions(circuit, edgeinfo) 
+                input = _prompt_deleting_node_instructions(circuit) 
 
                 # Process the user's input.
                 node_count, action = _process_user_input(node_count, input, circuit, edgeinfo)
@@ -96,10 +96,10 @@ module Auxiliary_Functions_Circuit_Deleting
         end
 
     # ==============================================================================
-    # ---------------- Function: _prompt_deleting_node_instructions ----------------
+    # ----------- Function: _prompt_deleting_node_instructions(circuit) ------------
     # ==============================================================================
 
-        function _prompt_deleting_node_instructions(circuit, edgeinfo)
+        function _prompt_deleting_node_instructions(circuit)
 
             # Display the instructions for the user.
             println("""\033[36m
@@ -120,7 +120,7 @@ module Auxiliary_Functions_Circuit_Deleting
         end
 
     # ==============================================================================
-    # -------------------- Function: _process_user_input ---------------------------
+    # --- Function: _process_user_input(input::String, circuit, edgeinfo)::Symbol --
     # ==============================================================================
 
         """
@@ -178,10 +178,29 @@ module Auxiliary_Functions_Circuit_Deleting
         end
         
     # ------------------------------------------------------------------------------
-    # ------------------------- function _parse_input_as_integer -------------------
+    # --- Function: _parse_input_as_integer(input::String, circuit, edgeinfo)::Symbol ---
     # ------------------------------------------------------------------------------
 
-        function _parse_input_as_integer(node_count, input::String, circuit)
+        """
+            _parse_input_as_integer(input::String, circuit, edgeinfo)::Symbol
+
+        Parses the user's input as an integer and deletes the node with the given ID from the circuit.
+
+        # Parameters:
+        - input: The input provided by the user.
+        - circuit: The primary data structure representing the circuit, including its nodes and components.
+        - edgeinfo: The data structure containing the edge information for the circuit.
+
+        # Returns:
+        - :continue if the user's input was processed successfully and the program should continue.
+        - :break if the user's input was processed successfully and the program should break.
+
+        # Notes:
+        - The function is used by the _process_user_input function to parse the user's input.
+        - This function is the primary driver for user interaction when modifying nodes.
+        It leverages the other helper functions to simplify its logic.
+        """
+        function _parse_input_as_integer(input::String, circuit, edgeinfo)::Symbol
 
             # Convert the input to an integer.
             node_id = parse(Int, input)

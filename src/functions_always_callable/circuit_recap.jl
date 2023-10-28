@@ -1,11 +1,11 @@
 # ==============================================================================
 # ==============================================================================
-# ==================== Module: Auxiliary_Functions_Recap =======================
+# ========================== Module: CircuitRecap ==============================
 # ==============================================================================
 # ==============================================================================
 
 """
-    Module: Auxiliary_Functions_Recap
+    Module: CircuitRecap
 
 Author: Michelangelo Dondi
 Date: 28-10-2023
@@ -13,7 +13,7 @@ Description:
     Dedicated to providing auxiliary functions for recapping the circuit. 
     This module simplifies the recap process by providing a single file to call.    
  
-Version: 4.2
+Version: 4.3
 License: MIT License
 
 Exported functions: 
@@ -32,7 +32,7 @@ Notes:
     - '"Component details" on edge Ei (Nj -> Nk)', where i is the edge index, 
     j is the index of the first node, and k is the index of the second node.
 """
-module Auxiliary_Functions_Circuit_Recap
+module CircuitRecap
 
     # ==============================================================================
     # ============================== Exported Function =============================
@@ -48,12 +48,12 @@ module Auxiliary_Functions_Circuit_Recap
     # ============================== Included Modules ==============================
     # ==============================================================================
 
-        # datastructure.jl provides the data structures used by the Circuit Plotter Program.
-        include("datastructure.jl")
+        # Module DataStructure provides the data structures used by the Circuit Plotter Program.
+        include("../datastructure.jl")
         using .DataStructure: EdgeInfo, Circuit # Access the data structures
 
     # ==============================================================================
-    # ======================== function show_circuit_recap =========================
+    # ============== Function: show_circuit_recap(circuit, edge_info) ==============
     # ==============================================================================
 
         """
@@ -130,7 +130,7 @@ module Auxiliary_Functions_Circuit_Recap
         end
         
     # ==============================================================================
-    # ========================= function show_nodes_recap ==========================
+    # ==================== Function: show_nodes_recap(circuit) =====================
     # ==============================================================================
         
         """
@@ -183,7 +183,7 @@ module Auxiliary_Functions_Circuit_Recap
         end    
 
     # ==============================================================================
-    # ---------------------------- function _nodes_recap ---------------------------
+    # ----------------------- Function: _nodes_recap(circuit) ----------------------
     # ==============================================================================
 
         """
@@ -234,7 +234,7 @@ module Auxiliary_Functions_Circuit_Recap
         end
     
     # ==============================================================================
-    # --------------------------- function _edges_recap ----------------------------
+    # ---------------------- Function: _edges_recap(edgeinfo) ----------------------
     # ==============================================================================
 
         """
@@ -283,7 +283,7 @@ module Auxiliary_Functions_Circuit_Recap
         end
 
     # ==============================================================================
-    # -------------------------- function _component_recap -------------------------
+    # --------------------- Function: _component_recap(circuit) --------------------
     # ==============================================================================
 
         """
