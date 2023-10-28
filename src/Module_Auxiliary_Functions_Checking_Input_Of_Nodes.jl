@@ -11,7 +11,7 @@ Author: Michelangelo Dondi
 Date: 28-10-2023
 Description: This module contains the function for checking if the input aimed to add a new node is valid.
 
-Version: 4.0
+Version: 4.1
 License: MIT License 
 
 Exported functions:
@@ -68,29 +68,30 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
         """
         function check_if_input_is_valid(input::String, circuit)::Bool
 
-            println("\nChecking if the input is valid...")
+            println("\n\033[36mChecking if the input is valid...\033[0m")
             # Check if the input is valid format and if the input is valid free coordinates.
             if Input_Format_Check.is_valid_format(input) 
 
                 # If the input is valid format, print a message and check if the input is valid free coordinates.
-                println("The input is in the correct format. Checking if the coordinates are available...")
+                println("\033[32mThe input is in the correct format. \n\033[36mChecking if the coordinates are available...\033[0m")
                 
                 # If the input is valid format, check if the input is valid free coordinates.
                 if Coordinate_Availability_Check.is_coordinate_available(input, circuit)
 
                     # If the input is valid format and if the input is valid free coordinates, return true.
-                    println("The coordinates are available.")   
+                    println("\033[32mThe coordinates are available.\033[0m")   
                     return true
                 else
                     
                     # If the input is valid format but if the input is not valid free coordinates, return false.
-                    println("The coordinates are not available.")
+                    println("\033[31mThe coordinates are not available.\033[0m")
                     return false
                 end                
             else
                     
-                # If the input is not valid format, print a message and return false.
-                println("The input is not in the correct pair of integers 'x,y' format.")
+                # If the input is not in the format 'integer x,y' (e.g. '1,-2'), print an error message and return false.
+                println("\n\033[31mInvalid input: you are not providing a pair of integer numbers.") 
+                println("\033[36mEnter integer coordinates as 'x,y' (e.g. '1,-2').\033[0m")                
                 return false
             end
         end
@@ -152,21 +153,19 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
                     # Check if the input is in the format 'integer x,y' (e.g. '1,-2').
                     if length(coords) != 2
 
-                        # If the input is not in the format 'integer x,y' (e.g. '1,-2'), print an error message and return false.
-                        println("\nInvalid input: you are not providing a pair of numbers. Enter integer coordinates as 'x,y' (e.g. '1,-2').")
+                        # If the input is not in the format 'integer x,y' (e.g. '1,-2'), return false.
                         return false
                     else
 
                         # Parse the coordinates as integers.
                         x, y = parse(Int, coords[1]), parse(Int, coords[2])
                         
-                        # Check if a node already exists at the provided coordinates.
+                        # If the input is in the format 'integer x,y' (e.g. '1,-2'), return true.
                         return true
                     end
                 catch
 
-                    # If the coordinates couldn't be parsed as integers, print an error message and return false.
-                    println("\nInvalid input. Enter integer coordinates as 'x,y' (e.g. '1,-2').")
+                    # If the input is not in the format 'integer x,y' (e.g. '1,-2'), return false.
                     return false
                 end
             end
@@ -244,8 +243,8 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
                     if node.x == x && node.y == y   
 
                         # Provide feedback to the user and return false.
-                        println("\nThe node coordinates you have inserted cannot be accepted for the following reason:")
-                        println("Node N",node.id," already exists at position ($x,$y).")
+                        println("\n\033[31mThe node coordinates you have inserted cannot be accepted for the following reason:")
+                        println("\033[33mNode N",node.id," already exists at position ($x,$y).\033[36m")
                         return false
                     end
                 end
