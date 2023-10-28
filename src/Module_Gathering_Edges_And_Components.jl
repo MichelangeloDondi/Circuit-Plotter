@@ -8,12 +8,12 @@
     Module: Gathering_Edges_And_Components
 
 Author: Michelangelo Dondi
-Date: 24-10-2023
+Date: 28-10-2023
 Description:
     Dedicated to housing the functions for collecting edge details and component details.
     This module simplifies the main function definition process by providing a single function to call.
 
-Version: 3.4
+Version: 4.1
 License: MIT License
 
 Exported functions:
@@ -74,15 +74,15 @@ module Gathering_Edges_And_Components
         Sequentially gathers edge details and component details from the user.
         The function aims to achieve the following: 
 
-            1. Prompt the user for the next edge.
-            2. Handle special input ('help', 'recap', 'draw', 'exit', 'save', 'break').
-            3. Split the input into the node indices.
-            4. Validate the input.  
-            5. Parse the node indices.
-            6. Try adding the edge to the circuit.
-            7. If the edge was added successfully, prompt the user for the component details.
-            8. Handle special input ('help', 'recap', 'draw', 'exit', 'stop').
-            9. If the input was to not add a component, break out of the loop.
+            1.  Prompt the user for the next edge.
+            2.  Handle special input ('help', 'recap', 'draw', 'exit', 'save', 'break').
+            3.  Split the input into the node indices.
+            4.  Validate the input.  
+            5.  Parse the node indices.
+            6.  Try adding the edge to the circuit.
+            7.  If the edge was added successfully, prompt the user for the component details.
+            8.  Handle special input ('help', 'recap', 'draw', 'exit', 'stop').
+            9.  If the input was to not add a component, break out of the loop.
             10. If the input was to add a component, prompt the user for the component details.
             11. Add the component to the circuit.
             12. Print a confirmation message.
@@ -128,7 +128,7 @@ module Gathering_Edges_And_Components
 
                 # If the input was to stop collecting edges, break out of the loop.
                 elseif handle_result == :break
-                    println("\nFinished adding edges and components to the circuit.")
+                    println("\n\033[32mFinished adding edges and components to the circuit.\033[0m")
                     break
                 end
 
@@ -146,7 +146,7 @@ module Gathering_Edges_And_Components
 
                         # Update the edge count and print a confirmation message.
                         edge_count += 1
-                        println("\nEdge E$edge_count: N$node1 -> N$node2 successfully added.")
+                        println("\n\033[32mEdge E$edge_count: N$node1 -> N$node2 successfully added.\033[0m")
 
                         # Collect component for the edge if the edge is not a dummy edge.
                         _collect_component_from_cmd(edge_count, circuit, edge_info)
@@ -171,10 +171,13 @@ module Gathering_Edges_And_Components
         - The user's input as a string.
         """
         function _get_edge_input(edge_count::Int)::String
-            println("\n===================================================")
-            println("\nNumber of edges already present in the Circuit: $edge_count.")
-            println("\nProvide the node indexes for the next edge (E$(edge_count + 1)) or type 'break' or 'b' to stop adding edges.")
-            println("Format: i,j (Direction: Ni->Nj)")
+            println("""\n===================================================
+            \033[33m
+            Number of edges already present in the Circuit: $edge_count.
+            \033[36m
+            Provide the node indexes for the next edge (E$(edge_count + 1)) or type 'break' or 'b' to stop adding edges.
+            Format: i,j (Direction: Ni->Nj) \033[0m
+            """)
             return readline()
         end
 
@@ -209,7 +212,8 @@ module Gathering_Edges_And_Components
 
             # Ensure there are only two nodes in the input.
             if length(edge_nodes) != 2
-                println("\nInvalid input. Provide two node indices separated by a comma (e.g. '3,2').")
+                println("\n\033[31mInvalid input.")
+                println("\033[36mProvide two node indices separated by a comma (e.g. '3,2').\033[0m")
                 return false
             end
 
@@ -217,7 +221,7 @@ module Gathering_Edges_And_Components
             try
                 node1, node2 = parse(Int, edge_nodes[1]), parse(Int, edge_nodes[2])
             catch e
-                println("\nError while parsing node indices: $e")
+                println("\n\033[31mError while parsing node indices: $e\033[0m")
                 return false
             end
             
@@ -266,15 +270,15 @@ module Gathering_Edges_And_Components
 
             # Check if the edge tries to connect a node to itself.
             if node1 == node2
-                println("\nThe edge cannot be added for the following reason:")
-                println("Self-loops are not allowed.")
+                println("\n\033[31mThe edge cannot be added for the following reason:")
+                println("\033[33mSelf-loops are not allowed.\033[0m")
                 return false
             end
 
             # Check if the edge tries to connect a node to a non-existent node.
             if node1 < 1 || node1 > node_count || node2 < 1 || node2 > node_count
-                println("\nThe edge cannot be added for the following reason:")
-                println("Invalid node indices. Range: [1, $node_count].")
+                println("\n\033[31mThe edge cannot be added for the following reason:")
+                println("\033[33mInvalid node indices. Range: [1, $node_count].\033[0m")
                 return false
             end
 
@@ -282,8 +286,8 @@ module Gathering_Edges_And_Components
             overlapping = overlapping_edges((node1, node2), edge_info.edges, circuit.nodes)
             if !isempty(overlapping)
                 overlaps_str = join(["E$(index)(N$(edge[1])->N$(edge[2]))" for (index, edge) in overlapping], ", ")
-                println("\nThe edge cannot be added for the following reason:")
-                println("Overlap detected with: $overlaps_str.")
+                println("\n\033[31mThe edge cannot be added for the following reason:")
+                println("\033[33mOverlap detected with: $overlaps_str.\033[0m")
                 return false
             end
 
@@ -319,7 +323,8 @@ module Gathering_Edges_And_Components
             while true 
 
                 # Ask the user if they want to add a component to the edge
-                println("\nDo you want to add a component to edge E$edge_count? Answer typing 'yes'/'y' or 'no'/'n'.")
+                println("\nDo you want to add a component to edge E$edge_count?")
+                println("\033[36mAnswer typing 'yes'/'y' or 'no'/'n'.\033[0m")
                 
                 # Read the input from the user.
                 input = readline()
@@ -339,7 +344,7 @@ module Gathering_Edges_And_Components
                 elseif handle_result  == :yes
 
                     # Prompt the user for the component details.
-                    println("\nProvide component details (e.g. 'R1 = 10 [Ω]'):")
+                    println("\n\033[36mProvide component details (e.g. 'R1 = 10 [Ω]'):\033[0m")
 
                     # Read the input from the user.
                     component_details = readline()
@@ -348,12 +353,13 @@ module Gathering_Edges_And_Components
                     push!(circuit.components, Main.Main_Function.Circuit_Structures.Component(edge_count, edge_info.edges[edge_count][1], edge_info.edges[edge_count][2], component_details))
 
                     # Print a confirmation message.
-                    println("\nComponent \"$component_details\" successfully added to edge E$edge_count.")  
+                    println("\n\033[32mComponent \"$component_details\" successfully added to edge E$edge_count.\033[0m")  
                     break
                     
                 # If the input was not handled, print an error message and continue to the next iteration.
                 else
-                    println("\nInvalid input. Answer typing 'yes'/'y' or 'no'/'n'.")
+                    println("\n\033[31mInvalid input.")
+                    println("\033[36mAnswer typing 'yes'/'y' or 'no'/'n'.\033[0m")
                 end
             end
         end
@@ -383,8 +389,8 @@ module Gathering_Edges_And_Components
                 if (node1, node2) == existing_edge  
 
                     # Print an error message and return true.
-                    println("\nThe edge cannot be added for the following reason:")
-                    println("Edge between nodes N$node1 and N$node2 already exists as E$index(N$node1->N$node2).")
+                    println("\n\033[31mThe edge cannot be added for the following reason:")
+                    println("\033[33mEdge between nodes N$node1 and N$node2 already exists as E$index(N$node1->N$node2).\033[0m")
 
                     # Return true to indicate that the edge already exists and break the loop
                     return true
@@ -394,8 +400,8 @@ module Gathering_Edges_And_Components
                 elseif (node2, node1) == existing_edge
 
                     # Print an error message and return true to indicate that the edge already exists
-                    println("\nThe edge cannot be added for the following reason:")
-                    println("Edge between nodes N$node1 and N$node2 already exists as E$index(N$node2->N$node1).")
+                    println("\n\033[31mThe edge cannot be added for the following reason:")
+                    println("\033[33mEdge between nodes N$node1 and N$node2 already exists as E$index(N$node2->N$node1).\033[0m")
 
                     # Return true to indicate that the edge already exists and break the loop
                     return true
