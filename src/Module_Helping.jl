@@ -8,12 +8,12 @@
     Module: Helping 
 
 Author: Michelangelo Dondi
-Date: 23-10-2023
+Date: 28-10-2023
 Description:
     Dedicated to providing guidance to users interacting with the Circuit Plotter Program.
     This module simplifies user interactions by offering clear instructions and comprehensive assistance.
 
-Version: 3.1
+Version: 4.1
 License: MIT License
 
 Exported functions:
@@ -84,7 +84,7 @@ module Helping
         - nothing
         """
         function show_help()
-            println("""
+            println("""\033[33m
             \n---------------------------------------------------
                                     HELP
             ---------------------------------------------------
@@ -121,7 +121,7 @@ module Helping
             println("""
             \n---------------------------------------------------
                                 END OF HELP 
-            ---------------------------------------------------
+            ---------------------------------------------------\033[0m
             """)
         end
 
@@ -142,7 +142,7 @@ module Helping
         - nothing
         """
         function _show_instructions()
-            println("""
+            println("""\033[33m
             \n---------------------------------------------------
                                 INSTRUCTIONS
             ---------------------------------------------------
@@ -159,6 +159,10 @@ module Helping
             - If there is an attempt to save a plot without displaying it first, the plot is displayed before saving.
             - For more information, please refer to the documentation.
             - For further issues, please contact support.
+
+            ---------------------------------------------------
+                            END OF INSTRUCTIONS
+            ---------------------------------------------------\033[0m
             """)
         end
     
@@ -180,8 +184,8 @@ module Helping
         function show_final_greetings_asking_whether_to_save_plot_displayed(circuit)
             
             # Ask the user whether to save the plot displayed before exiting the program.
-            println("\nType 'save' or 's' to save the plot of your circuit before exiting the program.")
-            println("If you do not want save if, press any other key to directly exit the program")
+            println("\n\033[36mType 'save' or 's' to save the plot of your circuit before exiting the program.")
+            println("If you do not want save if, press any other key to directly exit the program\033[0m")
 
             # Read the user input.
             input = readline()
