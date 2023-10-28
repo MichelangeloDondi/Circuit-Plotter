@@ -8,12 +8,12 @@
     Module: Gathering_Nodes
 
 Author: Michelangelo Dondi
-Date: 27-10-2023
+Date: 28-10-2023
 Description:    
     Dedicated to housing the functions for collecting node details from the user.
     This module simplifies the main function definition process by providing a single file to call.
 
-Version: 3.5
+Version: 4.1
 License: MIT License
 
 Exported functions:
@@ -217,8 +217,8 @@ module Gathering_Nodes
             elseif handle_result == :cancel
 
                 # Delete the nodes and update the node count.
-                node_count = delete_node_from_circuit(node_count, circuit, edgeinfo)
-                return delete_node_from_circuit(node_count, circuit, edgeinfo), :continue
+                node_count_decreased_n_times = delete_node_from_circuit(node_count, circuit, edgeinfo)
+                return node_count_decreased_n_times, :continue
             
             # Check if the node can be added to the circuit.
             elseif check_if_input_is_valid(input, circuit)
