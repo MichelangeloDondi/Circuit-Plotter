@@ -8,12 +8,12 @@
     Module Auxiliary_Functions_Circuit_Deleting
 
 Author: Michelangelo Dondi
-Date: 24-10-2023
+Date: 28-10-2023
 Description: 
     This module provides functions for modifying an existing node's coordinates in 
     the circuit and for deleting an existing node from the circuit.
 
-Version: 3.4
+Version: 4.1
 License: MIT License
 
 Exported functions: 
@@ -74,7 +74,7 @@ module Auxiliary_Functions_Circuit_Deleting
         # Returns:
         - nothing
         """
-        function delete_node_from_circuit(node_count::Int, circuit, edgeinfo)
+        function delete_node_from_circuit(node_count, circuit, edgeinfo)
 
             # Continuously prompt the user for node coordinates to delete.
             while true
@@ -83,13 +83,16 @@ module Auxiliary_Functions_Circuit_Deleting
                 input = _prompt_deleting_node_instructions(circuit, edgeinfo) 
 
                 # Process the user's input.
-                action = _process_user_input(input, circuit, edgeinfo)
+                node_count, action = _process_user_input(node_count, input, circuit, edgeinfo)
 
                 # If the user wants to stop modifying, break the loop.
                 if action == :break
                     break
                 end    
             end
+
+            # Return the decreased node counter.
+            return node_count
         end
 
     # ==============================================================================
@@ -99,16 +102,16 @@ module Auxiliary_Functions_Circuit_Deleting
         function _prompt_deleting_node_instructions(circuit, edgeinfo)
 
             # Display the instructions for the user.
-            println("""
+            println("""\033[36m
             You can delete an existing node from the circuit by entering its ID.
 
-            Here there is a recap of the circuit for your convenience:""")
+            Here there is a recap of the circuit for your convenience: \033[0m""")
 
             # Show the circuit recap.
             show_circuit_recap(circuit, edgeinfo)
 
             # Prompt the user for the node ID.
-            println("\nEnter the ID (e.g. '2') of the node you want to delete or type 'break' or 'b' to finish deleting nodes:")
+            print("\n\033[36mEnter the ID (e.g. '2') of the node you want to delete or type 'break' or 'b' to finish deleting nodes: \033[0m")
 
             # Read the node ID from the user.
             input = readline()
@@ -139,32 +142,38 @@ module Auxiliary_Functions_Circuit_Deleting
         - This function is the primary driver for user interaction when modifying nodes.
         It leverages the other helper functions to simplify its logic.
         """
-        function _process_user_input(input::String, circuit, edgeinfo)::Symbol
+        function _process_user_input(node_count, input::String, circuit, edgeinfo)
 
             # Check if the user entered special commands.
             handle_result = handle_special_input_break(input, circuit, edgeinfo)
 
             # If the command was handled (e.g., exit, recap), continue to the next iteration.
             if handle_result == :handled
-                return :continue
+                return node_count, :continue
 
             # If the user wants to stop deleting, break the loop.
             elseif handle_result == :break
-                println("\nFinished deleting nodes.")
-                return :break
-            end
+
+                # Provide feedback to the user and break the loop.
+                println("\n\033[32mFinished deleting nodes. \033[0m")
+                return node_count, :break
+            else
             
-            # Try to parse the user's input as an integer.
-            try
+                # Try to parse the user's input as an integer.
+                try
 
-                # Parse the user's input as an integer.
-                _parse_input_as_integer(input, circuit)
-                return :continue
+                    # Parse the input as an integer.
+                    node_count = _parse_input_as_integer(node_count, input, circuit)
 
-            # Handle potential errors (e.g., invalid input format).
-            catch e
-                println("\nInvalid input: $e. Please retry.\n")
-                return :continue
+                # Handle potential errors (e.g., invalid input format).
+                catch e
+
+                    # Provide feedback to the user.
+                    println("\n\033[31mInvalid input: $e. Please retry.\n\033[0m")
+                end
+
+                # Continue to the next iteration.
+                return node_count, :continue
             end
         end
         
@@ -172,7 +181,7 @@ module Auxiliary_Functions_Circuit_Deleting
     # ------------------------- function _parse_input_as_integer -------------------
     # ------------------------------------------------------------------------------
 
-        function _parse_input_as_integer(input::String, circuit)
+        function _parse_input_as_integer(node_count, input::String, circuit)
 
             # Convert the input to an integer.
             node_id = parse(Int, input)
@@ -184,16 +193,16 @@ module Auxiliary_Functions_Circuit_Deleting
             if found_node_idx === nothing   
 
                 # If the node was not found, print an error message and continue to the next iteration.
-                println("""\nNode with ID N$node_id not found. 
-                Please consider that node IDs must be integers and that the node must exist in the circuit.
-                The circuit recap is shown below for your convenience.
-                """)
-                return :continue
+                println("""
+                \033[31m
+                Node with ID N$node_id not found. \033[36m
+                Please consider that node IDs must be integers and that the node must exist in the circuit.\033[0m """)
+                return node_count
             end
 
             # Delete the node from the circuit and provide feedback to the user.
             deleteat!(circuit.nodes, found_node_idx)
-            println("\nNode N$node_id successfully deleted.")
+            println("\n\033[32mNode N$node_id successfully deleted.\033[0m")
 
             # Update the node_count.
             node_count -= 1
@@ -206,6 +215,6 @@ module Auxiliary_Functions_Circuit_Deleting
             # Rebuild the entire graph from the updated circuit.nodes array.
             circuit.graph = SimpleGraph(length(circuit.nodes))
 
-            return :continue
+            return node_count
         end
 end
