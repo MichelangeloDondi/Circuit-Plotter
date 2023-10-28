@@ -1,44 +1,43 @@
 # ==============================================================================
 # ==============================================================================
-# ================== Module: Gathering_Edges_And_Components ====================
+# =========================== Module: GatheringEdges ===========================
 # ==============================================================================
 # ==============================================================================
 
 """
-    Module: Gathering_Edges_And_Components
+    Module: GatheringEdges
 
 Author: Michelangelo Dondi
 Date: 28-10-2023
 Description:
-    Dedicated to housing the functions for collecting edge details and component details.
+    Dedicated to housing the functions for collecting edge details.
     This module simplifies the main function definition process by providing a single function to call.
 
-Version: 4.1
+Version: 4.4
 License: MIT License
 
 Exported functions:
-- `gather_edges_and_components(circuit, edge_info)`: Systematically 
-    assembles information about the edges and the components present within the circuit,
+- `gather_edges(circuit, edge_info)`: Systematically 
+    assembles information about the edges present within the circuit,
     utilizing direct inputs from the user. The accumulated data finds its place within 
-    the `circuit` structure. Additionally, a recap of edge particulars and of components
-    particulars is presented, followed by the graphical portrayal of the updated circuit.
+    the `circuit` structure. Additionally, a recap of edge particulars s presented, 
+    followed by the graphical portrayal of the updated circuit.
 
 Notes:
-- The module is included in Module_Main_Function.jl.
+- The module is included in Module MainFunction.
 - The module requires the following modules to be included:
-    - Module_Circuit_Structures.jl
-    - Module_Auxiliary_Functions_Geometry.jl
+    - DataStructure
+    - OverlappingCheck
     - Module_Auxiliary_Functions_Handle_Special_Input.jl
-    - Module_Gathering_Edges_And_Components.jl
 """
-module Gathering_Edges_And_Components
+module GatheringEdges
 
     # ==============================================================================
     # =========================== Exported Function ================================
     # ==============================================================================
 
         # Invoke this function to gather the edges
-        export collect_edges_and_components_from_cmd
+        export collect_edges
 
     # ==============================================================================
     # =========================== Required Packages ================================
@@ -52,26 +51,26 @@ module Gathering_Edges_And_Components
     # ==============================================================================    
 
         # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("datastructure.jl")
+        include("../datastructure.jl")
         using .DataStructure: EdgeInfo, Component, Circuit # Access the data structures
 
         # Module_Auxiliary_Functions_Geometry.jl provides functions for validating user input.
-        include("Module_Auxiliary_Functions_Geometry.jl")
-        using .Auxiliary_Functions_Geometry: overlapping_edges # Check if the new edge overlaps with existing edges
+        include("helper_functions_collecting_edges/overlapping_check.jl")
+        using .OverlappingCheck: overlapping_edges # Check if the new edge overlaps with existing edges
 
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
-        include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
+        include("../Module_Auxiliary_Functions_Handle_Special_Input.jl")
         using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input such as 'help', 'recap', 'draw', 'exit', 'break'
         using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_yes_no # Handle special input such as 'help', 'recap', 'draw', 'exit' 'yes', 'no'
 
     # ==============================================================================
-    # =============== function collect_edges_and_components_from_cmd ===============
+    # ================= Function: collect_edges(circuit, edge_info) ================
     # ==============================================================================
 
         """
-            collect_edges_and_components_from_cmd(circuit, edge_info) -> nothing
+            collect_edges(circuit, edge_info) -> nothing
 
-        Sequentially gathers edge details and component details from the user.
+        Sequentially gathers edge details from the user.
         The function aims to achieve the following: 
 
             1.  Prompt the user for the next edge.
@@ -105,7 +104,7 @@ module Gathering_Edges_And_Components
         - `handle_special_input_break(input, circuit, edge_info)`: Handle special input ('help', 'recap', 'draw', 'exit', 'save', 'break').
         - `handle_special_input_yes_no(input, circuit, edge_info)`: Handle special input ('help', 'recap', 'draw', 'exit', 'yes', 'no').      
         """
-        function collect_edges_and_components_from_cmd(circuit, edge_info)
+        function collect_edges(circuit, edge_info)
 
             # Number of nodes in the circuit.
             node_count = nv(circuit.graph)
@@ -149,14 +148,14 @@ module Gathering_Edges_And_Components
                         println("\n\033[32mEdge E$edge_count: N$node1 -> N$node2 successfully added.\033[0m")
 
                         # Collect component for the edge if the edge is not a dummy edge.
-                        _collect_component_from_cmd(edge_count, circuit, edge_info)
+                        _collect_components(edge_count, circuit, edge_info)
                     end
                 end
             end
         end
 
     # ==============================================================================
-    # ------------------------- function _get_edge_input ----------------------------
+    # ------------- Function: _get_edge_input(edge_count::Int)::String -------------
     # ==============================================================================
 
         """
@@ -181,11 +180,11 @@ module Gathering_Edges_And_Components
         end
 
     # ==============================================================================
-    # ------------------------- function _validate_edge_input ----------------------
+    # --- Function: _validate_edge_input(edge_nodes::Vector{SubString{String}}, node_count::Int, edge_info, circuit)::Bool ---
     # ==============================================================================
 
         """
-            _validate_edge_input(edge_nodes::Vector{String}, node_count::Int, edge_info, circuit) -> Bool
+            _validate_edge_input(edge_nodes::Vector{String}, node_count::Int, edge_info, circuit)::Bool
 
         Validate user-provided input for defining an edge in the circuit.
 
@@ -229,11 +228,11 @@ module Gathering_Edges_And_Components
         end
 
     # ==============================================================================
-    # ------------------------- function add_edge_to_circuit -----------------------
+    # --- Function: add_edge_to_circuit(node1::Int, node2::Int, edge_info, circuit)::Bool ---
     # ==============================================================================
 
         """
-            add_edge_to_circuit(node1::Int, node2::Int, edge_info, circuit) -> Bool
+            add_edge_to_circuit(node1::Int, node2::Int, edge_info, circuit)::Bool
 
         Add an edge between two nodes in the circuit.
 
@@ -299,11 +298,11 @@ module Gathering_Edges_And_Components
         end
 
     # ==============================================================================
-    # ---------------------- function _collect_component_from_cmd -------------------
+    # ----- Function: _collect_components(edge_count::Int, circuit, edge_info) -----
     # ==============================================================================
 
         """
-            _collect_component_from_cmd(edge_count::Int, circuit, edge_info) -> nothing
+            _collect_components(edge_count::Int, circuit, edge_info) -> nothing
 
         Sequentially gathers component details from the user.
 
@@ -316,7 +315,7 @@ module Gathering_Edges_And_Components
         Returns:
         - nothing
         """
-        function _collect_component_from_cmd(edge_count::Int, circuit, edge_info)
+        function _collect_components(edge_count::Int, circuit, edge_info)
 
             # Start collecting components for the edge.
             while true 

@@ -61,9 +61,9 @@ module MainFunction
         include("nodes_management/gathering_nodes.jl")
         using .GatheringNodes: collect_nodes # Collect node details from the user
 
-        # Module_Gathering_Edges_And_Components.jl provides functions for collecting edge details and component details.
-        include("Module_Gathering_Edges_And_Components.jl")
-        using .Gathering_Edges_And_Components: collect_edges_and_components_from_cmd # Collect edge details and component details from the user
+        # Module GatheringEdges provides functions for collecting edge details.
+        include("edges_management/gathering_edges.jl")
+        using .GatheringEdges: collect_edges # Collect edge details.
 
         # Module_Auxiliary_Functions_Circuit_Recap.jl provides auxiliary functions for recapping the circuit.
         include("functions_always_callable/circuit_recap.jl")
@@ -111,7 +111,7 @@ module MainFunction
             collect_nodes(circuit, edge_info)
 
             # Gather the particulars of the edges and of the components and provide feedback to the user.
-            collect_edges_and_components_from_cmd(circuit, edge_info)
+            collect_edges(circuit, edge_info)
 
             # Recap the circuit.
             show_circuit_recap(circuit, edge_info)

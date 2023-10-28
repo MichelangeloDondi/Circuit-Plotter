@@ -1,11 +1,11 @@
 # ==============================================================================
 # ==============================================================================
-# ================== Module: Auxiliary_Functions_Geometry ======================
+# ======================== Module: OverlappingCheck ============================
 # ==============================================================================
 # ==============================================================================
 
 """
-    Module Auxiliary_Functions_Geometry
+    Module OverlappingCheck
 
 Author: Michelangelo Dondi
 Date: 28-10-2023
@@ -13,13 +13,13 @@ Description:
     Dedicated to housing the geometry functions used by the Circuit Visualization Tool.
     This module simplifies the geometry process by providing a single file to call.
 
-Version: 4.2
+Version: 4.4
 License: MIT License
 
 Exported functions:
 - `overlapping_edges(new_edge, existing_edges, nodes)`: Checks if `new_edge` overlaps with any edge in `existing_edges`.
 """
-module Auxiliary_Functions_Geometry
+module OverlappingCheck
 
     # ==============================================================================
     # =========================== Exported Function ================================
@@ -29,7 +29,7 @@ module Auxiliary_Functions_Geometry
         export overlapping_edges 
 
     # ==============================================================================
-    # ======================= function overlapping_edges ===========================
+    # ======================= Function: overlapping_edges ===========================
     # ==============================================================================
 
         """
@@ -52,7 +52,7 @@ module Auxiliary_Functions_Geometry
         end
 
     # ==============================================================================
-    # ---------------------------- function _do_overlap ----------------------------
+    # ------------------- Function: _do_overlap(p1, q1, p2, q2) --------------------
     # ==============================================================================
             
         """
