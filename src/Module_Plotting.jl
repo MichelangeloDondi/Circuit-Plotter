@@ -8,13 +8,13 @@
     Module: Plotting
 
 Author: Michelangelo Dondi
-Date: 22-10-2023
+Date: 28-10-2023
 Description:
     A module dedicated to visually representing electrical circuits. This module provides
     core functionalities for plotting the circuit components and its design. It integrates
     with the main Circuit Plotter to provide an end-to-end circuit visualization tool.
 
-Version: 3.2
+Version: 4.1
 License: MIT License
         
 Exported functions:
@@ -89,7 +89,7 @@ module Plotting
         function draw_plot(circuit)
 
             # Provide feedback to the user
-            println("\nPlease wait while the circuit is being visualized...")
+            println("\n\033[36mPlease wait while the circuit is being visualized...\033[0m")
 
             # Create an empty plot
             p = scatter([], [], markersize=NODE_SIZE, markercolor=NODE_COLOR, label=false) 
@@ -98,7 +98,7 @@ module Plotting
             _prepare_and_display_plot(p, circuit)
 
             # Provide feedback to the user
-            println("Circuit visualization complete. You can now interact with the plot.")
+            println("\033[36mCircuit visualization complete. You can now interact with the plot.\033[0m")
         end
 
     # ==============================================================================
