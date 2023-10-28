@@ -57,7 +57,7 @@ module Saving
     # ==============================================================================
 
         """
-        save_plot_displayed(circuit) -> nothing
+        save_plot_displayed(circuit)
 
         Saves the current plot into an "Images" directory. If no plot is rendered, 
         the plot is first drawn and then saved. The user is prompted to provide a
@@ -71,6 +71,13 @@ module Saving
 
         Returns:
         - nothing
+            
+        Notes:
+        - The plot is saved in the "circuit_drawings" directory. If the "Images" directory does not exist, it is created.
+        - If no plot is rendered, the plot is first drawn and then saved.
+        - The user is prompted to provide a filename for the plot. 
+        - If no filename is provided, a default filename "circuit_plot.png" is used. 
+        - If the provided filename does not have an extension, ".png" is appended to the filename.
         """
         function save_plot_displayed(circuit, io::IO=stdin)
 
@@ -100,7 +107,7 @@ module Saving
     # ==============================================================================
 
         """
-            _ensure_plot_exists(circuit) -> nothing
+            _ensure_plot_exists(circuit)
 
         Ensures that a plot exists for the specified circuit. If no plot exists, 
         a plot is drawn.
@@ -110,6 +117,9 @@ module Saving
 
         Returns:
         - nothing
+
+        Notes:
+        - If no plot is rendered, the plot is first drawn and then saved.
         """
         function _ensure_plot_exists(circuit)
 
@@ -156,24 +166,33 @@ module Saving
         end    
 
     # ==============================================================================
-    # ----------------------- Function: _generate_filename() -----------------------
+    # ------------------- Function: _generate_filename()::String -------------------
     # ==============================================================================
 
         """
-            _generate_filename() -> String
+            _generate_filename()::String
 
         Ask the user for a filename to save the plot as. If no filename is provided, 
         a default filename "circuit_plot.png" is used.    
 
         Parameters:
-        - None
+        - io: The input/output stream to use for prompting the user for a filename.
             
         Returns:
         - The generated filename.
+            
+        Notes:
+        - The user is prompted to provide a filename for the plot.
+        - If no filename is provided, a default filename "circuit_plot.png" is used.
+        - If the provided filename does not have an extension, ".png" is appended to the filename.
         """
-        function _generate_filename(io::IO=stdin)
+        function _generate_filename(io::IO=stdin)::String
+
+            # Prompt the user for a filename
             println("\n\033[36mEnter a filename for the circuit plot")
             println("Otherwise, press Enter to use the default (default: circuit_plot.png).\033[0m")
+
+            # Read the filename
             filename = readline(io)
 
             # If filename is empty, use the default filename
@@ -183,6 +202,8 @@ module Saving
             
             # If filename does not have an extension, append ".png"
             if !contains(filename, r"\.\w+$")  # Regular expression check for file extension
+
+                # Append ".png" to filename
                 filename = filename * ".png"
             end
 
