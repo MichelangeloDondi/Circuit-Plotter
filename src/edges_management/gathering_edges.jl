@@ -28,7 +28,7 @@ Notes:
 - The module requires the following modules to be included:
     - DataStructure
     - OverlappingCheck
-    - Module_Auxiliary_Functions_Handle_Special_Input.jl
+    - HandlingSpecialInput
 """
 module GatheringEdges
 
@@ -58,11 +58,11 @@ module GatheringEdges
         include("helper_functions_collecting_edges/overlapping_check.jl")
         using .OverlappingCheck: overlapping_edges # Check if the new edge overlaps with existing edges
 
-        # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
-        include("../Module_Auxiliary_Functions_Handle_Special_Input.jl")
-        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input such as 'help', 'recap', 'draw', 'exit', 'break'
-        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_yes_no # Handle special input such as 'help', 'recap', 'draw', 'exit' 'yes', 'no'
-
+        # Module HandlingSpecialInput provides auxiliary functions for input handling.
+        include("../functions_always_callable/handling_special_input.jl")
+        using .HandlingSpecialInput: handle_special_input_break # Handle the following special input: 'exit', 'help', 'recap', 'draw', 'save', 'break'
+        using .HandlingSpecialInput: handle_special_input_yes_no # Handle the following special input: 'exit', 'help', 'recap', 'draw', 'save', 'yes', 'no'
+        
     # ==============================================================================
     # ================= Function: collect_edges(circuit, edge_info) ================
     # ==============================================================================
@@ -148,7 +148,7 @@ module GatheringEdges
                         println("\n\033[32mEdge E$edge_count: N$node1 -> N$node2 successfully added.\033[0m")
 
                         # Collect component for the edge if the edge is not a dummy edge.
-                        _collect_components(edge_count, circuit, edge_info)
+                        _collect_component(edge_count, circuit, edge_info)
                     end
                 end
             end
@@ -298,11 +298,11 @@ module GatheringEdges
         end
 
     # ==============================================================================
-    # ----- Function: _collect_components(edge_count::Int, circuit, edge_info) -----
+    # ----- Function: _collect_component(edge_count::Int, circuit, edge_info) ------
     # ==============================================================================
 
         """
-            _collect_components(edge_count::Int, circuit, edge_info) -> nothing
+            _collect_component(edge_count::Int, circuit, edge_info) -> nothing
 
         Sequentially gathers component details from the user.
 
@@ -315,7 +315,7 @@ module GatheringEdges
         Returns:
         - nothing
         """
-        function _collect_components(edge_count::Int, circuit, edge_info)
+        function _collect_component(edge_count::Int, circuit, edge_info)
 
             # Start collecting components for the edge.
             while true 
@@ -363,11 +363,11 @@ module GatheringEdges
         end
 
     # -------------------------------------------------------------------------------
-    # -------------------------------- _edge_exists ---------------------------------
+    # ------------ _edge_exists(node1::Int, node2::Int, edge_info)::Bool ------------
     # -------------------------------------------------------------------------------
 
         """
-            _edge_exists(node1::Int, node2::Int, edge_info) -> Bool
+            _edge_exists(node1::Int, node2::Int, edge_info)::Bool
 
         Checks if an edge already exists between two nodes.
 

@@ -13,7 +13,7 @@ Description:
     This module provides functions for modifying an existing node's coordinates in 
     the circuit and for deleting an existing node from the circuit.
 
-Version: 4.3
+Version: 4.4
 License: MIT License
 
 Exported functions: 
@@ -24,7 +24,7 @@ Notes:
 - The module requires the following modules to be included:
     - DataStructure
     - CircuitRecap
-    - Module_Auxiliary_Functions_Handle_Special_Input.jl    
+    - HandlingSpecialInput    
 """
 module DeletingNodes
 
@@ -54,16 +54,16 @@ module DeletingNodes
         include("../../functions_always_callable/circuit_recap.jl")
         using .CircuitRecap: show_nodes_recap # Recap the circuit    
 
-        # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
-        include("../../Module_Auxiliary_Functions_Handle_Special_Input.jl")
-        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input ('help', 'recap', 'draw', 'exit', 'break')
+        # Module HandlingSpecialInput provides auxiliary functions for input handling.
+        include("../../functions_always_callable/handling_special_input.jl")
+        using .HandlingSpecialInput: handle_special_input_break # Handle special input ('help', 'recap', 'draw', 'exit', 'break')
 
     # ==============================================================================
     # ================ Function: delete_node_from_circuit(circuit) =================
     # ==============================================================================
 
         """
-            delete_node_from_circuit(circuit) -> nothing
+            delete_node_from_circuit(circuit)
 
         Allows the user to delete an existing node from the circuit based on user input.
 
@@ -99,6 +99,20 @@ module DeletingNodes
     # ----------- Function: _prompt_deleting_node_instructions(circuit) ------------
     # ==============================================================================
 
+        """
+            _prompt_deleting_node_instructions(circuit)
+
+        Displays the instructions for the user to delete an existing node from the circuit.
+
+        # Parameters:
+        - circuit: The primary data structure representing the circuit, including its nodes and components.
+            
+        # Returns:
+        - input: The input provided by the user.
+        
+        # Notes:
+        - The function is used by the delete_node_from_circuit function to display the instructions for the user.
+        """
         function _prompt_deleting_node_instructions(circuit)
 
             # Display the instructions for the user.
@@ -120,27 +134,29 @@ module DeletingNodes
         end
 
     # ==============================================================================
-    # --- Function: _process_user_input(input::String, circuit, edgeinfo)::Symbol --
+    # ------- Function: _process_user_input(input::String, circuit, edgeinfo) ------
     # ==============================================================================
 
         """
-            _process_user_input(input::String, circuit, edgeinfo)::Symbol
+        _process_user_input(node_count, input::String, circuit, edgeinfo)
 
         Processes the user's input and returns a symbol indicating the action to be taken.
 
         # Parameters:
+        - node_count: The number of nodes in the circuit before the deletion.
         - input: The input provided by the user.
         - circuit: The primary data structure representing the circuit, including its nodes and components.
         - edgeinfo: The data structure containing the edge information for the circuit.
 
         # Returns:
-        - :continue if the user's input was processed successfully and the program should continue.
-        - :break if the user's input was processed successfully and the program should break.
-        
+        - node_count: The number of nodes in the circuit after the deletion.
+        - :continue if the user wants to continue deleting nodes.
+        - :break if the user wants to stop deleting nodes.
+
         # Notes:
         - The function is used by the delete_node_from_circuit function to process the user's input.
-        - This function is the primary driver for user interaction when modifying nodes.
-        It leverages the other helper functions to simplify its logic.
+        - The function is used by the delete_node_from_circuit function to return a symbol indicating the action to be taken.
+        - The function is used by the delete_node_from_circuit function to return the decreased node counter.
         """
         function _process_user_input(node_count, input::String, circuit, edgeinfo)
 
@@ -184,7 +200,7 @@ module DeletingNodes
     # ------------------------------------------------------------------------------
 
         """
-            _parse_input_as_integer(input::String, circuit, edgeinfo)
+            _parse_input_as_integer(node_count, input::String, circuit)
 
         Parses the user's input as an integer and deletes the node with the given ID from the circuit.
 

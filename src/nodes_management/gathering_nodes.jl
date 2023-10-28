@@ -13,7 +13,7 @@ Description:
     Dedicated to housing the functions for collecting node details from the user.
     This module simplifies the main function definition process by providing a single file to call.
 
-Version: 4.3
+Version: 4.4
 License: MIT License
 
 Exported functions:
@@ -26,7 +26,7 @@ Notes:
 - This module is called after the user has been greeted and instructed by `show_initial_greetings` in the main function.
 - The module requires the following modules to be included: 
     - DataStructure 
-    - Module_Auxiliary_Functions_Handle_Special_Input.jl 
+    - HandlingSpecialInput 
     - ModifyingNodes
     - DeletingNodes
 """
@@ -54,9 +54,9 @@ module GatheringNodes
         include("../datastructure.jl")
         using .DataStructure: Node, EdgeInfo, Circuit # Access the data structures
 
-        # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
-        include("../Module_Auxiliary_Functions_Handle_Special_Input.jl")
-        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break_modify_cancel # Handle the following special input: 'exit', 'help', 'recap', 'draw', 'save', 'break', 'modify', 'cancel'
+        # Module HandlingSpecialInput provides auxiliary functions for input handling.
+        include("../functions_always_callable/handling_special_input.jl")
+        using .HandlingSpecialInput: handle_special_input_break_modify_cancel # Handle the following special input: 'exit', 'help', 'recap', 'draw', 'save', 'break', 'modify', 'cancel'
 
         # Module CheckingNodesInput provides auxiliary functions for checking the input of nodes.
         include("helper_functions_collecting_nodes/checking_nodes_input.jl")

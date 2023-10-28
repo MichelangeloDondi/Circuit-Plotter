@@ -13,18 +13,18 @@ Description:
     This module provides functions for modifying an existing node's coordinates in 
     the circuit.
 
-Version: 4.3
+Version: 4.4
 License: MIT License
 
 Exported functions: 
 - `modify_existing_node(circuit)`: Modifies an existing nodes's coordinates in the circuit based on user input.
 
 Notes:
-- The module is included in Module_Gathering_Nodes.jl.  
+- The module is included in Module GatheringNodes  
 - The module requires the following modules to be included:
-    - Module_Circuit_Structures.jl
-    - Module_Auxiliary_Functions_Circuit_Recap.jl
-    - Module_Auxiliary_Functions_Handle_Special_Input.jl    
+    - DataStructure
+    - CircuitRecap
+    - HandlingSpecialInput    
 """
 module ModifyingNodes
 
@@ -54,9 +54,9 @@ module ModifyingNodes
         include("../../functions_always_callable/circuit_recap.jl")
         using .CircuitRecap: show_nodes_recap # Recap the circuit    
 
-        # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
-        include("../../Module_Auxiliary_Functions_Handle_Special_Input.jl")
-        using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input ('help', 'recap', 'draw', 'exit', 'break')
+        # Module HandlingSpecialInput provides auxiliary functions for input handling.
+        include("../../functions_always_callable/handling_special_input.jl")
+        using .HandlingSpecialInput: handle_special_input_break # Handle special input ('help', 'recap', 'draw', 'exit', 'break')
 
         # Module CheckingNodesInput provides auxiliary functions for checking the input of nodes.
         include("checking_nodes_input.jl")
