@@ -44,7 +44,7 @@ module Helping
         using .DataStructure: Circuit # Access the data structures
 
     # ==============================================================================
-    # =========================== show_initial_greetings ===========================
+    # ===================== Function: show_initial_greetings() =====================
     # ==============================================================================
             
         """
@@ -69,7 +69,7 @@ module Helping
         end
     
     # ==============================================================================
-    # ================================ show_help ===================================
+    # ========================== Function: show_help() =============================
     # ==============================================================================
         
         """
@@ -116,7 +116,7 @@ module Helping
             VISUALIZATION:
             - You can visualize the circuit at any time by entering 'draw'.
             - You will be asked whether to save the plot before continuing.
-            - Completed visuals are saved in the 'Images' directory.
+            - Completed visuals are saved in the 'circuit_drawings' directory.
             - Visuals are saved as "circuit_plot.png" by default.
             """)
             _show_instructions()
@@ -129,7 +129,7 @@ module Helping
         end
 
     # ==========================================================================
-    # ------------------------- _show_instructions -------------------------
+    # --------------------- Function: _show_instructions() ---------------------
     # ==========================================================================
             
         """
@@ -170,11 +170,11 @@ module Helping
         end
     
     # ==========================================================================
-    # --- function show_final_greetings_asking_whether_to_save_plot_displayed --
+    # - Function: show_final_greetings_asking_whether_to_save_plot_displayed() -
     # ==========================================================================
             
         """
-        show_final_greetings_asking_whether_to_save_plot_displayed(circuit) -> nothing
+            show_final_greetings_asking_whether_to_save_plot_displayed(circuit) -> nothing
 
         Shows the final greetings and asks the user whether to save the plot displayed before exiting the program.
 
