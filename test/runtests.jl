@@ -1,10 +1,10 @@
-# ==============================================================================
+# ------------------------------------------------------------------------------
 # ==============================================================================
 # ==============================================================================
 # ============================= File: runtests.jl ==============================
 # ==============================================================================
 # ==============================================================================
-# ==============================================================================
+# ------------------------------------------------------------------------------
 
 """
     File: runtests.jl
@@ -66,21 +66,35 @@ Notes:
     using .TestCheckIfInputIsValid: test_is_coordinate_available # Access the function
     using .TestCheckIfInputIsValid: test_is_valid_format # Access the function
 
-    # Module Test_image_name.jl provides the function 'test_save_plot_displayed()'.
-    #include("Module_Test_save_plot_displayed.jl")
-    #using .Test_save_plot_displayed: test_save_plot_displayed # Access the function
+    # Module TestImageName provides the function 'test_save_plot_displayed()'.
+    #include("test_save_plot_displayed.jl")
+    #using .TestSavePlotDisplayed: test_save_plot_displayed # Access the function
     
 # ==============================================================================
 # ========================== Hard-Coded Circuit ================================
 # ==============================================================================
 
+    """
+        Hard-coded circuit for testing purposes.
+
+    The circuit is the following:
+
+    N3 -- N4-- N5
+     |    |    | 
+     |    N6   |
+     |    |    | 
+    N2 -- ┴ -- N1
+
+    """
     # Create a circuit hard-coded
+    # Edge list: (N1, N2), (N2, N3), (N3, N4), (N4, N5), (N4, N6), (N5, N1), (N6, N2)
     circuit = Circuit([
-        Node(id=1, x=0, y=0),  # Node N1 at ( 0,0)
-        Node(id=2, x=-1, y=0), # Node N2 at (-1,0)
-        Node(id=3, x=2, y=0),  # Node N3 at ( 2,0)
-        Node(id=4, x=1, y=1),  # Node N4 at ( 1,1)
-        Node(id=5, x=0, y=2)   # Node N5 at ( 0,2)
+        Node(id = 1, x = 1, y =-1),  # Node N1 at ( 1,-1)
+        Node(id = 2, x =-1, y =-1),  # Node N2 at (-1,-1)
+        Node(id = 3, x =-1, y = 1),  # Node N3 at (-1, 1)
+        Node(id = 4, x = 0, y = 1),  # Node N4 at ( 0, 1)
+        Node(id = 5, x = 1, y = 1),  # Node N5 at ( 1, 1)
+        Node(id = 6, x = 0, y = 0)   # Node N6 at ( 0, 0)
         ], [], SimpleGraph())
 
 # ==============================================================================
