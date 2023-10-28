@@ -52,7 +52,7 @@ module Auxiliary_Functions_Circuit_Modifying
 
         # Module_Auxiliary_Functions_Circuit_Recap.jl provides auxiliary functions for recapping the circuit.
         include("Module_Auxiliary_Functions_Circuit_Recap.jl")
-        using .Auxiliary_Functions_Circuit_Recap: show_circuit_recap # Recap the circuit    
+        using .Auxiliary_Functions_Circuit_Recap: show_nodes_recap # Recap the circuit    
 
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
         include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
@@ -124,10 +124,10 @@ module Auxiliary_Functions_Circuit_Modifying
             \033[36m
             You can modify the coordinates of an existing node by typing its ID and providing the new coordinates.
 
-            Here there is a recap of the circuit for your convenience:\033[0m""")
+            Here there is a recap of the nodes in the circuit for your convenience:\033[0m""")
 
             # Show the current state of the circuit to aid user decision.
-            show_circuit_recap(circuit, edgeinfo)
+            show_nodes_recap(circuit, edgeinfo)
 
             # Ask the user for the ID of the node they wish to modify.
             print("\n\033[36mEnter the ID (e.g. '2') of the node you want to modify or type 'break' or 'b' to finish modifying nodes: \033[0m")

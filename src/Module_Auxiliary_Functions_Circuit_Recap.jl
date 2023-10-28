@@ -75,7 +75,7 @@ module Auxiliary_Functions_Circuit_Recap
         Example:
 
         ---------------------------------------------------
-                        BEGIN OF CIRCUIT RECAP
+                           CIRCUIT RECAP
         ---------------------------------------------------
 
         There are 4 nodes in the circuit:
@@ -110,7 +110,7 @@ module Auxiliary_Functions_Circuit_Recap
         function show_circuit_recap(circuit, edge_info)
 
             println("\n\033[33m---------------------------------------------------")
-            println("               BEGIN OF CIRCUIT RECAP")
+            println("                   CIRCUIT RECAP")
             println("---------------------------------------------------\n")
 
             # Display a recap of the nodes in the circuit
@@ -153,7 +153,7 @@ module Auxiliary_Functions_Circuit_Recap
         Example:
 
         ---------------------------------------------------
-                        BEGIN OF NODES RECAP
+                           NODES RECAP
         ---------------------------------------------------
 
         There are 4 nodes in the circuit:
@@ -164,21 +164,21 @@ module Auxiliary_Functions_Circuit_Recap
             - N4 at (1,1)
 
         ---------------------------------------------------
-                        END OF NODES RECAP
+                         END OF NODES RECAP
         ---------------------------------------------------
 
         """
         function show_nodes_recap(circuit)
 
             println("\n\033[36m---------------------------------------------------")
-            println("                BEGIN OF NODES RECAP")
+            println("                   NODES RECAP")
             println("---------------------------------------------------\n")
 
             # Display a recap of the nodes in the circuit
             _nodes_recap(circuit)
 
             println("\n---------------------------------------------------")
-            println("               END OF NODES RECAP")
+            println("                END OF NODES RECAP")
             println("---------------------------------------------------\033[0m\n")
         end    
 

@@ -52,7 +52,7 @@ module Auxiliary_Functions_Circuit_Deleting
 
         # Module_Auxiliary_Functions_Circuit_Recap.jl provides auxiliary functions for recapping the circuit.
         include("Module_Auxiliary_Functions_Circuit_Recap.jl")
-        using .Auxiliary_Functions_Circuit_Recap: show_circuit_recap # Recap the circuit    
+        using .Auxiliary_Functions_Circuit_Recap: show_nodes_recap # Recap the circuit    
 
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
         include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
@@ -105,10 +105,10 @@ module Auxiliary_Functions_Circuit_Deleting
             println("""\033[36m
             You can delete an existing node from the circuit by entering its ID.
 
-            Here there is a recap of the circuit for your convenience: \033[0m""")
+            Here there is a recap of the nodes in the circuit for your convenience: \033[0m""")
 
             # Show the circuit recap.
-            show_circuit_recap(circuit, edgeinfo)
+            show_nodes_recap(circuit, edgeinfo)
 
             # Prompt the user for the node ID.
             print("\n\033[36mEnter the ID (e.g. '2') of the node you want to delete or type 'break' or 'b' to finish deleting nodes: \033[0m")
