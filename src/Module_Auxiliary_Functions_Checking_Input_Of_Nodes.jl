@@ -8,10 +8,10 @@
     Module: Auxiliary_Functions_Checking_Input_Of_Nodes  
 
 Author: Michelangelo Dondi
-Date: 27-10-2023
+Date: 28-10-2023
 Description: This module contains the function for checking if the input aimed to add a new node is valid.
 
-Version: 3.7
+Version: 4.0
 License: MIT License 
 
 Exported functions:
@@ -65,29 +65,33 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
         # Notes:
         - This function is called by `process_input`.
         - This function is called before the node is added to the circuit by `_add_node_to_circuit`.
-            
-        # Examples:
-        ```julia-repl   
-        julia> _check_if_inupt_is_valid("1,-2", circuit)
-        true # If the input is valid.
-        false # If the input is not valid.
         """
         function check_if_input_is_valid(input::String, circuit)::Bool
 
+            println("\nChecking if the input is valid...")
             # Check if the input is valid format and if the input is valid free coordinates.
             if Input_Format_Check.is_valid_format(input) 
+
+                # If the input is valid format, print a message and check if the input is valid free coordinates.
+                println("The input is in the correct format. Checking if the coordinates are available...")
                 
                 # If the input is valid format, check if the input is valid free coordinates.
                 if Coordinate_Availability_Check.is_coordinate_available(input, circuit)
 
-                    # If the input is valid, return true.    
+                    # If the input is valid format and if the input is valid free coordinates, return true.
+                    println("The coordinates are available.")   
                     return true
                 else
-
-                    # If the input is not valid, return false.
+                    
+                    # If the input is valid format but if the input is not valid free coordinates, return false.
+                    println("The coordinates are not available.")
                     return false
-                end
-  
+                end                
+            else
+                    
+                # If the input is not valid format, print a message and return false.
+                println("The input is not in the correct pair of integers 'x,y' format.")
+                return false
             end
         end
         
