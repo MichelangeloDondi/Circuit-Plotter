@@ -17,7 +17,7 @@ Description:
     Users can define nodes, components, and their connections, with an end visualization
     rendered using the PlotlyJS backend for interactivity.
 
-Version: 4.4
+Version: 4.5
 License: MIT License
 
 Notes:
@@ -72,31 +72,9 @@ Notes:
     include("mainfunction.jl")
     using .MainFunction # Access the main function
 
-# ==============================================================================
-# ===================== Function: main(circuit, edge_info) =====================
-# ==============================================================================
+################################################################################
+# ============================== Main Function ================================ #
+################################################################################
 
-    """
-        Function: main(circuit, edge_info)
-
-    Description:
-        The main function of the program. It is called by the user to execute the program.
-           
-    Parameters:
-    - circuit:     The circuit data structure, which is a LightGraphs.SimpleGraphs.SimpleGraphs object.
-    - edge_info:   The edge information data structure, which is a LightGraphs.SimpleGraphs.SimpleGraphs object.
-        
-    Returns:
-    - Nothing.
-            
-    Notes:
-    - The function is structured as follows:
-        - The user is welcomed to the program and the instructions are printed.
-        - The user is asked to input the nodes of the circuit.
-        - The user is asked to input the edges of the circuit.
-        - The recaps of the circuit is printed.
-        - The drawing of the circuit is printed.
-        - The user is asked whether to save the circuit drawing.
-        - The user is asked whether to exit the program or to start again.
-    """
+    #Run the main function
     main(circuit, edge_info)

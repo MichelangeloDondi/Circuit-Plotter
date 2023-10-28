@@ -15,7 +15,7 @@ Description:
     This module orchestrates the execution of the various modules that comprise the program,
     and provides the user with feedback and instructions as necessary.
 
-Version: 4.4
+Version: 4.5
 License: MIT License
         
 Exported functions:
@@ -48,7 +48,7 @@ module MainFunction
     # ============================== Included Modules ==============================
     # ==============================================================================
 
-        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
+        # Module DataStructure provides the data structures used by the Circuit Plotter Program.
         include("datastructure.jl")
         using .DataStructure: EdgeInfo, Circuit # Access the data structures
 
@@ -65,7 +65,7 @@ module MainFunction
         include("edges_management/gathering_edges.jl")
         using .GatheringEdges: collect_edges # Collect edge details.
 
-        # Module_Auxiliary_Functions_Circuit_Recap.jl provides auxiliary functions for recapping the circuit.
+        # Module CircuitRecap provides auxiliary functions for recapping the circuit.
         include("functions_always_callable/circuit_recap.jl")
         using .CircuitRecap: show_circuit_recap # Recap the circuit
         
