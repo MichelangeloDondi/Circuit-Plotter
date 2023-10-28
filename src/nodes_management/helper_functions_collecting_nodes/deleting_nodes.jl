@@ -1,11 +1,11 @@
 # ==============================================================================
 # ==============================================================================
-# ============== Module: Auxiliary_Functions_Circuit_Deleting ==================
+# =========================== Module: DeletingNodes ============================
 # ==============================================================================
 # ==============================================================================
 
 """
-    Module: Auxiliary_Functions_Circuit_Deleting
+    Module: DeletingNodes
 
 Author: Michelangelo Dondi
 Date: 28-10-2023
@@ -20,13 +20,13 @@ Exported functions:
 - `delete_node_from_circuit(circuit)`: Deletes an existing nodes from the circuit based on user input.  
 
 Notes:
-- The module is included in Module_Gathering_Nodes.jl.  
+- The module is included in Module GatheringNodes.  
 - The module requires the following modules to be included:
-    - Module_Circuit_Structures.jl
-    - Module_Auxiliary_Functions_Circuit_Recap.jl
+    - DataStructure
+    - CircuitRecap
     - Module_Auxiliary_Functions_Handle_Special_Input.jl    
 """
-module Auxiliary_Functions_Circuit_Deleting
+module DeletingNodes
 
     # ==============================================================================
     # =========================== Exported Functions ===============================
@@ -47,15 +47,15 @@ module Auxiliary_Functions_Circuit_Deleting
     # ==============================================================================
 
         # Module DataStructure provides the data structures used by the Circuit Plotter Program.
-        include("datastructure.jl")
+        include("../../datastructure.jl")
         using .DataStructure: EdgeInfo, Circuit # Access the data structures
 
         # Module CircuitRecap provides auxiliary functions for recapping the circuit.
-        include("functions_always_callable/circuit_recap.jl")
+        include("../../functions_always_callable/circuit_recap.jl")
         using .CircuitRecap: show_nodes_recap # Recap the circuit    
 
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
-        include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
+        include("../../Module_Auxiliary_Functions_Handle_Special_Input.jl")
         using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input ('help', 'recap', 'draw', 'exit', 'break')
 
     # ==============================================================================
@@ -165,6 +165,8 @@ module Auxiliary_Functions_Circuit_Deleting
                     # Parse the input as an integer.
                     node_count = _parse_input_as_integer(node_count, input, circuit)
 
+                    println("\n\033[36mPress enter to continue deleting nodes or type 'break' or 'b' to finish deleting nodes: \033[0m") ############################
+
                 # Handle potential errors (e.g., invalid input format).
                 catch e
 
@@ -178,11 +180,11 @@ module Auxiliary_Functions_Circuit_Deleting
         end
         
     # ------------------------------------------------------------------------------
-    # --- Function: _parse_input_as_integer(input::String, circuit, edgeinfo)::Symbol ---
+    # ---------- Function: _parse_input_as_integer(input::String, circuit) ---------
     # ------------------------------------------------------------------------------
 
         """
-            _parse_input_as_integer(input::String, circuit, edgeinfo)::Symbol
+            _parse_input_as_integer(input::String, circuit, edgeinfo)
 
         Parses the user's input as an integer and deletes the node with the given ID from the circuit.
 
@@ -192,15 +194,15 @@ module Auxiliary_Functions_Circuit_Deleting
         - edgeinfo: The data structure containing the edge information for the circuit.
 
         # Returns:
-        - :continue if the user's input was processed successfully and the program should continue.
-        - :break if the user's input was processed successfully and the program should break.
+        - node_count: The number of nodes in the circuit after the deletion.
 
         # Notes:
-        - The function is used by the _process_user_input function to parse the user's input.
-        - This function is the primary driver for user interaction when modifying nodes.
-        It leverages the other helper functions to simplify its logic.
+        - The function is used by the _process_user_input function to parse the user's input as an integer.
+        - The function is used by the _process_user_input function to delete the node with the given ID from the circuit.
+        - The function is used by the _process_user_input function to update the node IDs after the deleted node.
+        - The function is used by the _process_user_input function to rebuild the entire graph from the updated circuit.nodes array.
         """
-        function _parse_input_as_integer(input::String, circuit, edgeinfo)::Symbol
+        function _parse_input_as_integer(node_count, input::String, circuit)
 
             # Convert the input to an integer.
             node_id = parse(Int, input)

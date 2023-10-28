@@ -1,11 +1,11 @@
 # ==============================================================================
 # ==============================================================================
-# ============= Module: Auxiliary_Functions_Circuit_Modifying.jl ================
+# =========================== Module: ModifyingNodes ===========================
 # ==============================================================================
 # ==============================================================================
 
 """
-    Module: Auxiliary_Functions_Circuit_Modifying
+    Module: ModifyingNodes
 
 Author: Michelangelo Dondi
 Date: 28-10-2023
@@ -26,7 +26,7 @@ Notes:
     - Module_Auxiliary_Functions_Circuit_Recap.jl
     - Module_Auxiliary_Functions_Handle_Special_Input.jl    
 """
-module Auxiliary_Functions_Circuit_Modifying
+module ModifyingNodes
 
     # ==============================================================================
     # =========================== Exported Functions ===============================
@@ -47,20 +47,20 @@ module Auxiliary_Functions_Circuit_Modifying
     # ==============================================================================
 
         # Module DataStructure provides the data structures used by the Circuit Plotter Program.
-        include("datastructure.jl")
+        include("../../datastructure.jl")
         using .DataStructure: EdgeInfo, Circuit # Access the data structures
 
         # Module CircuitRecap provides auxiliary functions for recapping the circuit.
-        include("functions_always_callable/circuit_recap.jl")
+        include("../../functions_always_callable/circuit_recap.jl")
         using .CircuitRecap: show_nodes_recap # Recap the circuit    
 
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
-        include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
+        include("../../Module_Auxiliary_Functions_Handle_Special_Input.jl")
         using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break # Handle special input ('help', 'recap', 'draw', 'exit', 'break')
 
-        # Module_Auxiliary_Functions_Checking_Input_Of_Nodes provides auxiliary functions for checking the input of nodes.
-        include("Module_Auxiliary_Functions_Checking_Input_Of_Nodes.jl")
-        using .Auxiliary_Functions_Checking_Input_Of_Nodes: check_if_input_is_valid # Check if the node can be added to the circuit.
+        # Module CheckingNodesInput provides auxiliary functions for checking the input of nodes.
+        include("checking_nodes_input.jl")
+        using .CheckingNodesInput: check_if_input_is_valid # Check if the node can be added to the circuit.
         
     # ==============================================================================
     # ======================== function modify_existing_node =======================

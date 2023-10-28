@@ -27,8 +27,8 @@ Notes:
 - The module requires the following modules to be included: 
     - DataStructure 
     - Module_Auxiliary_Functions_Handle_Special_Input.jl 
-    - Module_Auxiliary_Functions_Circuit_Modifying.jl
-    - Module_Auxiliary_Functions_Circuit_Deleting.jl
+    - ModifyingNodes
+    - DeletingNodes
 """
 module GatheringNodes
 
@@ -58,17 +58,17 @@ module GatheringNodes
         include("../Module_Auxiliary_Functions_Handle_Special_Input.jl")
         using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break_modify_cancel # Handle the following special input: 'exit', 'help', 'recap', 'draw', 'save', 'break', 'modify', 'cancel'
 
-        # Module_Auxiliary_Functions_Checking_Input_Of_Nodes provides auxiliary functions for checking the input of nodes.
-        include("../Module_Auxiliary_Functions_Checking_Input_Of_Nodes.jl")
-        using .Auxiliary_Functions_Checking_Input_Of_Nodes: check_if_input_is_valid # Check if the node can be added to the circuit.
+        # Module CheckingNodesInput provides auxiliary functions for checking the input of nodes.
+        include("helper_functions_collecting_nodes/checking_nodes_input.jl")
+        using .CheckingNodesInput: check_if_input_is_valid # Check if the node can be added to the circuit.
 
-        # Module_Auxiliary_Functions_Circuit_Modifying.jl provides auxiliary functions for modifying the circuit.
-        include("../Module_Auxiliary_Functions_Circuit_Modifying.jl")
-        using .Auxiliary_Functions_Circuit_Modifying: modify_existing_node # Modify existing nodes
+        # Module ModifyingNodes provides auxiliary functions for modifying the circuit.
+        include("helper_functions_collecting_nodes/modifying_nodes.jl")
+        using .ModifyingNodes: modify_existing_node # Modify existing nodes
 
-        # Module_Auxiliary_Functions_Circuit_Deleting.jl provides auxiliary functions for deleting nodes from the circuit.
-        include("../Module_Auxiliary_Functions_Circuit_Deleting.jl")
-        using .Auxiliary_Functions_Circuit_Deleting: delete_node_from_circuit # Delete existing nodes
+        # Module DeletingNodes provides auxiliary functions for deleting nodes from the circuit.
+        include("helper_functions_collecting_nodes/deleting_nodes.jl")
+        using .DeletingNodes: delete_node_from_circuit # Delete existing nodes
 
     # ==============================================================================
     # ======================= function collect_nodes_from_cmd ======================
@@ -113,11 +113,11 @@ module GatheringNodes
         end
 
     # ==============================================================================
-    # ---------------------- function _prompt_for_coordinates ----------------------
+    # --------- Function: _prompt_for_coordinates(node_count::Int)::String ---------
     # ==============================================================================
 
         """
-            _prompt_for_coordinates(node_count::Int) -> String
+            _prompt_for_coordinates(node_count::Int)::String
         
         Prompt the user for node coordinates or a special command.
         
@@ -130,7 +130,7 @@ module GatheringNodes
         # Notes:
         - This function is called by `collect_nodes_from_cmd`.
         """
-        function _prompt_for_coordinates(node_count::Int)
+        function _prompt_for_coordinates(node_count::Int)::String
 
             # Print the prompt message.
             print(""" 

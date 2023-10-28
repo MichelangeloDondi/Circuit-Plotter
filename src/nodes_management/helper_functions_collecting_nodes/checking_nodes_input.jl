@@ -1,17 +1,17 @@
 # ============================================================================
 # ============================================================================
-# =========== Module: Auxiliary_Functions_Checking_Input_Of_Nodes ============
+# ======================== Module: CheckingNodesInput ========================
 # ============================================================================
 # ============================================================================
 
 """
-    Module: Auxiliary_Functions_Checking_Input_Of_Nodes  
+    Module: CheckingNodesInput 
 
 Author: Michelangelo Dondi
 Date: 28-10-2023
 Description: This module contains the function for checking if the input aimed to add a new node is valid.
 
-Version: 4.1
+Version: 4.3
 License: MIT License 
 
 Exported functions:
@@ -20,32 +20,32 @@ The input is valid if it is in the format 'integer x,y' (e.g. '1,-2') and if no 
 at the provided coordinates.
 
 Submodules: 
-- 'Input_Format_Check': Checks if the input is in the format 'integer x,y' (e.g. '1,-2').
-- 'Coordinate_Availability_Check': Checks if no node already exists at the provided coordinates.
+- InputFormatCheck: Checks if the input is in the format 'integer x,y' (e.g. '1,-2').
+- Coordinate_AvailabilityCheck': Checks if no node already exists at the provided coordinates.
 
 Notes:
-- This module is called by 'Module_Gathering_Nodes.jl'
-- This module is called by 'Module_Auxiliary_Functions_Modifying.jl'
+- This module is called by GatheringNodes
+- This module is called by ModifyingNodes
 """
-module Auxiliary_Functions_Checking_Input_Of_Nodes
+module CheckingNodesInput
 
     # ==============================================================================
-    # =========================== Exported function ================================
+    # =========================== Exported Function ================================
     # ==============================================================================
         
         # Invoke the function to check if the input of the coordinates of the new node is valid.
         export check_if_input_is_valid
     
     # ==============================================================================
-    # ============================ Included modules ================================
+    # ============================ Included Modules ================================
     # ==============================================================================
 
         # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("datastructure.jl")
+        include("../../datastructure.jl")
         using .DataStructure: Node, Circuit # Access the data structures
 
     # ==============================================================================
-    # ====================== Function: check_if_input_is_valid =====================
+    # ====== Function: check_if_input_is_valid(input::String, circuit)::Bool =======
     # ==============================================================================
 
         """
@@ -70,13 +70,13 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
 
             println("\n\033[36mChecking if the input is valid...\033[0m")
             # Check if the input is valid format and if the input is valid free coordinates.
-            if Input_Format_Check.is_valid_format(input) 
+            if InputFormatCheck.is_valid_format(input) 
 
                 # If the input is valid format, print a message and check if the input is valid free coordinates.
                 println("\033[32mThe input is in the correct format. \n\033[36mChecking if the coordinates are available...\033[0m")
                 
                 # If the input is valid format, check if the input is valid free coordinates.
-                if Coordinate_Availability_Check.is_coordinate_available(input, circuit)
+                if CoordinateAvailabilityCheck.is_coordinate_available(input, circuit)
 
                     # If the input is valid format and if the input is valid free coordinates, return true.
                     println("\033[32mThe coordinates are available.\033[0m")   
@@ -98,12 +98,12 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
         
     # ==============================================================================
     # ==============================================================================
-    # ---------------------- Submodule: Input_Format_Check -------------------------
+    # ----------------------- Submodule: InputFormatCheck --------------------------
     # ==============================================================================
     # ==============================================================================
 
     """
-        Submodule: Input_Format_Check
+        Submodule: InputFormatCheck
 
     Description: This submodule contains the function for checking if the input is in the format 'integer x,y' (e.g. '1,-2').
         
@@ -111,9 +111,9 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
     - 'is_valid_format(input::String)::Bool': Checks if the input is in the format 'integer x,y' (e.g. '1,-2').
         
     Notes:
-    - This module is a submodule of 'Module_Auxiliary_Functions_Checking_Input_Of_Nodes.jl'.
+    - This module is a submodule of Module CheckingNodesInput.
     """
-    module Input_Format_Check
+    module InputFormatCheck
 
         # ==============================================================================
         # =========================== Exported Function ================================
@@ -123,7 +123,7 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
             export is_valid_format
 
         # ==============================================================================
-        # ====================== Function: is_valid_format =============================
+        # =============== Function: is_valid_format(input::String)::Bool ===============
         # ==============================================================================
 
             """
@@ -173,41 +173,41 @@ module Auxiliary_Functions_Checking_Input_Of_Nodes
 
     # ==============================================================================
     # ==============================================================================
-    # ----------------- Submodule: Coordinate_Availability_Check -------------------
+    # ------------------ Submodule: CoordinateAvailabilityCheck --------------------
     # ==============================================================================
     # ==============================================================================
     
     """
-        Submodule: Coordinate_Availability_Check
+        Submodule: CoordinateAvailabilityCheck
 
     Description: This submodule contains the function for checking if the coordinates are available.
 
     Exported functions:
-    - '_is_coordinate_available(input::String, circuit::Circuit)::Bool': Checks if the coordinates are available.
+    - 'is_coordinate_available(input::String, circuit::Circuit)::Bool': Checks if the coordinates are available.
     The coordinates are available if no node already exists at the provided coordinates.
 
     Notes:
-    - This module is a submodule of 'Module_Auxiliary_Functions_Checking_Input_Of_Nodes.jl'.
+    - This module is a submodule of Module CheckingNodesInput.
     """
-    module Coordinate_Availability_Check
+    module CoordinateAvailabilityCheck
 
         # ==============================================================================
-        # =========================== Exported function ================================
+        # =========================== Exported Function ================================
         # ==============================================================================
 
             # Invoke the function to check if the coordinates are available.
             export is_coordinate_available
 
         # ==============================================================================
-        # ============================ Included modules ================================
+        # ============================ Included Modules ================================
         # ==============================================================================
 
             # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-            include("datastructure.jl")
+            include("../../datastructure.jl")
             using .DataStructure: Node, Circuit # Access the data structures
 
         # ==============================================================================
-        # ===================== Function: _is_coordinate_available =====================
+        # === Function: is_coordinate_available(input::String, circuit::Circuit)::Bool ===
         # ==============================================================================
 
             """
