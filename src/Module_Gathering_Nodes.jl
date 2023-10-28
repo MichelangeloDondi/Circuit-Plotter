@@ -137,9 +137,9 @@ module Gathering_Nodes
             print(""" 
             ===================================================
         
-            Number of nodes already present in the Circuit: $node_count.
+            \033[33mNumber of nodes already present in the Circuit: $node_count.\033[0m
         
-            Provide the coordinates of the next node (N$(node_count + 1))
+            \033[36mProvide the coordinates of the next node (N$(node_count + 1))
             Format: integer x,y (e.g. '1,-2')
             
             Otherwise, you can call a general command (type 'help' or 'h' for more info)
@@ -147,7 +147,7 @@ module Gathering_Nodes
         
             - 'break'  or 'b' to stop collecting nodes.
             - 'modify' or 'm' to modify existing nodes.
-            - 'cancel' or 'c' to cancel existing nodes.
+            - 'cancel' or 'c' to cancel existing nodes.\033[0m
         
             ===================================================
         
@@ -194,15 +194,15 @@ module Gathering_Nodes
                 if node_count == 0
 
                     # Provide feedback to the user and continue to the next iteration.
-                    println("\nYour circuit has no nodes so far.")
-                    println("You must add at least one node to the circuit to continue.")
+                    println("\n\033[31mYour circuit has no nodes so far.")
+                    println("You must add at least one node to the circuit to continue.\033[0m")
                     return node_count, :continue
 
                 # If at least one node was added, break out of the loop.
                 else    
 
                     # Provide feedback to the user and break out of the loop.
-                    println("\nFinished adding nodes to the circuit.")
+                    println("\n\033[33mFinished adding nodes to the circuit.\033[0m")
                     return node_count, :break
                 end
             
@@ -253,12 +253,6 @@ module Gathering_Nodes
         # Notes:
         - This function is called by `process_input`.
         - This function is called after the node has been checked for validity by `_check_if_node_can_be_added`.
-
-        # Examples:
-        ```julia-repl
-        julia> _add_node_to_circuit("1,-2", 1, circuit)
-
-        Node N1 successfully added at position (1,-2).
         """
         function _add_node_to_circuit(input::String, idx::Int, circuit)
 
@@ -273,6 +267,6 @@ module Gathering_Nodes
             add_vertex!(circuit.graph)
 
             # Provide feedback to the user and return true.
-            println("\nNode N$idx successfully added at position ($x,$y).")
+            println("\n\033[32mNode N$idx successfully added at position ($x,$y).\033[0m")
         end
     end
