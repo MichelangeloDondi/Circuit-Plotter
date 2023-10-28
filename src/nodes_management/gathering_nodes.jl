@@ -1,11 +1,11 @@
 # ==============================================================================
 # ==============================================================================
-# ======================== Module: Gathering_Nodes =============================
+# =========================== Module: GatheringNodes ===========================
 # ==============================================================================
 # ==============================================================================
 
 """
-    Module: Gathering_Nodes
+    Module: GatheringNodes
 
 Author: Michelangelo Dondi
 Date: 28-10-2023
@@ -13,32 +13,31 @@ Description:
     Dedicated to housing the functions for collecting node details from the user.
     This module simplifies the main function definition process by providing a single file to call.
 
-Version: 4.2
+Version: 4.3
 License: MIT License
 
 Exported functions:
-- `collect_nodes_from_cmd(circuit, edgeinfo)`: Main function to collect node coordinates 
+- `collect_nodes(circuit, edgeinfo)`: Main function to collect node coordinates 
 from the user. The user is prompted to input node coordinates or type 'break' or 'b' to 
 end the node collection. The user can also modify or cancel existing nodes.
 
 Notes:
-- This module is called by `Module_Main_Function.jl`.
-- This module is called after the user has been greeted and instructed by `Module_Helping.jl`.
-- This module is called before the user is prompted to input component details by `Module_Gathering_Components.jl`.
+- This module is called by MainFunction.
+- This module is called after the user has been greeted and instructed by `show_initial_greetings` in the main function.
 - The module requires the following modules to be included: 
-    - Module_Circuit_Structures.jl 
+    - DataStructure 
     - Module_Auxiliary_Functions_Handle_Special_Input.jl 
     - Module_Auxiliary_Functions_Circuit_Modifying.jl
     - Module_Auxiliary_Functions_Circuit_Deleting.jl
 """
-module Gathering_Nodes
+module GatheringNodes
 
     # ==============================================================================
     # =========================== Exported Function ================================
     # ==============================================================================
 
-        # Invoke this function to gather the nodes
-        export collect_nodes_from_cmd
+        # Invoke this function to collect the nodes
+        export collect_nodes
 
     # ==============================================================================
     # =========================== Required Packages ================================
@@ -51,24 +50,24 @@ module Gathering_Nodes
     # =========================== Included Modules =================================
     # ==============================================================================  
 
-        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("datastructure.jl")
+        # Module DataStructure provides the data structures used by the Circuit Plotter Program.
+        include("../datastructure.jl")
         using .DataStructure: Node, EdgeInfo, Circuit # Access the data structures
 
         # Module_Auxiliary_Functions_Handle_Special_Input.jl provides auxiliary functions for input handling.
-        include("Module_Auxiliary_Functions_Handle_Special_Input.jl")
+        include("../Module_Auxiliary_Functions_Handle_Special_Input.jl")
         using .Auxiliary_Functions_Handle_Special_Input: handle_special_input_break_modify_cancel # Handle the following special input: 'exit', 'help', 'recap', 'draw', 'save', 'break', 'modify', 'cancel'
 
         # Module_Auxiliary_Functions_Checking_Input_Of_Nodes provides auxiliary functions for checking the input of nodes.
-        include("Module_Auxiliary_Functions_Checking_Input_Of_Nodes.jl")
+        include("../Module_Auxiliary_Functions_Checking_Input_Of_Nodes.jl")
         using .Auxiliary_Functions_Checking_Input_Of_Nodes: check_if_input_is_valid # Check if the node can be added to the circuit.
 
         # Module_Auxiliary_Functions_Circuit_Modifying.jl provides auxiliary functions for modifying the circuit.
-        include("Module_Auxiliary_Functions_Circuit_Modifying.jl")
+        include("../Module_Auxiliary_Functions_Circuit_Modifying.jl")
         using .Auxiliary_Functions_Circuit_Modifying: modify_existing_node # Modify existing nodes
 
         # Module_Auxiliary_Functions_Circuit_Deleting.jl provides auxiliary functions for deleting nodes from the circuit.
-        include("Module_Auxiliary_Functions_Circuit_Deleting.jl")
+        include("../Module_Auxiliary_Functions_Circuit_Deleting.jl")
         using .Auxiliary_Functions_Circuit_Deleting: delete_node_from_circuit # Delete existing nodes
 
     # ==============================================================================
@@ -93,7 +92,7 @@ module Gathering_Nodes
         - This function is called by `main`.
         - This function is called after the user has been greeted and instructed by `show_initial_greetings`.
         """
-        function collect_nodes_from_cmd(circuit, edgeinfo)
+        function collect_nodes(circuit, edgeinfo)
 
             node_count = 0
             

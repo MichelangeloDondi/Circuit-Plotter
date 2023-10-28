@@ -57,9 +57,9 @@ module MainFunction
         using .Helping: show_initial_greetings # Greetings and instructions
         using .Helping: show_final_greetings_asking_whether_to_save_plot_displayed # Final greetings and whether to save the plot displayed before exiting the program
 
-        # Module_Gathering_Nodes.jl provides functions for collecting node details.
-        include("Module_Gathering_Nodes.jl")
-        using .Gathering_Nodes: collect_nodes_from_cmd # Collect node details from the user
+        # Module GatheringNodes provides functions to gather node details.
+        include("nodes_management/gathering_nodes.jl")
+        using .GatheringNodes: collect_nodes # Collect node details from the user
 
         # Module_Gathering_Edges_And_Components.jl provides functions for collecting edge details and component details.
         include("Module_Gathering_Edges_And_Components.jl")
@@ -108,7 +108,7 @@ module MainFunction
             show_initial_greetings()
 
             # Gather the particulars of the nodes.
-            collect_nodes_from_cmd(circuit, edge_info)
+            collect_nodes(circuit, edge_info)
 
             # Gather the particulars of the edges and of the components and provide feedback to the user.
             collect_edges_and_components_from_cmd(circuit, edge_info)
