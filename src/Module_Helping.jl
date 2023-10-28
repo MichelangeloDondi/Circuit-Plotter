@@ -13,7 +13,7 @@ Description:
     Dedicated to providing guidance to users interacting with the Circuit Plotter Program.
     This module simplifies user interactions by offering clear instructions and comprehensive assistance.
 
-Version: 4.2
+Version: 4.3
 License: MIT License
 
 Exported functions:
@@ -29,10 +29,10 @@ module Helping
         # Invoke these function to show greetings and instructions
         export show_initial_greetings
 
-        # Invoke these functions to obtain help and instructions
+        # Invoke thi function to obtain help and instructions
         export show_help
 
-        # Invoke these function to show final greetings and whether to save the plot displayed before exiting the program
+        # Invoke this function to show final greetings and whether to save the plot displayed before exiting the program
         export show_final_greetings_asking_whether_to_save_plot_displayed
 
     # ==============================================================================
