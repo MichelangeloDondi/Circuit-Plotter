@@ -8,12 +8,12 @@
     Module Auxiliary_Functions_Circuit_Modifying
 
 Author: Michelangelo Dondi
-Date: 27-10-2023
+Date: 28-10-2023
 Description: 
     This module provides functions for modifying an existing node's coordinates in 
     the circuit.
 
-Version: 3.5
+Version: 4.1
 License: MIT License
 
 Exported functions: 
@@ -121,17 +121,16 @@ module Auxiliary_Functions_Circuit_Modifying
 
             # Display the instructions for the user.
             println("""
+            \033[36m
+            You can modify the coordinates of an existing node by typing its ID and providing the new coordinates.
 
-            You can modify the coordinates of an existing node 
-            by typing its ID and providing the new coordinates.
-
-            Here there is a recap of the circuit for your convenience:""")
+            Here there is a recap of the circuit for your convenience:\033[0m""")
 
             # Show the current state of the circuit to aid user decision.
             show_circuit_recap(circuit, edgeinfo)
 
             # Ask the user for the ID of the node they wish to modify.
-            print("\nEnter the ID (e.g. '2') of the node you want to modify or type 'break' or 'b' to finish modifying nodes: ")
+            print("\n\033[36mEnter the ID (e.g. '2') of the node you want to modify or type 'break' or 'b' to finish modifying nodes: \033[0m")
             
             # Return the user's input.
             return readline()
@@ -170,7 +169,7 @@ module Auxiliary_Functions_Circuit_Modifying
 
             # If the user wants to stop modifying, break the loop.
             elseif handle_result == :break
-                println("\nFinished modifying nodes.")
+                println("\n\033[32mFinished modifying nodes.\033[0m")
                 return :break
             end
             
@@ -183,7 +182,9 @@ module Auxiliary_Functions_Circuit_Modifying
 
             # Handle potential errors (e.g., invalid input format).
             catch e
-                println("\nInvalid input: $e. Please retry.")
+
+                # Inform the user of the error and continue to the next iteration.
+                println("\n\033[31mInvalid input: $e. Please try again with a valid input.\033[0m")
                 return :continue
             end
         end
@@ -214,13 +215,13 @@ module Auxiliary_Functions_Circuit_Modifying
 
             # If no such node exists, inform the user.
             if found_node === nothing
-                println("""\nNode with ID N$node_id not found. 
-                Please ensure node IDs are integers and the node exists in the circuit.""")
+                println("""\n\033[31mNode with ID N$node_id not found. \033[36m
+                Please ensure node IDs are integers and the node exists in the circuit.\033[30m""")
                 return :continue
             end
 
             # Ask the user for the new coordinates.
-            println("\nProvide the new coordinates for node N$node_id in the format 'x,y' (coordinates must be integers): ")
+            print("\n\033[36mProvide the new coordinates for node N$node_id in the format 'x,y' (coordinates must be integers): \033[0m")
 
             # Get the user's input.
             input = readline()
@@ -238,7 +239,7 @@ module Auxiliary_Functions_Circuit_Modifying
                 _update_node_coordinates(found_node, x, y)
 
                 # Confirm to the user that the node's coordinates were successfully modified.
-                println("\nNode N$node_id successfully modified to position ($x,$y).")
+                println("\n\033[32mNode N$node_id successfully modified to position ($x,$y). \033[0m")
                 return :continue
 
             end
