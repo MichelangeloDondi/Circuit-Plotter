@@ -95,9 +95,12 @@ module Helping
             - The program is designed primary for electrical circuits.
             - However, it can be used for any type of circuit.
             - Input nodes, edges, and component details following the prompts.
+            - The program will automatically render the circuit.
 
             NODE COORDINATES:
             - Ensure coordinates are integer numbers.
+            - Ensure coordinates are separated by a comma.
+            - Ensure coordinates are not already used by another node.
 
             EDGES:
             - Edges are links between 2 different nodes.
