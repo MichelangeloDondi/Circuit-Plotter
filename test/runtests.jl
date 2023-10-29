@@ -13,7 +13,7 @@ Author: Michelangelo Dondi
 Date: 29-10-2023
 Description: This file runs the tests for the Circuit Plotter Program.
 
-Version: 4.5
+Version: 4.6
 License: MIT License
 
 Notes:
@@ -108,7 +108,7 @@ Notes:
     # ==============================================================================
 
         # Test module 'Module_Test_check_if_input_is_valid.jl'
-        println("\nRunning tests for Module_Test_check_if_input_is_valid...")
+        println("\nRunning tests for Module TestCheckIfInputIsValid...")
 
         # Test 'is_valid_format()' of Module Auxiliary_Functions_Checking_Input_Of_Nodes
         test_is_valid_format()
@@ -117,8 +117,10 @@ Notes:
         test_is_coordinate_available(circuit)
 
     # ==============================================================================
-    # ========================== Testing Module_Saving =============================
+    # ========================== Testing Module Saving =============================
     # ==============================================================================
+
+        println("\nRunning tests for Module Saving...")
 
         # Test 'save_plot_displayed()'
         #test_save_plot_displayed()
