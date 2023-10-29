@@ -16,13 +16,33 @@ Description:
 Version: 4.6
 License: MIT License
 
+Included modules:
+- Module 'DataStructure' provides the data structures used by the Circuit Plotter Program.
+- Module 'Plotting' provides functions for drawing the current circuit plot.
+
+Required packages:
+- 'Plots' for saving plots
+- 'FilePathsBase' to normalize filepaths
+
 Exported functions:
 - `save_plot_displayed(circuit)`: Saves the plot into a "circuit_drawings" directory. 
-If no plot is rendered, the plot is first drawn and then saved. The user is prompted 
-to provide a filename for the plot. If no filename is provided, a default filename 
-"circuit_plot.png" is used. If the provided filename does not have an extension, 
-".png" is appended to the filename. The plot is saved in the "Images" directory. 
-If the "circuit_drawings" directory does not exist, it is created.
+    If no plot is rendered, the plot is first drawn and then saved. The user is prompted 
+    to provide a filename for the plot. If no filename is provided, a default filename 
+    "circuit_plot.png" is used. If the provided filename does not have an extension, 
+    ".png" is appended to the filename. The plot is saved in the "Images" directory. 
+    If the "circuit_drawings" directory does not exist, it is created.
+
+Notes:
+- The plot is saved in the "circuit_drawings" directory. If the directory does not exist, 
+    it is created and then the plot is saved in it.
+- If no plot is rendered, the plot is first drawn and then saved.
+- The user is prompted to provide a filename for the plot.
+- If no filename is provided, a default filename "circuit_plot.png" is used.
+- The ".png" is appended to the filename.
+- Function `save_plot_displayed(circuit)` is called by the function 'show_final_greetings_asking_whether_to_save_plot_displayed(circuit)' 
+    defined in module 'Helping' and used by the function 'main(circuit, edge_info)' defined in module 'MainFunction'.
+- Function `save_plot_displayed(circuit)` is called by the function `_handle_special_input(input::String, circuit, edge_info)::Symbol` 
+    defined in module 'HandlingSpecialInputs'.
 """
 module Saving
 
@@ -47,11 +67,11 @@ module Saving
     # ============================== Included Modules ==============================
     # ==============================================================================  
 
-        # Module DataStructure provides the data structures used by the Circuit Plotter Program.
-        include("../datastructure.jl")
+        # Module 'DataStructure' provides the data structures used by the Circuit Plotter Program.
+        include("../data_structure.jl")
         using .DataStructure: Circuit # Access the data structures
 
-        # Module Plotting provides functions for drawing the current circuit plot.
+        # Module 'Plotting' provides functions for drawing the current circuit plot.
         include("plotting.jl")
         using .Plotting: draw_plot # Draw the current circuit plot
 
@@ -62,13 +82,12 @@ module Saving
         """
         save_plot_displayed(circuit)
 
-        Saves the current plot into an "Images" directory. If no plot is rendered, 
-        the plot is first drawn and then saved. The user is prompted to provide a
-        filename for the plot. If no filename is provided, a default filename 
-        "circuit_plot.png" is used. If the provided filename does not have an   
-        extension, ".png" is appended to the filename. The plot is saved in the
-        "circuit_drawings" directory. If the "Images" directory does not exist, 
-        it is created.
+        Saves the current plot into a "circuit_drawings" directory. If no plot is 
+        rendered, the plot is first drawn and then saved. The user is prompted to 
+        provide a filename for the plot. If no filename is provided, a default 
+        filename "circuit_plot.png" is used. The extension ".png" is appended to
+        the filename. If the "circuit_drawings" directory does not exist, it is
+        created and the plot is saved in it.
 
         Parameters:
         - circuit: The circuit to draw and save.

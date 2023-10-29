@@ -7,24 +7,31 @@
 """
     Module: ModifyingNodes
 
-Author: Michelangelo Dondi
-Date: 28-10-2023
-Description: 
-    This module provides functions for modifying an existing node's coordinates in 
-    the circuit.
+# Author: Michelangelo Dondi
+# Date: 29-10-2023
+# Description: 
+    This module provides functions for modifying an existing node's coordinates in the circuit.
 
-Version: 4.4
-License: MIT License
+# Version: 4.6
+# License: MIT License
 
-Exported functions: 
-- `modify_existing_node(circuit)`: Modifies an existing nodes's coordinates in the circuit based on user input.
+# Included modules:
+    - Module 'DataStructure provides' the data structures used by the Circuit Plotter Program.
+    - Module 'CircuitRecap provides' auxiliary functions for recapping the circuit.
+    - Module 'HandlingSpecialInput' provides auxiliary functions for input handling.
+    - Module 'CheckingNodesInput' provides auxiliary functions for checking the input of nodes.
 
-Notes:
-- The module is included in Module GatheringNodes  
-- The module requires the following modules to be included:
-    - DataStructure
-    - CircuitRecap
-    - HandlingSpecialInput    
+# Required packages:
+    - 'LightGraphs' for graph data structures
+
+# Exported functions: 
+    - `modify_existing_node(circuit)`: Modifies an existing nodes's coordinates in the circuit based on user input.
+
+# When exported functions are invoked?
+    - Function `modify_existing_node(circuit)` is invoked by the function `collect_nodes(circuit, edgeinfo)` in module 'GatheringNodes'.
+
+# Notes:
+    - Function `modify_existing_node(circuit)` is the primary driver for user interaction when modifying nodes. 
 """
 module ModifyingNodes
 
@@ -46,24 +53,24 @@ module ModifyingNodes
     # ============================ Included Modules ================================
     # ==============================================================================
 
-        # Module DataStructure provides the data structures used by the Circuit Plotter Program.
-        include("../../datastructure.jl")
+        # Module 'DataStructure' provides the data structures used by the Circuit Plotter Program.
+        include("../../data_structure.jl")
         using .DataStructure: EdgeInfo, Circuit # Access the data structures
 
-        # Module CircuitRecap provides auxiliary functions for recapping the circuit.
+        # Module 'CircuitRecap' provides auxiliary functions for recapping the circuit.
         include("../../functions_always_callable/circuit_recap.jl")
         using .CircuitRecap: show_nodes_recap # Recap the circuit    
 
-        # Module HandlingSpecialInput provides auxiliary functions for input handling.
+        # Module 'HandlingSpecialInput' provides auxiliary functions for input handling.
         include("../../functions_always_callable/handling_special_input.jl")
         using .HandlingSpecialInput: handle_special_input_break # Handle special input ('help', 'recap', 'draw', 'exit', 'break')
 
-        # Module CheckingNodesInput provides auxiliary functions for checking the input of nodes.
+        # Module 'CheckingNodesInput' provides auxiliary functions for checking the input of nodes.
         include("checking_nodes_input.jl")
         using .CheckingNodesInput: check_if_input_is_valid # Check if the node can be added to the circuit.
         
     # ==============================================================================
-    # ======================== function modify_existing_node =======================
+    # ============== Function: modify_existing_node(circuit, edgeinfo) =============
     # ==============================================================================
 
         """
@@ -72,13 +79,24 @@ module ModifyingNodes
         Allows the user to modify an existing node's coordinates in the circuit based on input.
 
         # Parameters:
-        - circuit: The primary data structure representing the circuit's nodes and components.
-        - edgeinfo: Additional information about the edges of the circuit.
+            - circuit: The primary data structure representing the circuit's nodes and components.
+            - edgeinfo: Additional information about the edges of the circuit.
+
+        # Returns:
+            - nothing
+
+        # Function Logic:
+            - Keep prompting the user until they decide to exit.
+            - Display instructions for the user.
+            - Process the user's input.
+            - If the user wants to stop modifying, break the loop.
+            - If the user wants to modify a node, prompt them for the ID of the node they wish to modify.
+
+        # When is this function invoked?
+            - This function is invoked by the function `collect_nodes(circuit, edgeinfo)` in module 'GatheringNodes'.
 
         # Notes:
-        - The function is used by the collect_nodes_from_cmd function to modify an existing node's coordinates in the circuit.
-        - This function is the primary driver for user interaction when modifying nodes.
-        It leverages the other helper functions to simplify its logic.
+            - This function is the primary driver for user interaction when modifying nodes.
         """
         function modify_existing_node(circuit, edgeinfo)
 
@@ -99,25 +117,33 @@ module ModifyingNodes
         end
 
     # ==============================================================================
-    # ------------------ function _prompt_modify_node_instructions -----------------
+    # --------- Function: _prompt_modify_node_instructions(circuit)::String --------
     # ==============================================================================
 
         """
-            _prompt_modify_node_instructions(circuit, edgeinfo)::String
+            _prompt_modify_node_instructions(circuit)::String
 
         Prompts the user for the ID of the node they wish to modify.
 
         # Parameters:
-        - circuit: The primary data structure representing the circuit's nodes and components.
-        - edgeinfo: Additional information about the edges of the circuit.
+            - circuit: The primary data structure representing the circuit's nodes and components.
             
         # Returns:
-        - The user's input as a string.
+            - The user's input as a string.
             
+        # Function logic:
+            - Display the instructions for the user.
+            - Show the current state of the circuit to aid user decision.
+            - Ask the user for the ID of the node they wish to modify.
+            - Return the user's input.
+            
+        # When is this function invoked?
+            - This function is invoked by the function `modify_existing_node(circuit)` in module 'ModifyingNodes'.    
+
         # Notes:
-        - The function is used by the modify_existing_node function to prompt the user for the ID of the node they wish to modify.
+            - This function is used by the modify_existing_node function to prompt the user for the ID of the node they wish to modify.
         """
-        function _prompt_modify_node_instructions(circuit, edgeinfo)
+        function _prompt_modify_node_instructions(circuit)::String
 
             # Display the instructions for the user.
             println("""
@@ -137,26 +163,49 @@ module ModifyingNodes
         end
 
     # ==============================================================================
-    # ------------------------ function _process_user_input ------------------------
+    # --- Function: _process_user_input(input::String, circuit, edgeinfo)::Symbol ---
     # ==============================================================================
 
         """
-            _process_user_input(input::String, circuit)::Symbol 
+            _process_user_input(input::String, circuit, edgeinfo)::Symbol
 
         Processes the user's input when modifying a node's coordinates.
 
-        # Parameters:
-        - input: The user's input.
-        - circuit: The primary data structure representing the circuit's nodes and components.
+        #Parameters: 
+            - input: The user's input.
+            - circuit: The primary data structure representing the circuit's nodes and components.
+            - edgeinfo: Additional information about the edges of the circuit.
 
         # Returns:
-        - :continue if the user's input was processed successfully and the program should continue.
-        - :break if the user's input was processed successfully and the program should break out of the loop.
+            - :continue if the user's input was processed successfully and the program should continue.
+            - :break if the user's input was processed successfully and the program should break out of the loop.
+
+        # Function logic:
+            - Check if the user entered special commands.
+            - If the command was handled (e.g., exit, recap), continue to the next iteration.
+            - If the user wants to stop modifying, break the loop.
+            - Try to parse the user's input as an integer.
+            - Handle potential errors (e.g., invalid input format).
+            - Inform the user of the error and continue to the next iteration.
+            - Parse the user's input as an integer.
+            - Get the node with the given ID.
+            - If no such node exists, inform the user.
+            - Ask the user for the new coordinates.
+            - Get the user's input.
+            - Check if the new coordinates are valid.
+            - Split the input into its x and y coordinates.
+            - Parse the coordinates as integers.
+            - Update the node's coordinates with the new values.
+            - Confirm to the user that the node's coordinates were successfully modified.
+            - Return :continue to continue the loop.
+
+        # When is this function invoked?
+            - This function is invoked by the function `modify_existing_node(circuit, edgeinfo)` in module 'ModifyingNodes'.
 
         # Notes:
-        - The function is used by the modify_existing_node function to process the user's input when modifying a node's coordinates.
-        - This function is the primary driver for user interaction when modifying nodes.
-        It leverages the other helper functions to simplify its logic.
+            - The function is used by the modify_existing_node function to process the user's input when modifying a node's coordinates.
+            - This function is the primary driver for user interaction when modifying nodes.
+            It leverages the other helper functions to simplify its logic.
         """
         function _process_user_input(input::String, circuit, edgeinfo)::Symbol
 
@@ -190,20 +239,39 @@ module ModifyingNodes
         end
         
     # ------------------------------------------------------------------------------
-    # ------------------------- function _parse_input_as_integer -------------------
+    # --------- Function: _parse_input_as_integer(input::String, circuit) ----------
     # ------------------------------------------------------------------------------
 
         """
-            _parse_input_as_integer(input::String, circuit)::nothing
+            _parse_input_as_integer(input::String, circuit)
         
         Parses the user's input as an integer and modifies the node's coordinates.
 
         # Parameters:
-        - input: The user's input.
-        - circuit: The primary data structure representing the circuit's nodes and components.
+            - input: The user's input.
+            - circuit: The primary data structure representing the circuit's nodes and components.
+
+        # Returns:
+            - :continue if the user's input was processed successfully and the program should continue.
+
+        # Function logic:
+            - Convert the user's input to an integer to retrieve the node ID.
+            - Get the node with the given ID.
+            - If no such node exists, inform the user.
+            - Ask the user for the new coordinates.
+            - Get the user's input.
+            - Check if the new coordinates are valid.
+            - Split the input into its x and y coordinates.
+            - Parse the coordinates as integers.
+            - Update the node's coordinates with the new values.
+            - Confirm to the user that the node's coordinates were successfully modified.
+            - Return :continue to continue the loop.
+
+        # When is this function invoked?
+            - This function is invoked by the function `_process_user_input(input::String, circuit, edgeinfo)::Symbol` in module 'ModifyingNodes'.
 
         # Notes:
-        - The function is used by the process_user_input function to parse the user's input as an integer and modify the node's coordinates.
+            - The function is used by the process_user_input function to parse the user's input as an integer and modify the node's coordinates.
         """            
         function _parse_input_as_integer(input::String, circuit)
 
@@ -245,7 +313,7 @@ module ModifyingNodes
             end
         end
 
-    # ------------------------- function _get_node_by_id ---------------------------
+    # ----------- Function: _get_node_by_id(node_id::Int, circuit)::Node -----------
 
         """
             _get_node_by_id(node_id::Int, circuit)::Node
@@ -253,16 +321,24 @@ module ModifyingNodes
         Retrieve a specific node from the circuit using its ID.
 
         # Parameters:
-        - node_id: The unique identifier for the node.
-        - circuit: The primary data structure representing the circuit's nodes and components.
+            - node_id: The unique identifier for the node.
+            - circuit: The primary data structure representing the circuit's nodes and components.
 
         # Returns:
-        - The Node with the specified ID or nothing if not found.
+            - The Node with the specified ID or nothing if not found.
+
+        # Function logic:
+            - Iterate over all nodes in the circuit.
+            - If the current node's ID matches the provided ID, return the node.
+            - If no node with the given ID was found, return nothing.
+
+        # When is this function invoked?
+            - This function is invoked by the function `_parse_input_as_integer(input::String, circuit)` in module 'ModifyingNodes'.
 
         # Notes:
-        - It's essential for node IDs to be unique to retrieve the correct node.
+            - It's essential for node IDs to be unique to retrieve the correct node.
         """
-        function _get_node_by_id(node_id::Int, circuit)
+        function _get_node_by_id(node_id::Int, circuit)::Node
 
             # Iterate over all nodes in the circuit.
             for node in circuit.nodes
@@ -277,7 +353,7 @@ module ModifyingNodes
             return nothing
         end
 
-    # ---------------------- function _update_node_coordinates ---------------------
+    # ----------- function _update_node_coordinates(node, x::Int, y::Int) ----------
             
         """
             _update_node_coordinates(node, x::Int, y::Int)
@@ -285,13 +361,22 @@ module ModifyingNodes
         Update the x and y coordinates of a given node.
 
         # Parameters:
-        - node: The node whose coordinates are to be updated.
-        - x: The new x-coordinate value.
-        - y: The new y-coordinate value.
+            - node: The node whose coordinates are to be updated.
+            - x: The new x-coordinate value.
+            - y: The new y-coordinate value.
+
+        # Returns:
+            - nothing
+
+        # Function logic:
+            - Update the node's coordinates.
+
+        # When is this function invoked?
+            - This function is invoked by the function `_parse_input_as_integer(input::String, circuit)` in module 'ModifyingNodes'.
 
         # Notes:
-        - Directly modifies the x and y attributes of the node. 
-        - The function is used by the process_user_input function to update the x and y coordinates of a given node.
+            - Directly modifies the x and y attributes of the node. 
+            - The function is used by the process_user_input function to update the x and y coordinates of a given node.
         """
         function _update_node_coordinates(node, x::Int, y::Int)
 

@@ -8,18 +8,42 @@
 """
     Module: MainFunction
 
-Author: Michelangelo Dondi
-Date: 28-10-2023
-Description:
-    Dedicated to housing the main function of the Circuit Visualization Tool.
-    This module orchestrates the execution of the various modules that comprise the program,
-    and provides the user with feedback and instructions as necessary.
+Dedicated to housing the main function of the Circuit Visualization Tool.
+This module orchestrates the execution of the various modules that comprise the program,
+and provides the user with feedback and instructions as necessary.
 
-Version: 4.5
-License: MIT License
+# Author: Michelangelo Dondi
+
+# Date: 29-10-2023
+
+# Version: 4.7
+
+# License: MIT License
+
+# Required packages:
+    - `LightGraphs`: For graph data structures
+
+# Included modules:
+    - `DataStructure`: For housing the data structures used by the Circuit Plotter Program
+    - `Helping`: For providing helper functions for the main program
+    - `GatheringNodes`: For providing functions to gather node details
+    - `GatheringEdges`: For providing functions for collecting edge details
+    - `CircuitRecap`: For providing auxiliary functions for recapping the circuit
+    - `Plotting`: For providing functions for drawing the current circuit plot
+    - `Saving`: For providing functions for saving the plot displayed
+
+# 
         
-Exported functions:
-- `main()`: The main function of the program. It orchestrates the execution of the various modules that comprise the program, and provides the user with feedback and instructions as necessary.
+# Exported functions:
+    - `main(circuit, edge_info)`: The main function of the program. It orchestrates the 
+        execution of the various modules that comprise the program, and provides the user 
+        with feedback and instructions as necessary.
+
+# When are the exported functions invoked?
+    - Function `main(circuit, edge_info)` is invoked in module 'Main' when the program is run.
+
+# Notes:
+    - This module is the entry point of the program.
 """
 module MainFunction
 
@@ -48,32 +72,32 @@ module MainFunction
     # ============================== Included Modules ==============================
     # ==============================================================================
 
-        # Module DataStructure provides the data structures used by the Circuit Plotter Program.
-        include("datastructure.jl")
+        # Module 'DataStructure' provides the data structures used by the Circuit Plotter Program.
+        include("data_structure.jl")
         using .DataStructure: EdgeInfo, Circuit # Access the data structures
 
-        # Module Helping provides helper functions for the main program.
+        # Module 'Helping' provides helper functions for the main program.
         include("functions_always_callable/helping.jl")
         using .Helping: show_initial_greetings # Greetings and instructions
         using .Helping: show_final_greetings_asking_whether_to_save_plot_displayed # Final greetings and whether to save the plot displayed before exiting the program
 
-        # Module GatheringNodes provides functions to gather node details.
+        # Module 'GatheringNodes' provides functions to gather node details.
         include("nodes_management/gathering_nodes.jl")
         using .GatheringNodes: collect_nodes # Collect node details from the user
 
-        # Module GatheringEdges provides functions for collecting edge details.
+        # Module 'GatheringEdges' provides functions for collecting edge details.
         include("edges_management/gathering_edges.jl")
         using .GatheringEdges: collect_edges # Collect edge details.
 
-        # Module CircuitRecap provides auxiliary functions for recapping the circuit.
+        # Module 'CircuitRecap' provides auxiliary functions for recapping the circuit.
         include("functions_always_callable/circuit_recap.jl")
         using .CircuitRecap: show_circuit_recap # Recap the circuit
         
-        # Module Plotting provides functions for drawing the current circuit plot.
+        # Module 'Plotting' provides functions for drawing the current circuit plot.
         include("functions_always_callable/plotting.jl")
         using .Plotting: draw_plot # Draw the current circuit plot
         
-        # Module Saving provides functions for saving the plot displayed.
+        # Module 'Saving' provides functions for saving the plot displayed.
         include("functions_always_callable/saving.jl")
         using .Saving: save_plot_displayed # Save the plot displayed
     

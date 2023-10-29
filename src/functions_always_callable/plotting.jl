@@ -17,9 +17,6 @@ Description:
 Version: 4.6
 License: MIT License
         
-Exported functions:
-- `draw_plot(circuit)`: Invoke this function to visualize a given circuit.
-
 Included modules:
 - 'DataStructure' provides the data structures used by the Circuit Plotter Program.
 
@@ -46,8 +43,14 @@ Constants:
     const PHI = 1.61803398875       # Golden ratio
     const TITLE_WIDTH = 500         # Width of the plot title
 
+Exported functions:
+- `draw_plot(circuit)`: Invoke this function to visualize a given circuit.
+    
 Notes:
-- The module is invoked by the main of Circuit Plotter Program and by Module HandlingSpecialInput.
+- Function 'draw_circuit(circuit)' is called by the function 'main(circuit, edge_info)' defined in
+    module 'MainFunction'.
+- Function 'draw_circuit(circuit)' is called by the function '_handle_special_input(circuit, edge_info)' 
+    defined in module 'HandlingSpecialInput'.
 """
 module Plotting
 
@@ -55,15 +58,15 @@ module Plotting
     # ============================= Exported Function ==============================
     # ==============================================================================
 
-        # Invoke this function to visualize a given circuit.
+        # Invoke this function at any time to visualize the current state of the circuit.
         export draw_plot 
 
     # ==============================================================================
     # ============================== Included Modules ==============================
     # ==============================================================================
 
-        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("../datastructure.jl")
+        # Module 'DataStructure' provides the data structures used by the Circuit Plotter Program.
+        include("../data_structure.jl")
         using .DataStructure: Node, Circuit # Access the data structures
         
     # ==============================================================================

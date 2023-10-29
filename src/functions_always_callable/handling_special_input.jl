@@ -7,20 +7,45 @@
 """
     Module: HandlingSpecialInput
 
-Author: Michelangelo Dondi
-Date: 28-10-2023
-Description: 
-    This module provides functions for handling special user input, such as
-    'exit', 'help', 'recap', 'draw' and 'save'.
+This module provides functions for handling special user input, such as
+'exit', 'help', 'recap', 'draw' and 'save'.     
 
-Version: 4.4
-License: MIT License
+# Author: Michelangelo Dondi
 
-Exported functions: 
-- `handle_special_input_break(input::String)::Symbol`: Handles the followiing special 
-    input from the user: 'exit', 'help', 'recap', 'draw', 'save' and 'break'.
-- `handle_special_input_yes_no(input::String)::Symbol`: Handles the following special 
-    input from the user: 'exit', 'help', 'recap', 'draw', 'save', 'yes', 'no'.
+# Date: 29-10-2023
+
+# Version: 4.7
+
+# License: MIT License
+
+# Included modules:
+    - 'Helping': provides helper functions for the main program.
+    - 'CircuitRecap': provides auxiliary functions for recapping the circuit.
+    - 'Plotting': provides functions for drawing the current circuit plot.
+    - 'Saving': provides functions for saving the plot displayed.
+
+# Required packages:
+    - none
+
+# Exported functions: 
+    - `handle_special_input_break(input::String)::Symbol`: Handles the followiing special 
+        input from the user: 'exit', 'help', 'recap', 'draw', 'save' and 'break'.
+    - `handle_special_input_yes_no(input::String)::Symbol`: Handles the following special 
+        input from the user: 'exit', 'help', 'recap', 'draw', 'save', 'yes', 'no'.
+
+# When are the exported functions invoked?
+    - Function `handle_special_input_break(input::String)::Symbol` is called by function 
+        `handle_special_input_break(input::String)::Symbol` in module 'GatheringEdges'.
+    - Function `handle_special_input_break_modify_cancel(input::String)::Symbol` is called 
+        by function `handle_special_input_break_modify_cancel(input::String)::Symbol` in 
+        module 'GatheringNodes'.
+    - Function `handle_special_input_yes_no(input::String)::Symbol` is called by function 
+        `handle_special_input_yes_no(input::String)::Symbol` in module 'GatheringEdges'.
+????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+# Notes:
+    - Function `handle_special_input_break_modify_cancel(input::String)::Symbol` is called 
+        by function `handle_special_input_break_modify_cancel(input::String)::Symbol` in 
+        module 'GatheringEdges'.
 """
 module HandlingSpecialInput
 
@@ -41,19 +66,19 @@ module HandlingSpecialInput
     # ============================== Included Modules ==============================
     # ==============================================================================
 
-        # Module Helping provides helper functions for the main program.
+        # Module 'Helping' provides helper functions for the main program.
         include("helping.jl")
         using .Helping: show_help # Help and instructions
 
-        # Module CircuitRecap provides auxiliary functions for recapping the circuit.
+        # Module 'CircuitRecap' provides auxiliary functions for recapping the circuit.
         include("circuit_recap.jl")
         using .CircuitRecap: show_circuit_recap # Recap the circuit
         
-        # Module Plotting provides functions for drawing the current circuit plot.
+        # Module 'Plotting' provides functions for drawing the current circuit plot.
         include("plotting.jl")
         using .Plotting: draw_plot # Draw the current circuit plot
 
-        # Module Saving provides functions for saving the plot displayed.
+        # Module 'Saving' provides functions for saving the plot displayed.
         include("saving.jl")
         using .Saving: save_plot_displayed # Save the plot displayed
         

@@ -7,32 +7,46 @@
 """
     Module: CircuitRecap
 
-Author: Michelangelo Dondi
-Date: 29-10-2023
-Description: 
-    Dedicated to providing auxiliary functions for recapping the circuit details.
-    This module simplifies the recap process by providing functions to display a
-    recap of the circuit in the console. The recap includes a summary of the nodes, 
-    edges and components present within the circuit.
- 
-Version: 4.5
-License: MIT License
+Dedicated to providing auxiliary functions for recapping the circuit details.
+This module simplifies the recap process by providing functions to display a
+recap of the circuit in the console. The recap includes a summary of the nodes, 
+edges and components present within the circuit.
+    
+# Author: Michelangelo Dondi
 
-Exported functions: 
-- `show_circuit_recap(circuit, edge_info)`: Displays a recap 
-of the circuit in the console. The recap includes a summary of the nodes, edges,
-and components present within the circuit.
-- `show_nodes_recap(circuit)`: Displays a recap of the nodes in the circuit.
+# Date: 29-10-2023
 
-Notes:
-- The nodes recap is displayed in the console in the following format:
-    - 'Ni at (xi,yi)', where i is the index of the node.
-- The edges  recap is displayed in the console in the following format:
-    - 'Ei: Nj -> Nk', where i is the edge index, j is the index of the first node, 
-    and k is the index of the second node.
-- The components recap is displayed in the console in the following format:
-    - '"Component details" on edge Ei (Nj -> Nk)', where i is the edge index, 
-    j is the index of the first node, and k is the index of the second node.
+# Version: 4.7
+
+# License: MIT License
+
+# Required packages:
+    - none
+
+# Included modules:
+    - `DataStructure`: For housing the data structures used by the Circuit Plotter Program
+
+# Exported functions: 
+    - `show_circuit_recap(circuit, edge_info)`: Displays a recap 
+        of the circuit in the console. The recap includes a summary of the nodes, edges,
+        and components present within the circuit.
+    - `show_nodes_recap(circuit)`: Displays a recap of the nodes in the circuit.
+
+# When are the exported functions invoked?
+    - Function `show_circuit_recap(circuit, edge_info)` is invoked in module 'Main' when the user
+        requests a recap of the circuit.
+    - Function `show_nodes_recap(circuit)` is invoked in module 'Main' when the user
+        requests a recap of the nodes in the circuit.
+
+# Notes:
+    - The nodes recap is displayed in the console in the following format:
+        - 'Ni at (xi,yi)', where i is the index of the node.
+    - The edges  recap is displayed in the console in the following format:
+        - 'Ei: Nj -> Nk', where i is the edge index, j is the index of the first node, 
+        and k is the index of the second node.
+    - The components recap is displayed in the console in the following format:
+        - '"Component details" on edge Ei (Nj -> Nk)', where i is the edge index, 
+        j is the index of the first node, and k is the index of the second node.
 """
 module CircuitRecap
 
@@ -50,8 +64,8 @@ module CircuitRecap
     # ============================== Included Modules ==============================
     # ==============================================================================
 
-        # Module DataStructure provides the data structures used by the Circuit Plotter Program.
-        include("../datastructure.jl")
+        # Module 'DataStructure' provides the data structures used by the Circuit Plotter Program.
+        include("../data_structure.jl")
         using .DataStructure: EdgeInfo, Circuit # Access the data structures
 
     # ==============================================================================
@@ -64,15 +78,39 @@ module CircuitRecap
         Displays a recap of the circuit in the console. The recap includes a summary of the nodes, edges,
         and components present within the circuit.
 
-        Parameters:
-        - circuit: The primary structure amalgamating nodes, components, and their 
+        #Parameters:
+            - circuit: The primary structure amalgamating nodes, components, and their 
                 illustrative representation within the circuit.
-        - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
+            - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
 
-        Returns:
-        - nothing
+        # Returns:
+            - nothing
 
-        Example:
+        Function logic:
+            - Display a recap of the nodes in the circuit
+            - Display a recap of the edges in the circuit
+            - Display a recap of the components in the circuit
+
+        # Invoke functions:
+            - _nodes_recap(circuit)
+            - _edges_recap(edge_info)
+            - _components_recap(circuit)
+
+        # When is this function invoked?
+            - Function `show_circuit_recap(circuit, edge_info)` is invoked in module 'Main' when the user
+                requests a recap of the circuit.
+
+        # Notes:
+            - The nodes recap is displayed in the console in the following format:
+                - Ni at (xi,yi), where i is the index of the node.
+            - The edges  recap is displayed in the console in the following format:
+                - Ei: Nj -> Nk, where i is the edge index, j is the index of the first node, 
+                and k is the index of the second node.
+            - The components recap is displayed in the console in the following format:
+                - "Component details" on edge Ei (Nj -> Nk), where i is the edge index, 
+                j is the index of the first node, and k is the index of the second node.
+
+        # Example:
 
         ---------------------------------------------------
                            CIRCUIT RECAP
@@ -138,19 +176,31 @@ module CircuitRecap
 
         Displays a recap of the nodes in the circuit.
 
-        Parameters:
-        - circuit: The primary structure amalgamating nodes, components, and their 
+        # Parameters:
+            - circuit: The primary structure amalgamating nodes, components, and their 
                 illustrative representation within the circuit.
 
-        Returns:
-        - nothing
+        #Returns:
+            - nothing
 
-        Notes:
-        - If there are no nodes in the circuit, a message to that effect is displayed.
-        - The recap is displayed in the console in the following format:
-        - Ni at (xi,yi), where i is the index of the node.
+        # Function logic:
+            - Display a recap of the nodes in the circuit
 
-        Example:
+        # Invoked functions:
+            - _nodes_recap(circuit)
+
+        # When is this function invoked?
+            - Function `show_nodes_recap(circuit)` is invoked by function `_prompt_modify_node_instructions(circuit)::String` 
+                in module 'Modyfying_Nodes' before prompting the user to modify a node.
+            - Function `show_nodes_recap(circuit)` is invoked by function `_prompt_delete_node_instructions(circuit)::String` 
+                in module 'Deleting_Nodes' before prompting the user to delete a node.
+
+        # Notes:
+            - If there are no nodes in the circuit, a message to that effect is displayed.
+            - The nodes recap is displayed in the console in the following format:
+                - Ni at (xi,yi), where i is the index of the node.
+
+        # Example:
 
         ---------------------------------------------------
                            NODES RECAP
@@ -191,19 +241,33 @@ module CircuitRecap
 
         Displays a recap of the nodes in the circuit.
 
-        Parameters:
-        - circuit: The primary structure amalgamating nodes, components, and their 
+        # Parameters:
+            - circuit: The primary structure amalgamating nodes, components, and their 
                 illustrative representation within the circuit.
 
-        Returns:
-        - nothing
+        # Returns:
+            - nothing
 
-        Notes:
-        - If there are no nodes in the circuit, a message to that effect is displayed.
-        - The recap is displayed in the console in the following format:
-        - Ni at (xi,yi), where i is the index of the node.
+        # Function logic:
+            - Display a recap of the nodes in the circuit
 
-        Example:
+        # Invoked functions:
+            - isempty(circuit.nodes)::Bool
+            - length(circuit.nodes)::Int
+            - println()::Nothing
+
+        # When is this function invoked?
+            - Function `_nodes_recap(circuit)` is invoked by function `show_circuit_recap(circuit, edge_info)` 
+                in module 'CircuitRecap' when the user requests a recap of the circuit.
+            - Function `_nodes_recap(circuit)` is invoked by function `show_nodes_recap(circuit)` 
+                in module 'CircuitRecap' when the user requests a recap of the nodes in the circuit.
+
+        # Notes:
+            - If there are no nodes in the circuit, a message to that effect is displayed.
+            - The recap is displayed in the console in the following format:
+                - Ni at (xi,yi), where i is the index of the node.
+
+        # Example:
 
         There are 4 nodes in the circuit:
 
@@ -248,17 +312,29 @@ module CircuitRecap
 
         Displays a recap of the edges in the circuit.
 
-        Parameters:
-        - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
+        # Parameters:
+            - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
 
-        Returns:
-        - nothing
+        # Returns:
+            - nothing
 
-        Notes:
-        - The edges are displayed in the format Ei: Nj -> Nk, where i is the edge index, 
+        # Function logic:
+            - Display a recap of the edges in the circuit
+
+        # Invoked functions:
+            - isempty(edge_info.edges)::Bool
+            - length(edge_info.edges)::Int
+            - println()::Nothing
+
+        # When is this function invoked?
+            - Function `_edges_recap(edge_info)` is invoked by function `show_circuit_recap(circuit, edge_info)` 
+                in module 'CircuitRecap' when the user requests a recap of the circuit. 
+
+        # Notes:
+            - The edges are displayed in the format Ei: Nj -> Nk, where i is the edge index, 
                 j is the index of the first node, and k is the index of the second node.
 
-        Example: 
+        # Example: 
 
         There are 4 edges in the circuit:
 
@@ -304,19 +380,31 @@ module CircuitRecap
 
         Displays a recap of the components in the circuit.
 
-        Parameters:
-        - circuit: The primary structure amalgamating nodes, components, and their 
+        # Parameters:
+            - circuit: The primary structure amalgamating nodes, components, and their 
                 illustrative representation within the circuit.
 
-        Returns:
-        - nothing
+        # Returns:
+            - nothing
 
-        Notes:
-        - The recap is displayed in the console in the following format:
+        # Function logic:
+            - Display a recap of the components in the circuit
+
+        # Invoked functions:
+            - isempty(circuit.components)::Bool
+            - length(circuit.components)::Int
+            - println()::Nothing
+
+        # When is this function invoked?
+            - Function `_components_recap(circuit)` is invoked by function `show_circuit_recap(circuit, edge_info)` 
+                in module 'CircuitRecap' when the user requests a recap of the circuit.
+
+        # Notes:
+            - The recap is displayed in the console in the following format:
                 - "Component details" on edge Ei (Nj -> Nk), where i is the edge index, 
                 j is the index of the first node, and k is the index of the second node.
 
-        Example:
+        # Example:
 
         There are 4 components in the circuit:
 

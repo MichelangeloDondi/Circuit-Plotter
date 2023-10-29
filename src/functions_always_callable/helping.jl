@@ -16,9 +16,21 @@ Description:
 Version: 4.6
 License: MIT License
 
+Included modules:
+- 'DataStructure' provides the data structures used by the Circuit Plotter Program.
+- 'Saving provides' functions for plotting the circuit.
+
+Required packages:
+- none
+
 Exported functions:
 - `show_initial_greetings()`: Presents the welcoming message and initial instructions.
 - `show_help()`: Delivers an in-depth guide on the program's usage.
+
+Notes:
+- This module is used by the function 'main(circuit, edgeinfo)' in module 'MainFunction'.
+- This module is used by the function '_handle_special_input' in module 'HandlingSpecialInput'.
+- This module is used by the function 'show_final_greetings_asking_whether_to_save_plot_displayed(circuit)' in module 'MainFunction'.
 """
 module Helping
 
@@ -40,7 +52,7 @@ module Helping
     # ==============================================================================
 
         # Module DataStructure provides the data structures used by the Circuit Plotter Program.
-        include("../datastructure.jl")
+        include("../data_structure.jl")
         using .DataStructure: Circuit # Access the data structures
 
         # Module Saving provides functions for plotting the circuit.

@@ -7,58 +7,65 @@
 """
     Module: GatheringEdges
 
-Author: Michelangelo Dondi
-Date: 28-10-2023
-Description:
-    Dedicated to housing the functions for collecting edge details.
-    This module simplifies the main function definition process by providing a single function to call.
+Dedicated to housing the functions for collecting edge details.
+This module simplifies the main function definition process by providing a single function to call.
+    
+# Author: Michelangelo Dondi
 
-Version: 4.4
-License: MIT License
+# Date: 29-10-2023
 
-Exported functions:
-- `gather_edges(circuit, edge_info)`: Systematically 
-    assembles information about the edges present within the circuit,
-    utilizing direct inputs from the user. The accumulated data finds its place within 
-    the `circuit` structure. Additionally, a recap of edge particulars s presented, 
-    followed by the graphical portrayal of the updated circuit.
+# Version: 4.7
 
-Notes:
-- The module is included in Module MainFunction.
-- The module requires the following modules to be included:
-    - DataStructure
-    - OverlappingCheck
-    - HandlingSpecialInput
+# License: MIT License
+
+# Required packages:
+    - `LightGraphs`: For graph data structures
+
+# Included modules:
+    - `DataStructure`: For housing the data structures used by the Circuit Plotter Program
+    - `OverlappingCheck`: For providing functions for checking if an edge overlaps with existing edges
+    - `HandlingSpecialInput`: For providing auxiliary functions for input handling
+
+# Exported functions:
+    - `gather_edges(circuit, edge_info)`: Systematically assembles information about 
+        the edges present within the circuit, utilizing direct inputs from the user. 
+        The accumulated data finds its place within the `circuit` structure. 
+
+# When is the exported function invoked?
+    - The function is invoked by the function `main(circuit, edge_info)` in module 'MainFunction'.
+
+# Notes:
+    - Function `gather_edges(circuit, edge_info)` is the primary function for collecting edge details.
 """
 module GatheringEdges
 
     # ==============================================================================
-    # =========================== Exported Function ================================
+    # ============================= Exported Function ==============================
     # ==============================================================================
 
         # Invoke this function to gather the edges
         export collect_edges
 
     # ==============================================================================
-    # =========================== Required Packages ================================
+    # ============================== Required Packages =============================
     # ==============================================================================    
 
         # For graph data structures
         using LightGraphs
     
     # ==============================================================================
-    # =========================== Included Modules =================================
+    # ============================== Included Modules ==============================
     # ==============================================================================    
 
-        # Module_CircuitStructures.jl provides the data structures used by the Circuit Plotter Program.
-        include("../datastructure.jl")
+        # Module 'DataStructure' provides the data structures used by the Circuit Plotter Program.
+        include("../data_structure.jl")
         using .DataStructure: EdgeInfo, Component, Circuit # Access the data structures
 
-        # Module_Auxiliary_Functions_Geometry.jl provides functions for validating user input.
+        # Module 'OverlappingCheck' provides functions for checking if an edge overlaps with existing edges.
         include("helper_functions_collecting_edges/overlapping_check.jl")
         using .OverlappingCheck: overlapping_edges # Check if the new edge overlaps with existing edges
 
-        # Module HandlingSpecialInput provides auxiliary functions for input handling.
+        # Module 'HandlingSpecialInput' provides auxiliary functions for input handling.
         include("../functions_always_callable/handling_special_input.jl")
         using .HandlingSpecialInput: handle_special_input_break # Handle the following special input: 'exit', 'help', 'recap', 'draw', 'save', 'break'
         using .HandlingSpecialInput: handle_special_input_yes_no # Handle the following special input: 'exit', 'help', 'recap', 'draw', 'save', 'yes', 'no'
@@ -68,41 +75,66 @@ module GatheringEdges
     # ==============================================================================
 
         """
-            collect_edges(circuit, edge_info) -> nothing
+            collect_edges(circuit, edge_info)
 
         Sequentially gathers edge details from the user.
-        The function aims to achieve the following: 
 
-            1.  Prompt the user for the next edge.
-            2.  Handle special input ('help', 'recap', 'draw', 'exit', 'save', 'break').
-            3.  Split the input into the node indices.
-            4.  Validate the input.  
-            5.  Parse the node indices.
-            6.  Try adding the edge to the circuit.
-            7.  If the edge was added successfully, prompt the user for the component details.
-            8.  Handle special input ('help', 'recap', 'draw', 'exit', 'stop').
-            9.  If the input was to not add a component, break out of the loop.
-            10. If the input was to add a component, prompt the user for the component details.
-            11. Add the component to the circuit.
-            12. Print a confirmation message.
 
-        Parameters:
-        - circuit: The primary structure amalgamating nodes, components, and their illustrative
-                 representation within the circuit.
-        - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
+        # Parameters:
+            - circuit: The primary structure amalgamating nodes, components, and their illustrative
+                representation within the circuit.
+            - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
 
-        Returns:
-        - nothing
+        #Returns:
+            - nothing
 
-        Notes:  
-        The function is called by the main function.
-        The function calls the following functions:
-        - `_get_edge_input(edge_count::Int)::String`: Prompt the user for the next edge.
-        - `_validate_edge_input(edge_nodes::Vector{String}, node_count::Int, edge_info, circuit) -> Bool`: Validate user-provided input for defining an edge in the circuit.
-        - `_add_edge_to_circuit(node1::Int, node2::Int, edge_info, circuit) -> Bool`: Add an edge between two nodes in the circuit.
-        - `_collect_component_from_cmd(edge_count::Int, circuit, edge_info) -> nothing`: Sequentially gathers component details from the user.
-        - `handle_special_input_break(input, circuit, edge_info)`: Handle special input ('help', 'recap', 'draw', 'exit', 'save', 'break').
-        - `handle_special_input_yes_no(input, circuit, edge_info)`: Handle special input ('help', 'recap', 'draw', 'exit', 'yes', 'no').      
+        # Function logic:
+            - Number of nodes in the circuit.
+            - Initialize the edge count.
+            - Start collecting edges and components.
+            - Prompt the user for the next edge.
+            - Handle special input ('help', 'recap', 'draw', 'exit', 'save', 'break').
+            - Split the input into the node indices.
+            - Check if the input is valid.
+            - Parse the node indices.
+            - Try adding the edge to the circuit.
+            - If the edge was added successfully, prompt the user for the component details.
+            - Handle special input ('help', 'recap', 'draw', 'exit', 'stop').
+            - If the input was to not add a component, break out of the loop.
+            - If the input was to add a component, prompt the user for the component details.
+            - Add the component to the circuit.
+            - Print a confirmation message. 
+
+        # Invoked functions:
+            - `_get_edge_input(edge_count::Int)::String`: Prompt the user for the next edge.
+            - `_validate_edge_input(edge_nodes::Vector{String}, node_count::Int, edge_info, circuit)::Bool`: 
+                Validate user-provided input for defining an edge in the circuit.
+            - `_add_edge_to_circuit(node1::Int, node2::Int, edge_info, circuit)::Bool`: Add an edge between 
+                two nodes in the circuit.
+            - `_collect_component_from_cmd(edge_count::Int, circuit, edge_info)`: Sequentially gathers  
+                component details from the user.
+            - `handle_special_input_break(input, circuit, edge_info)`: Handle special input ('help', 'recap', 
+                'draw', 'exit', 'save', 'break').
+            - `handle_special_input_yes_no(input, circuit, edge_info)`: Handle special input ('help', 'recap', 
+                'draw', 'exit', 'yes', 'no').      
+        
+        # When is the function invoked?
+            - The function is invoked by the function `main(circuit, edge_info)` in module 'MainFunction'.
+
+        # Notes:  
+            - The function aims to achieve the following: 
+                1.  Prompt the user for the next edge.
+                2.  Handle special input ('help', 'recap', 'draw', 'exit', 'save', 'break').
+                3.  Split the input into the node indices.
+                4.  Validate the input.  
+                5.  Parse the node indices.
+                6.  Try adding the edge to the circuit.
+                7.  If the edge was added successfully, prompt the user for the component details.
+                8.  Handle special input ('help', 'recap', 'draw', 'exit', 'stop').
+                9.  If the input was to not add a component, break out of the loop.
+                10. If the input was to add a component, prompt the user for the component details.
+                11. Add the component to the circuit.
+                12. Print a confirmation message.    
         """
         function collect_edges(circuit, edge_info)
 
@@ -163,11 +195,26 @@ module GatheringEdges
 
         Prompt the user for the next edge.
 
-        Parameters:
-        - edge_count: The number of edges in the circuit.
+        # Parameters:
+            - edge_count::Int: The number of edges in the circuit.
             
-        Returns:
-        - The user's input as a string.
+        # Returns:
+            - The user's input as a string.
+
+        # Function logic:
+            - Print the number of edges already present in the Circuit.
+            - Prompt the user for the next edge (E$(edge_count + 1)) or type 'break' or 'b' to stop adding edges.
+            - Return the user's input as a string.
+
+        # Invoked functions:
+            - `readline()`: Read the user's input.
+            
+        # When is the function invoked?
+            - The function is invoked by the function `collect_edges(circuit, edge_info)` in module 'GatheringEdges'.
+
+        # Notes:
+            - The function calls the following functions:
+                - `readline()`: Read the user's input.
         """
         function _get_edge_input(edge_count::Int)::String
             print("""\n===================================================
@@ -189,22 +236,34 @@ module GatheringEdges
         Validate user-provided input for defining an edge in the circuit.
 
         # Parameters:
-
-        - `edge_nodes`: A vector containing the two nodes (as strings) defining the edge.
-        - `node_count`: The total number of nodes in the circuit.
-        - `edge_info`: A data structure containing information about the circuit's edges.
-        - `circuit`: The primary data structure representing the circuit's nodes and components.
+            - `edge_nodes`: A vector containing the two nodes (as strings) defining the edge.
+            - `node_count`: The total number of nodes in the circuit.
+            - `edge_info`: A data structure containing information about the circuit's edges.
+            - `circuit`: The primary data structure representing the circuit's nodes and components.
 
         # Returns:
+            - `true` if the input is valid. However, this does not imply that the edge can be added to the circuit 
+                (e.g., it may overlap with existing edges or be a self-loop). This is checked in the `add_edge_to_circuit` function.
+            - `false` otherwise, indicating an invalid input
 
-        - `true` if the input is valid. However, this does not imply that the edge can be added to the circuit 
-            (e.g., it may overlap with existing edges or be a self-loop). This is checked in the `add_edge_to_circuit` function.
-        - `false` otherwise, indicating an invalid input
+        # Function logic:
+            - Ensure there are only two nodes in the input.
+            - Parse the node indices and ensure they are valid integers.
+            - Return true if the input is valid.
+
+        # Invoked functions:
+            - `parse(Int, edge_nodes[1])` from module 'GatheringEdges':
+                - Parse the first node index.
+            - `parse(Int, edge_nodes[2])` from module 'GatheringEdges':
+                - Parse the second node index.
+
+        # When is the function invoked?
+            - The function is invoked by the function `collect_edges(circuit, edge_info)` in module 'GatheringEdges'.
 
         # Notes:
-        The function checks the following:
-        - If the input contains exactly two nodes.
-        - If the provided node indices are valid integers within the circuit's node range.
+            - The function calls the following functions:
+                - `parse(Int, edge_nodes[1])`: Parse the first node index.
+                - `parse(Int, edge_nodes[2])`: Parse the second node index.
         """
         function _validate_edge_input(edge_nodes::Vector{SubString{String}}, node_count::Int, edge_info, circuit)::Bool
 
@@ -234,27 +293,39 @@ module GatheringEdges
         """
             add_edge_to_circuit(node1::Int, node2::Int, edge_info, circuit)::Bool
 
-        Add an edge between two nodes in the circuit.
+        Add an edge between two nodes in the circuit and update the relevant data structures.
 
         # Parameters:
-
-        - `node1`: The starting node of the edge (as an integer).
-        - `node2`: The ending node of the edge (as an integer).
-        - `edge_info`: A data structure containing information about the circuit's edges.
-        - `circuit`: The primary data structure representing the circuit's nodes and components.
+            - `node1`: The starting node of the edge (as an integer).
+            - `node2`: The ending node of the edge (as an integer).
+            - `edge_info`: A data structure containing information about the circuit's edges.
+            - `circuit`: The primary data structure representing the circuit's nodes and components.
 
         # Returns:
+            - `true` if the edge is successfully added to the circuit.
+            - `false` otherwise, indicating that the edge could not be added.
 
-        - `true` if the edge is successfully added to the circuit.
-        - `false` otherwise, indicating that the edge could not be added.
+        # Function logic:
+            - Number of nodes in the circuit.
+            - Check if the edge already exists.
+            - Check if the edge tries to connect a node to itself.
+            - Check if the edge tries to connect a node to a non-existent node.
+            - Check if the edge overlaps with existing edges.
+            - Add the edge to the circuit.
+            - Return true to indicate that the edge was successfully added.
+
+        # Invoked functions:
+            - `overlapping_edges((node1, node2), edge_info.edges, circuit.nodes)` from module 'OverlappingCheck':
+                - Check if the new edge overlaps with existing edges.
+
+        # When is this function invoked?    
+            - The function is invoked by the function `collect_edges(circuit, edge_info)` in module 'GatheringEdges'.
 
         # Notes:
-
-        The function aims to achieve the following:
-
-        1. Verify if the edge can be added (e.g., it does not already exist, does npt overlap, is not a self-loop, etc.).
-        2. Add the edge to the relevant data structures.
-        3. Update any counters or other related data.
+            - The function aims to achieve the following:
+                1. Verify if the edge can be added (e.g., it does not already exist, does npt overlap, is not a self-loop, etc.).
+                2. Add the edge to the relevant data structures.
+                3. Update any counters or other related data.
         """
         function add_edge_to_circuit(node1::Int, node2::Int, edge_info, circuit)::Bool
 
@@ -306,14 +377,36 @@ module GatheringEdges
 
         Sequentially gathers component details from the user.
 
-        Parameters:
-        - edge_count: The number of edges in the circuit.
-        - circuit: The primary structure amalgamating nodes, components, and their illustrative
+        # Parameters:
+            - edge_count: The number of edges in the circuit.
+            - circuit: The primary structure amalgamating nodes, components, and their illustrative
                  representation within the circuit.
-        - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
+            - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
 
-        Returns:
-        - nothing
+        # Returns:
+            - nothing
+
+        # Function logic:
+            - Start collecting components for the edge.
+            - Ask the user if they want to add a component to the edge.
+            - Read the input from the user.
+            - Handle special input (e.g. 'help', 'draw', 'exit', 'stop').
+            - If the input was handled, continue to the next iteration.
+            - If the input was to not add a component, break out of the loop.
+            - If the input was to add a component, prompt the user for the component details.
+            - Read the input from the user.
+            - Add the component to the circuit.
+            - Print a confirmation message.
+
+        # Invoked functions:
+            - `handle_special_input_yes_no(input, circuit, edge_info)`: Handle special input ('help', 'recap', 
+                'draw', 'exit', 'yes', 'no').
+
+        # When is the function invoked?
+            - The function is invoked by the function `collect_edges(circuit, edge_info)` in module 'GatheringEdges'.
+
+        # Notes:
+            - Function `collect_edges(circuit, edge_info)` is the primary function for collecting component details.
         """
         function _collect_component(edge_count::Int, circuit, edge_info)
 
@@ -371,14 +464,33 @@ module GatheringEdges
 
         Checks if an edge already exists between two nodes.
 
-        Parameters:
-        - node1: The index of the first node.
-        - node2: The index of the second node.
-        - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
+        # Parameters:
+            - node1: The index of the first node.
+            - node2: The index of the second node.
+            - edge_info: A dedicated structure to chronicle the specifics of node-to-node connectivity.
 
-        Returns:
-        - true: if the edge already exists
-        - false: otherwise
+        # Returns:
+            - true: if the edge already exists
+            - false: otherwise
+
+        # Function logic:
+            - For each edge in the circuit:
+                - Check if the edge already exists.
+                - Check if the edge already exists in the opposite direction.
+            - Return false to indicate that the edge does not already exist.
+
+        # Invoked functions:    
+            - `add_edge_to_circuit(node1::Int, node2::Int, edge_info, circuit)::Bool` from module 'GatheringEdges':
+                - Add an edge between two nodes in the circuit and update the relevant data structures.
+
+        # When is the function invoked?
+            - The function is invoked by the function `add_edge_to_circuit(node1::Int, node2::Int, edge_info, circuit)::Bool` 
+                in module 'GatheringEdges'.
+
+        # Notes:
+            - The function aims to achieve the following:
+                1. Check if the edge already exists.
+                2. Check if the edge already exists in the opposite direction.
         """
         function _edge_exists(node1::Int, node2::Int, edge_info)::Bool
             for (index, existing_edge) in enumerate(edge_info.edges)

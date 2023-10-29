@@ -7,28 +7,37 @@
 """
     Module: GatheringNodes
 
-Author: Michelangelo Dondi
-Date: 28-10-2023
-Description:    
-    Dedicated to housing the functions for collecting node details from the user.
-    This module simplifies the main function definition process by providing a single file to call.
+Dedicated to housing the functions for collecting node details from the user.
+This module simplifies the main function definition process by providing a single file to call.
 
-Version: 4.4
-License: MIT License
+# Author: Michelangelo Dondi
 
-Exported functions:
-- `collect_nodes(circuit, edgeinfo)`: Main function to collect node coordinates 
-from the user. The user is prompted to input node coordinates or type 'break' or 'b' to 
-end the node collection. The user can also modify or cancel existing nodes.
+# Date: 29-10-2023
 
-Notes:
-- This module is called by MainFunction.
-- This module is called after the user has been greeted and instructed by `show_initial_greetings` in the main function.
-- The module requires the following modules to be included: 
-    - DataStructure 
-    - HandlingSpecialInput 
-    - ModifyingNodes
-    - DeletingNodes
+# Version: 4.7
+
+# License: MIT License
+
+# Required packages:
+    - `LightGraphs`: For graph data structures
+
+# Included modules:
+    - `DataStructure`: Provides the data structures used by the Circuit Plotter Program.
+    - `HandlingSpecialInput`: Provides auxiliary functions for input handling.
+    - `CheckingNodesInput`: Provides auxiliary functions for checking the input of nodes.
+    - `ModifyingNodes`: Provides auxiliary functions for modifying the circuit.
+    - `DeletingNodes`: Provides auxiliary functions for deleting nodes from the circuit.
+
+# Exported functions:
+    - `collect_nodes(circuit, edgeinfo)`: Main function to collect node coordinates from
+        the user. The user is prompted to input node coordinates or type 'break' or 'b' 
+        to end the node collection. The user can also modify or cancel existing nodes.
+
+# When are the exported functions invoked?
+    - Function `collect_nodes(circuit, edgeinfo)` is invoked by function `main(circuit, edge_info)` in module 'MainFunction'.
+
+# Notes:
+    - This module is called after the user has been greeted and instructed by `show_initial_greetings` in the main function.
 """
 module GatheringNodes
 
@@ -50,47 +59,60 @@ module GatheringNodes
     # =========================== Included Modules =================================
     # ==============================================================================  
 
-        # Module DataStructure provides the data structures used by the Circuit Plotter Program.
-        include("../datastructure.jl")
+        # Module 'DataStructure' provides the data structures used by the Circuit Plotter Program.
+        include("../data_structure.jl")
         using .DataStructure: Node, EdgeInfo, Circuit # Access the data structures
 
-        # Module HandlingSpecialInput provides auxiliary functions for input handling.
+        # Module 'HandlingSpecialInput' provides auxiliary functions for input handling.
         include("../functions_always_callable/handling_special_input.jl")
         using .HandlingSpecialInput: handle_special_input_break_modify_cancel # Handle the following special input: 'exit', 'help', 'recap', 'draw', 'save', 'break', 'modify', 'cancel'
 
-        # Module CheckingNodesInput provides auxiliary functions for checking the input of nodes.
+        # Module 'CheckingNodesInput' provides auxiliary functions for checking the input of nodes.
         include("helper_functions_collecting_nodes/checking_nodes_input.jl")
         using .CheckingNodesInput: check_if_input_is_valid # Check if the node can be added to the circuit.
 
-        # Module ModifyingNodes provides auxiliary functions for modifying the circuit.
+        # Module 'ModifyingNodes' provides auxiliary functions for modifying the circuit.
         include("helper_functions_collecting_nodes/modifying_nodes.jl")
         using .ModifyingNodes: modify_existing_node # Modify existing nodes
 
-        # Module DeletingNodes provides auxiliary functions for deleting nodes from the circuit.
+        # Module 'DeletingNodes' provides auxiliary functions for deleting nodes from the circuit.
         include("helper_functions_collecting_nodes/deleting_nodes.jl")
         using .DeletingNodes: delete_node_from_circuit # Delete existing nodes
 
     # ==============================================================================
-    # ======================= function collect_nodes_from_cmd ======================
+    # ================= Function: collect_nodes(circuit, edgeinfo) =================
     # ==============================================================================
         
         """
-            collect_nodes_from_cmd(circuit, edgeinfo)
+            collect_nodes(circuit, edgeinfo)
         
-        Main function to collect node coordinates from the user. 
-        The user is prompted to input node coordinates or type 'break' or 'b' to end the node collection. 
-        The user can also modify or cancel existing nodes.
+        The main function to collect node coordinates. 
         
         # Parameters:
-        - circuit: The primary data structure representing the circuit.
-        - edgeinfo: Data structure representing the edges of the circuit.
+            - circuit: The primary data structure representing the circuit.
+            - edgeinfo: Data structure representing the edges of the circuit.
         
         # Returns:
-        - Nothing. Modifies the circuit and edgeinfo in-place.
+            - Nothing. Modifies the circuit and edgeinfo in-place.
+
+        # Function logic:
+            - Continuously prompt the user for node coordinates until a break command is given.
+            - Process the input.
+            - If the action is to break, break out of the loop.
+            - If the action is to stop collecting nodes, break out of the loop.
+            - If the action is to modify existing nodes, modify them.
+            - If the action is to cancel existing nodes, delete them.
+            - Check if the node can be added to the circuit.
+            - Add the node to the circuit.
+            - If the node was added, increase the node count and continue to the next iteration.
+            - If the input was invalid, continue to the next iteration.
+
+        # When is this function invoked?
+            - This function is invoked by function `main(circuit, edge_info)` in module 'MainFunction'.
 
         # Notes:
-        - This function is called by `main`.
-        - This function is called after the user has been greeted and instructed by `show_initial_greetings`.
+            - Function 'collect_nodes_from_cmd' is the primary function for collecting nodes.
+            - This function is called after the user has been greeted and instructed by function `show_initial_greetings()`.
         """
         function collect_nodes(circuit, edgeinfo)
 
@@ -122,13 +144,20 @@ module GatheringNodes
         Prompt the user for node coordinates or a special command.
         
         # Parameters:
-        - node_count: The number of nodes already present in the circuit.
+            - node_count::Int: The number of nodes already present in the circuit.
         
         # Returns:
-        - The input string provided by the user.
+            - The input string provided by the user.
+        
+        # Function logic:
+            - Print the prompt message.
+            - Return the input string provided by the user.
+
+        # When is this function invoked?
+            - Function '_prompt_for_coordinates(node_count::Int)::String' is invoked by function `collect_nodes(circuit, edgeinfo)` in module 'GatheringNodes'.
 
         # Notes:
-        - This function is called by `collect_nodes_from_cmd`.
+            - This function is called by `collect_nodes_from_cmd`.
         """
         function _prompt_for_coordinates(node_count::Int)::String
 
