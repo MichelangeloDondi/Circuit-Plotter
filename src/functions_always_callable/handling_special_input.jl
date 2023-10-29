@@ -209,7 +209,7 @@ module HandlingSpecialInput
         Handles the following special input from the user:
         'exit', 'help', 'recap', 'draw', 'save', 'break', 'yes', 'no'.    
 
-        #Parameters:
+        # Parameters:
             - input: The input provided by the user.
 
         # Returns:
@@ -278,11 +278,11 @@ module HandlingSpecialInput
             - :not_common_special_input otherwise.
         
         # Function logic:   
-            - If the user types 'exit' or 'e', exit the program.
-            - If the user types 'help' or 'h', show the help message.
+            - If the user types 'exit'  or 'e', exit the program.
+            - If the user types 'help'  or 'h', show the help message.
             - If the user types 'recap' or 'r', show the recap message.
-            - If the user types 'draw' or 'd', draw the current plot.
-            - If the user types 'save' or 's', save the current plot.
+            - If the user types 'draw'  or 'd', draw the current plot.
+            - If the user types 'save'  or 's', save the current plot.
             - If the input was not handled, return :not_common_special_input.
 
         # Invoked functions:

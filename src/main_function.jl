@@ -30,8 +30,6 @@ and provides the user with feedback and instructions as necessary.
     - `CircuitRecap`: For providing auxiliary functions for recapping the circuit
     - `Plotting`: For providing functions for drawing the current circuit plot
     - `Saving`: For providing functions for saving the plot displayed
-
-# 
         
 # Exported functions:
     - `main(circuit, edge_info)`: The main function of the program. It orchestrates the 
@@ -80,11 +78,11 @@ module MainFunction
         using .Helping: show_initial_greetings # Greetings and instructions
         using .Helping: show_final_greetings_asking_whether_to_save_plot_displayed # Final greetings and whether to save the plot displayed before exiting the program
 
-        # Module 'GatheringNodes' provides functions to gather node details.
+        # Module 'GatheringNodes' provides functions to collect node details.
         include("nodes_management/gathering_nodes.jl")
         using .GatheringNodes: collect_nodes # Collect node details from the user
 
-        # Module 'GatheringEdges' provides functions for collecting edge details.
+        # Module 'GatheringEdges' provides functions to collect edge details.
         include("edges_management/gathering_edges.jl")
         using .GatheringEdges: collect_edges # Collect edge details.
 
