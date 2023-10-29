@@ -8,12 +8,14 @@
     Module: CircuitRecap
 
 Author: Michelangelo Dondi
-Date: 28-10-2023
+Date: 29-10-2023
 Description: 
-    Dedicated to providing auxiliary functions for recapping the circuit. 
-    This module simplifies the recap process by providing a single file to call.    
+    Dedicated to providing auxiliary functions for recapping the circuit details.
+    This module simplifies the recap process by providing functions to display a
+    recap of the circuit in the console. The recap includes a summary of the nodes, 
+    edges and components present within the circuit.
  
-Version: 4.3
+Version: 4.5
 License: MIT License
 
 Exported functions: 
@@ -35,7 +37,7 @@ Notes:
 module CircuitRecap
 
     # ==============================================================================
-    # ============================== Exported Function =============================
+    # ============================= Exported Functions =============================
     # ==============================================================================
             
         # Invoke this function to export the recap function
@@ -57,7 +59,7 @@ module CircuitRecap
     # ==============================================================================
 
         """
-            show_circuit_recap(circuit, edge_info) -> nothing
+            show_circuit_recap(circuit, edge_info)
 
         Displays a recap of the circuit in the console. The recap includes a summary of the nodes, edges,
         and components present within the circuit.
@@ -69,8 +71,6 @@ module CircuitRecap
 
         Returns:
         - nothing
-
-        Notes:
 
         Example:
 
@@ -126,7 +126,7 @@ module CircuitRecap
 
             println("\n---------------------------------------------------")
             println("               END OF CIRCUIT RECAP")
-            println("---------------------------------------------------\n\033[0m")
+            println("---------------------------------------------------\033[0m")
         end
         
     # ==============================================================================
@@ -134,7 +134,7 @@ module CircuitRecap
     # ==============================================================================
         
         """
-            show_nodes_recap(circuit) -> nothing
+            show_nodes_recap(circuit)
 
         Displays a recap of the nodes in the circuit.
 
@@ -171,7 +171,7 @@ module CircuitRecap
         function show_nodes_recap(circuit)
 
             println("\n\033[33m---------------------------------------------------")
-            println("                   NODES RECAP")
+            println("                    NODES RECAP")
             println("---------------------------------------------------\n")
 
             # Display a recap of the nodes in the circuit
@@ -187,7 +187,7 @@ module CircuitRecap
     # ==============================================================================
 
         """
-            _nodes_recap(circuit) -> nothing
+            _nodes_recap(circuit)
 
         Displays a recap of the nodes in the circuit.
 
@@ -221,8 +221,14 @@ module CircuitRecap
                 println("There are no nodes in the circuit.")
             else    
 
-                # Otherwise, display the number of nodes in the circuit.
-                println("There are $(length(circuit.nodes)) nodes in the circuit:\n")
+                # If there is only one node in the circuit, display a message to that effect.
+                if length(circuit.nodes) == 1
+                    println("There is only one node in the circuit:\n")
+                else
+
+                    # Otherwise, display the number of nodes in the circuit.
+                    println("There are $(length(circuit.nodes)) nodes in the circuit:\n")
+                end
 
                 # Display the details of each node in the circuit
                 for node in circuit.nodes
@@ -238,7 +244,7 @@ module CircuitRecap
     # ==============================================================================
 
         """
-            _edges_recap(edge_info) -> nothing
+            _edges_recap(edge_info)
 
         Displays a recap of the edges in the circuit.
 
@@ -268,10 +274,17 @@ module CircuitRecap
 
                 # If there are no edges in the circuit, display a message to that effect.
                 println("\nThere are no edges in the circuit.")
-            else    
+            else
+                
+                # If there is only one edge in the circuit, display a message to that effect.
+                if length(edge_info.edges) == 1
+                    println("\nThere is only one edge in the circuit:\n")
+                else
 
-                # Otherwise, display the number of edges in the circuit.
-                println("\nThere are $(length(edge_info.edges)) edges in the circuit:\n")            
+                    # Otherwise, display the number of edges in the circuit.
+                    println("\nThere are $(length(edge_info.edges)) edges in the circuit:\n")            
+
+                end
 
                 # Display the details of each edge in the circuit
                 for i in 1:length(edge_info.edges)
@@ -287,7 +300,7 @@ module CircuitRecap
     # ==============================================================================
 
         """
-            _components_recap(circuit) -> nothing
+            _components_recap(circuit)
 
         Displays a recap of the components in the circuit.
 
@@ -321,9 +334,15 @@ module CircuitRecap
                 println("\nThere are no components in the circuit.")
             else
 
-                # Otherwise, display the number of components in the circuit.
-                println("\nThere are $(length(circuit.components)) components in the circuit:\n")
-            
+                # If there is only one component in the circuit, display a message to that effect.
+                if length(circuit.components) == 1
+                    println("\nThere is only one component in the circuit:\n")
+                else
+
+                    # Otherwise, display the number of components in the circuit.
+                    println("\nThere are $(length(circuit.components)) components in the circuit:\n")
+                end
+
                 # Display the details of each component in the circuit
                 for comp in circuit.components  
 
