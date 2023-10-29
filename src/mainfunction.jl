@@ -86,7 +86,7 @@ module MainFunction
         edge_info = EdgeInfo([])
 
     # ==============================================================================
-    # ============================== Function: main() ==============================
+    # ===================== Function: main(circuit, edge_info) =====================
     # ==============================================================================
 
         """
@@ -134,9 +134,9 @@ module MainFunction
                 println("""
                 
                 Do you want to create another circuit?\033[36m
-                println("Type 'y' for yes or 'n' for no.
-                println("If you type 'n', the program will exit.
-                println("If you type 'y', or anything else, the program will start over.""")
+
+                Type 'y' for yes or 'n' for no.
+                If you type 'n', the program will exit. If you type 'y', or anything else, the program will start over.""")
 
                 # Check whether the user wants to create another circuit.
                 if readline(stdin) == "n"
