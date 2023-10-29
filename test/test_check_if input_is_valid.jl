@@ -13,7 +13,7 @@ Description: This module provides functions to test the function 'check_if_input
     of the module CheckingNodesInput. The function 'check_if_input_is_valid()' checks if the 
     input provided by the user can be used to add a node to the circuit. 
 
-Version: 4.5
+Version: 4.6
 Licence: MIT Licence
 
 Exported Functions:
@@ -472,7 +472,7 @@ module TestCheckIfInputIsValid
             println("""
             ---------------------------------------------------
 
-            \033[96mTest 3C: checking if an empty string is valid
+            \033[96mTest 3C: checking if an empty string is valid \033[0m
 
                 - Input: '$input3C'
                 - Expected Output: false
