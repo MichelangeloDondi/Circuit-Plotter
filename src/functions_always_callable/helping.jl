@@ -8,12 +8,12 @@
     Module: Helping 
 
 Author: Michelangelo Dondi
-Date: 28-10-2023
+Date: 29-10-2023
 Description:
     Dedicated to providing guidance to users interacting with the Circuit Plotter Program.
     This module simplifies user interactions by offering clear instructions and comprehensive assistance.
 
-Version: 4.3
+Version: 4.6
 License: MIT License
 
 Exported functions:
@@ -52,7 +52,7 @@ module Helping
     # ==============================================================================
             
         """
-            show_initial_greetings() -> nothing
+            show_initial_greetings()
 
         Presents the welcoming message and initial instructions.
 
@@ -61,6 +61,10 @@ module Helping
             
         Returns:
         - nothing
+
+        Notes:
+        - This function is exported.
+        - This function is called by the function 'main(circuit, edgeinfo)' in Module Main.
         """
         function show_initial_greetings()
             println("""\033[33m
@@ -77,7 +81,7 @@ module Helping
     # ==============================================================================
         
         """
-            show_help() -> nothing
+            show_help() 
 
         Provides an extensive guide detailing each aspect of the Circuit Plotter Program.
 
@@ -86,6 +90,10 @@ module Helping
             
         Returns:
         - nothing
+
+        Notes:
+        - This function is exported.
+        - This function is called by the function '_handle_special_input' in Module HandlingSpecialInput.
         """
         function show_help()
             println("""\033[33m
@@ -119,7 +127,7 @@ module Helping
 
             VISUALIZATION:
             - You can visualize the circuit at any time by entering 'draw'.
-            - You will be asked whether to save the plot before continuing.
+            - You will be asked whether to save the plot before exiting the program.
             - Completed visuals are saved in the 'circuit_drawings' directory.
             - Visuals are saved as "circuit_plot.png" by default.
             """)
@@ -137,7 +145,7 @@ module Helping
     # ==========================================================================
             
         """
-            _show_instructions() -> nothing
+            _show_instructions() 
 
         Displays the general instructions for the Circuit Plotter Program.
         Includes common commands and general usage notes.
@@ -147,6 +155,10 @@ module Helping
             
         Returns:
         - nothing
+
+        Notes:
+        - This function is not exported.
+        - This function is only used by the functions 'show_initial_greetings()' and 'show_help()'.
         """
         function _show_instructions()
             println("""\033[33m
@@ -178,7 +190,7 @@ module Helping
     # ==========================================================================
             
         """
-            show_final_greetings_asking_whether_to_save_plot_displayed(circuit) -> nothing
+            show_final_greetings_asking_whether_to_save_plot_displayed(circuit)
 
         Shows the final greetings and asks the user whether to save the plot displayed before exiting the program.
 
@@ -187,6 +199,10 @@ module Helping
 
         Returns:
         - nothing
+
+        Notes:
+        - This function is exported.
+        - This function is only used by the function 'main()'.
         """
         function show_final_greetings_asking_whether_to_save_plot_displayed(circuit)
             
