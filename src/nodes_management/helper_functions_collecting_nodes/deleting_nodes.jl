@@ -18,13 +18,13 @@ the circuit and for deleting an existing node from the circuit.
 
 # License: MIT License
 
+# Required packages:
+    - 'LightGraphs': For graph data structures.
+
 # Included modules:
     - 'DataStructure': Provides the data structures used by the Circuit Plotter Program.
     - 'CircuitRecap': Provides auxiliary functions for recapping the circuit.
     - 'HandlingSpecialInput': Provides auxiliary functions for input handling.
-
-# Required packages:
-    - 'LightGraphs': For graph data structures.
 
 # Exported functions: 
     - `delete_node_from_circuit(circuit)`: Deletes an existing nodes from the circuit based on user input.  

@@ -10,9 +10,9 @@
 """
     Program: Circuit Plotter
 
-    A user-friendly tool that allows the creation and visualization of electrical circuits.
-    Users can define nodes, components, and their connections, with an end visualization
-    rendered using the PlotlyJS backend for interactivity.
+A user-friendly tool that allows the creation and visualization of electrical circuits.
+Users can define nodes, components, and their connections, with an end visualization
+rendered using the PlotlyJS backend for interactivity.
 
 # Author: Michelangelo Dondi
 

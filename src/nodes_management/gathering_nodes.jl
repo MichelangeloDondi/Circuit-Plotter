@@ -107,6 +107,15 @@ module GatheringNodes
             - If the node was added, increase the node count and continue to the next iteration.
             - If the input was invalid, continue to the next iteration.
 
+        # Invoked functions:
+            - Function '_prompt_for_coordinates(node_count::Int)::String' is invoked by function 
+                `collect_nodes(circuit, edgeinfo)` in module 'GatheringNodes':
+                    - Print the prompt message.
+                    - Return the input string provided by the user.
+            - Function '_process_input(input::String, node_count::Int, circuit, edgeinfo)' is 
+                invoked by function `collect_nodes(circuit, edgeinfo)` in module 'GatheringNodes':
+                    - Process the user input to either add, modify, or delete nodes.
+
         # When is this function invoked?
             - This function is invoked by function `main(circuit, edge_info)` in module 'MainFunction'.
 
@@ -153,6 +162,10 @@ module GatheringNodes
             - Print the prompt message.
             - Return the input string provided by the user.
 
+        # Invoked functions:
+            - Function 'readline()' is invoked by function `_prompt_for_coordinates(node_count::Int)::String` in module 'GatheringNodes':
+                - Read the input string provided by the user.
+
         # When is this function invoked?
             - Function '_prompt_for_coordinates(node_count::Int)::String' is invoked by function `collect_nodes(circuit, edgeinfo)` in module 'GatheringNodes'.
 
@@ -194,17 +207,43 @@ module GatheringNodes
         Process the user input to either add, modify, or delete nodes.
         
         # Parameters:
-        - input: The input string provided by the user.
-        - node_count: The number of nodes already present in the circuit.
-        - circuit: The primary data structure representing the circuit.
-        - edgeinfo: Data structure representing the edges of the circuit.
+            - input: The input string provided by the user.
+            - node_count: The number of nodes already present in the circuit.
+            - circuit: The primary data structure representing the circuit.
+            - edgeinfo: Data structure representing the edges of the circuit.
         
         # Returns:
-        - The updated node_count after processing the input.
-        - A symbol indicating the action to be taken after processing (:continue, :break).
+            - The updated node_count after processing the input.
+            - A symbol indicating the action to be taken after processing (:continue, :break).
+
+        # Function logic:
+            - Handle special input ('exit', 'help', 'recap', 'draw', 'save', 'break', 'modify', 'cancel').
+            - If the input was handled, continue to the next iteration.
+            - If the input was to stop collecting nodes, break out of the loop.
+            - If the input was to modify existing nodes, modify them.
+            - If the input was to cancel existing nodes, delete them.
+            - Check if the node can be added to the circuit.
+            - Add the node to the circuit.
+            - If the node was added, increase the node count and continue to the next iteration.
+            - If the input was invalid, continue to the next iteration.
+
+        # Invoked functions:
+            - Function 'handle_special_input_break_modify_cancel(input, circuit, edgeinfo)' is invoked by function 
+            `_process_input(input::String, node_count::Int, circuit, edgeinfo)` in module 'GatheringNodes':
+                - Handle the following special input: 'exit', 'help', 'recap', 'draw', 'save', 'break', 'modify', 'cancel'.
+            - Function 'check_if_input_is_valid(input, circuit)' is invoked by function 
+            `_process_input(input::String, node_count::Int, circuit, edgeinfo)` in module 'GatheringNodes':
+                - Check if the node can be added to the circuit.
+            - Function '_add_node_to_circuit(input::String, node_count::Int, circuit)' is invoked by function 
+            `_process_input(input::String, node_count::Int, circuit, edgeinfo)` in module 'GatheringNodes':
+                - Add the node to the circuit.
+
+        # When is this function invoked?
+            - Function '_process_input(input::String, node_count::Int, circuit, edgeinfo)' is invoked by function 
+            `collect_nodes(circuit, edgeinfo)` in module 'GatheringNodes'.
 
         # Notes:
-        - This function is called by `collect_nodes_from_cmd`.
+            - This function is called by `collect_nodes(circuit, edgeinfo)` in module 'GatheringNodes'.
         """
         function _process_input(input::String, node_count::Int, circuit, edgeinfo)
 

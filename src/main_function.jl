@@ -1,4 +1,3 @@
-
 # ==============================================================================
 # ==============================================================================
 # ============================ Module: MainFunction ============================
@@ -8,7 +7,7 @@
 """
     Module: MainFunction
 
-Dedicated to housing the main function '' of the Circuit Plotter Program. 
+Dedicated to housing the main function 'main(circuit, edge_info)' of the Circuit Plotter Program. 
 This module orchestrates the execution of the various modules that comprise the program,
 and provides the user with feedback and instructions as necessary.
 

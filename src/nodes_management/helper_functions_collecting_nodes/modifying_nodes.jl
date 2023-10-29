@@ -7,22 +7,24 @@
 """
     Module: ModifyingNodes
 
+This module provides functions for modifying an existing node's coordinates in the circuit.
+
 # Author: Michelangelo Dondi
+
 # Date: 29-10-2023
-# Description: 
-    This module provides functions for modifying an existing node's coordinates in the circuit.
 
-# Version: 4.6
+# Version: 4.7
+
 # License: MIT License
-
-# Included modules:
-    - Module 'DataStructure provides' the data structures used by the Circuit Plotter Program.
-    - Module 'CircuitRecap provides' auxiliary functions for recapping the circuit.
-    - Module 'HandlingSpecialInput' provides auxiliary functions for input handling.
-    - Module 'CheckingNodesInput' provides auxiliary functions for checking the input of nodes.
 
 # Required packages:
     - 'LightGraphs' for graph data structures
+
+# Included modules:
+    - 'DataStructure' provides the data structures used by the Circuit Plotter Program.
+    - 'CircuitRecap' provides auxiliary functions for recapping the circuit.
+    - 'HandlingSpecialInput' provides auxiliary functions for input handling.
+    - 'CheckingNodesInput' provides auxiliary functions for checking the input of nodes.
 
 # Exported functions: 
     - `modify_existing_node(circuit)`: Modifies an existing nodes's coordinates in the circuit based on user input.
@@ -188,7 +190,7 @@ module ModifyingNodes
 
         Processes the user's input when modifying a node's coordinates.
 
-        #Parameters: 
+        # Parameters: 
             - input: The user's input.
             - circuit: The primary data structure representing the circuit's nodes and components.
             - edgeinfo: Additional information about the edges of the circuit.
