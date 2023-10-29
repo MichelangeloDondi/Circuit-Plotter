@@ -8,12 +8,12 @@
     Module: DeletingNodes
 
 Author: Michelangelo Dondi
-Date: 28-10-2023
+Date: 29-10-2023
 Description: 
     This module provides functions for modifying an existing node's coordinates in 
     the circuit and for deleting an existing node from the circuit.
 
-Version: 4.4
+Version: 4.5
 License: MIT License
 
 Exported functions: 
@@ -180,8 +180,6 @@ module DeletingNodes
 
                     # Parse the input as an integer.
                     node_count = _parse_input_as_integer(node_count, input, circuit)
-
-                    println("\n\033[36mPress enter to continue deleting nodes or type 'break' or 'b' to finish deleting nodes: \033[0m") ############################
 
                 # Handle potential errors (e.g., invalid input format).
                 catch e
