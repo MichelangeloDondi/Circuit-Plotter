@@ -7,25 +7,32 @@
 """
     Module: TestCheckIfInputIsValid
 
-Author: Michelangelo Dondi
-Date: 29-10-2023
-Description: This module provides functions to test the function 'check_if_input_is_valid()' 
-    of the module CheckingNodesInput. The function 'check_if_input_is_valid()' checks if the 
-    input provided by the user can be used to add a node to the circuit. 
+This module provides functions to test the function 'check_if_input_is_valid()' of the 
+module 'CheckingNodesInput'. The function 'check_if_input_is_valid()' checks if the input 
+provided by the user can be used to add a node to the circuit. The input is valid if it 
+is in the format 'x,y' (without regarding for spaces) and if the coordinates are available.
 
-Version: 4.6
-Licence: MIT Licence
+# Author: Michelangelo Dondi
 
-Exported Functions:
-    test_is_valid_format()
-    test_is_coordinate_available(circuit)
-        
-Required Packages:
-    Test
-        
-Including Modules:
-    CheckingNodesInput
-    CircuitRecap
+# Date: 29-10-2023
+
+# Version: 4.8
+
+# Licence: MIT Licence
+
+# Required Packages:
+    - Test
+
+# Including Modules:
+    - 'CheckingNodesInput' provides functions to check if the input provided by the user can be used to add a node to the circuit.
+    - 'CircuitRecap' provides auxiliary functions for recapping the circuit.
+
+# Exported Functions:
+    - test_is_valid_format()
+    - test_is_coordinate_available(circuit)
+                
+# Notes:
+    - none
 """
 module TestCheckIfInputIsValid
 
@@ -49,13 +56,13 @@ module TestCheckIfInputIsValid
     # ============================ Including Modules ===============================
     # ==============================================================================
 
-        # Module CheckingNodesInput provides functions to check if the input provided by the user can be used to add a node to the circuit.
-        include("../src/nodes_management/helper_functions_collecting_nodes/checking_nodes_input.jl")
+        # Module 'CheckingNodesInput' provides functions to check if the input provided by the user can be used to add a node to the circuit.
+        include("../../../../src/nodes_management/helper_functions_collecting_nodes/checking_nodes_input.jl")
         using .CheckingNodesInput.CoordinateAvailabilityCheck # Check if the coordinates are available.
         using .CheckingNodesInput.InputFormatCheck # Check if the input is in the correct format (a pair of integers).
 
-        # Module_Auxiliary_Functions_Circuit_Recap.jl provides auxiliary functions for recapping the circuit.
-        include("../src/functions_always_callable/circuit_recap.jl")
+        # Module 'CircuitRecap' provides auxiliary functions for recapping the circuit.
+        include("../../../../src/functions_always_callable/circuit_recap.jl")
         using .CircuitRecap: show_nodes_recap # Recap the nodes in the circuit    
 
     # ==============================================================================
@@ -67,39 +74,42 @@ module TestCheckIfInputIsValid
 
         Test if the input is in valid format (a pair of integers).
 
-        Parameters:
-        None
+        # Parameters:
+            - None
             
-        Returns:
-        None
+        # Returns:
+            - None
             
-        Notes:
-        The function is_valid_format(input) is tested in the following cases:
+        # Function tested:
+        - is_valid_format(input) of the module 'CheckingNodesInput'
+        
+        # Notes:
+            - The function is_valid_format(input) is tested in the following cases:
 
-        Cases 'A' where the input is a pair of valid integers:
-            - Test 1A: pair of small integers
-            - Test 2A: pair of large positive integers
-            - Test 3A: pair of large integers with opposite signs
-            - Test 4A: pair of integers with a space in front
-            - Test 5A: pair of integers with a space at the end
-            - Test 6A: pair of integers with a space in the middle after the comma
-            - Test 7A: pair of integers with a space in the middle before the comma
+                - Cases 'A' where the input is a pair of valid integers:
+                    - Test 1A: pair of small integers
+                    - Test 2A: pair of large positive integers
+                    - Test 3A: pair of large integers with opposite signs
+                    - Test 4A: pair of integers with a space in front
+                    - Test 5A: pair of integers with a space at the end
+                    - Test 6A: pair of integers with a space in the middle after the comma
+                    - Test 7A: pair of integers with a space in the middle before the comma
 
-        Cases 'B' where the input is composed of integer numbers but is not in the format 'x,y':
-            - Test 1B: single integer
-            - Test 2B: pair of integers with a double comma
-            - Test 3B: triple integer
-            - Test 4B: pair of integers with a negative sign in the middle
-            - Test 5B: pair of integers with a negative sign at the end
-            - Test 6B: pair of integers with a comma at the beginning
-            - Test 7B: pair of integers with a comma at the end
+                - Cases 'B' where the input is composed of integer numbers but is not in the format 'x,y':
+                    - Test 1B: single integer
+                    - Test 2B: pair of integers with a double comma
+                    - Test 3B: triple integer
+                    - Test 4B: pair of integers with a negative sign in the middle
+                    - Test 5B: pair of integers with a negative sign at the end
+                    - Test 6B: pair of integers with a comma at the beginning
+                    - Test 7B: pair of integers with a comma at the end
 
-        Cases 'C' where the input is not composed of integer numbers:
-            - Test 1C: pair of an integer with a letter
-            - Test 2C: pair of an integer with a special character
-            - Test 3C: empty string
-            - Test 4C: pair of an integer with a space
-            - Test 5C: pair of an integer with a space
+                - Cases 'C' where the input is not composed of integer numbers:
+                    - Test 1C: pair of an integer with a letter
+                    - Test 2C: pair of an integer with a special character
+                    - Test 3C: empty string
+                    - Test 4C: pair of an integer with a space
+                    - Test 5C: pair of an integer with a space
         """
         function test_is_valid_format()
 
@@ -165,23 +175,23 @@ module TestCheckIfInputIsValid
 
         Test if a pair of integers in the format 'x,y' (without regarding for spaces) returns true.
 
-        Parameters:
-        None
+        # Parameters:
+            - None
             
-        Returns:
-        None
+        # Returns:
+            - None
             
-        Notes:
-        The function is_valid_format(input) is tested in the following cases:
+        # Notes:
+            - The function is_valid_format(input) is tested in the following cases:
 
-        Cases 'A' where the input is a pair of valid integers:
-            - Test 1A: pair of small integers
-            - Test 2A: pair of large positive integers
-            - Test 3A: pair of large integers with opposite signs
-            - Test 4A: pair of integers with a space in front
-            - Test 5A: pair of integers with a space at the end
-            - Test 6A: pair of integers with a space in the middle after the comma
-            - Test 7A: pair of integers with a space in the middle before the comma
+                - Cases 'A' where the input is a pair of valid integers:
+                    - Test 1A: pair of small integers
+                    - Test 2A: pair of large positive integers
+                    - Test 3A: pair of large integers with opposite signs
+                    - Test 4A: pair of integers with a space in front
+                    - Test 5A: pair of integers with a space at the end
+                    - Test 6A: pair of integers with a space in the middle after the comma
+                    - Test 7A: pair of integers with a space in the middle before the comma
         """
         function test_is_valid_format_cases_A_where_the_input_is_a_pair_of_valid_integers()
 
@@ -293,23 +303,23 @@ module TestCheckIfInputIsValid
 
         Test if the input is not in the format 'x,y' (without regarding for spaces) returns false.
 
-        Parameters:
-        None
+        # Parameters:
+            - None
             
-        Returns:
-        None
+        # Returns:
+            - None
             
-        Notes:
-        The function is_valid_format(input) is tested in the following cases:
+        # Notes:
+            - The function is_valid_format(input) is tested in the following cases:
 
-        Cases 'B' where the input is composed of integer numbers but is not in the format 'x,y':
-            - Test 1B: single integer
-            - Test 2B: pair of integers with a double comma
-            - Test 3B: triple integer
-            - Test 4B: pair of integers with a negative sign in the middle
-            - Test 5B: pair of integers with a negative sign at the end
-            - Test 6B: pair of integers with a comma at the beginning
-            - Test 7B: pair of integers with a comma at the end
+                - Cases 'B' where the input is composed of integer numbers but is not in the format 'x,y':
+                    - Test 1B: single integer
+                    - Test 2B: pair of integers with a double comma
+                    - Test 3B: triple integer
+                    - Test 4B: pair of integers with a negative sign in the middle
+                    - Test 5B: pair of integers with a negative sign at the end
+                    - Test 6B: pair of integers with a comma at the beginning
+                    - Test 7B: pair of integers with a comma at the end
         """
         function test_is_valid_format_cases_B_where_the_input_is_not_in_the_format_x_y()
 
@@ -421,21 +431,21 @@ module TestCheckIfInputIsValid
 
         Test if the input is not composed of integer numbers returns false.
 
-        Parameters:
-        None
+        # Parameters:
+            - None
             
-        Returns:
-        None
+        # Returns:
+            - None       
             
-        Notes:
-        The function is_valid_format(input) is tested in the following cases:
+        # Notes:
+            - The function is_valid_format(input) is tested in the following cases:
 
-        Cases 'C' where the input is not composed of integer numbers:
-            - Test 1C: pair of an integer with a letter
-            - Test 2C: pair of an integer with a special character
-            - Test 3C: empty string
-            - Test 4C: pair of an integer with a space
-            - Test 5C: pair of an integer with a space
+                - Cases 'C' where the input is not composed of integer numbers:
+                    - Test 1C: pair of an integer with a letter
+                    - Test 2C: pair of an integer with a special character
+                    - Test 3C: empty string
+                    - Test 4C: pair of an integer with a space
+                    - Test 5C: pair of an integer with a space
         """
         function test_is_valid_format_cases_C_where_the_input_is_not_composed_of_integer_numbers()
 
@@ -519,25 +529,25 @@ module TestCheckIfInputIsValid
 
         Test if the input is associated to available coordinates.
 
-        Parameters:
-        - input : the input to be tested.
-        - circuit : the circuit to be tested.
+        # Parameters:
+            - input : the input to be tested.
+            - circuit : the circuit to be tested.
 
-        Returns:
-        None
+        # Returns:
+            - None
         
-        Notes:
-        The function is_coordinate_available(input, circuit) is tested in the following cases:
+        # Notes:
+            - The function is_coordinate_available(input, circuit) is tested in the following cases:
 
-        Cases 'A' where the coordinates are available and therefore the function should return true:
-            - Test 1A: node at (2,2) does not already exist so the coordinates are available
-            - Test 2A: node at (-3,4) does not already exist so the coordinates are available
-            - Test 3A: node at (1001,0) does not already exist so the coordinates are available
+                - Cases 'A' where the coordinates are available and therefore the function should return true:
+                    - Test 1A: node at (2,2) does not already exist so the coordinates are available
+                    - Test 2A: node at (-3,4) does not already exist so the coordinates are available
+                    - Test 3A: node at (1001,0) does not already exist so the coordinates are available
 
-        Cases 'B' where the coordinates are not available and therefore the function should return false:
-            - Test 1B: node at (0,0) already exists so the coordinates are not available
-            - Test 2B: node at (1,1) already exists so the coordinates are not available
-            - Test 3B: node at (-1,0) already exists so the coordinates are not available
+                - Cases 'B' where the coordinates are not available and therefore the function should return false:
+                    - Test 1B: node at (0,0) already exists so the coordinates are not available
+                    - Test 2B: node at (1,1) already exists so the coordinates are not available
+                    - Test 3B: node at (-1,0) already exists so the coordinates are not available
         """
         function test_is_coordinate_available(circuit)
 
@@ -595,19 +605,19 @@ module TestCheckIfInputIsValid
 
         Test if the coordinates that are available are indicated as available.
 
-        Parameters:
-        - circuit: the circuit to be tested.
+        # Parameters:
+            - circuit: the circuit to be tested.
             
-        Returns:
-        None
+        # Returns:
+            - None
             
-        Notes:
-        The function is_coordinate_available(input, circuit) is tested in the following cases:
+        # Notes:
+            - The function is_coordinate_available(input, circuit) is tested in the following cases:
 
-        Cases 'A' where the coordinates are available and therefore the function should return true:
-            - Test 1A: node at (2,2) does not already exist so the coordinates are available
-            - Test 2A: node at (-3,4) does not already exist so the coordinates are available
-            - Test 3A: node at (1001,0) does not already exist so the coordinates are available
+                - Cases 'A' where the coordinates are available and therefore the function should return true:
+                    - Test 1A: node at (2,2) does not already exist so the coordinates are available
+                    - Test 2A: node at (-3,4) does not already exist so the coordinates are available
+                    - Test 3A: node at (1001,0) does not already exist so the coordinates are available
         """
         function test_is_coordinate_available_cases_A_where_the_coordinates_are_available(circuit)
             
@@ -663,19 +673,19 @@ module TestCheckIfInputIsValid
 
         Test if the coordinates that are already occupied are indicated as not available.
 
-        Parameters:
-        - circuit: the circuit to be tested.
+        # Parameters:
+            - circuit: the circuit to be tested.
             
-        Returns:
-        None
+        # Returns:
+            - None
             
-        Notes:
-        The function is_coordinate_available(input, circuit) is tested in the following cases:
+        # Notes:
+            - The function is_coordinate_available(input, circuit) is tested in the following cases:
 
-        Cases 'B' where the coordinates are not available and therefore the function should return false:
-            - Test 1B: node at (0,0) already exists so the coordinates are not available
-            - Test 2B: node at (1,1) already exists so the coordinates are not available
-            - Test 3B: node at (1,-1) already exists so the coordinates are not available
+                - Cases 'B' where the coordinates are not available and therefore the function should return false:
+                    - Test 1B: node at (0,0) already exists so the coordinates are not available
+                    - Test 2B: node at (1,1) already exists so the coordinates are not available
+                    - Test 3B: node at (1,-1) already exists so the coordinates are not available
         """        
         function test_is_coordinate_available_cases_B_where_the_coordinates_are_not_available(circuit)
 
