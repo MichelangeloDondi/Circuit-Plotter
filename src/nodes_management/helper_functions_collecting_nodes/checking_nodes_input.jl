@@ -8,10 +8,10 @@
     Module: CheckingNodesInput 
 
 Author: Michelangelo Dondi
-Date: 28-10-2023
+Date: 29-10-2023
 Description: This module contains the function for checking if the input aimed to add a new node is valid.
 
-Version: 4.3
+Version: 4.5
 License: MIT License 
 
 Exported functions:
@@ -244,7 +244,7 @@ module CheckingNodesInput
 
                         # Provide feedback to the user and return false.
                         println("\n\033[31mThe node coordinates you have inserted cannot be accepted for the following reason:")
-                        println("\033[33mNode N",node.id," already exists at position ($x,$y).\033[36m")
+                        println("\033[33mNode N",node.id," already exists at position ($x,$y).\033[0m\n")
                         return false
                     end
                 end
