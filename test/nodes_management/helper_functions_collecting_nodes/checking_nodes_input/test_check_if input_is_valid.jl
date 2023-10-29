@@ -20,14 +20,14 @@ is in the format 'x,y' (without regarding for spaces) and if the coordinates are
 
 # Licence: MIT Licence
 
-# Required Packages:
+# Required packages:
     - Test
 
-# Including Modules:
+# Including modules:
     - 'CheckingNodesInput' provides functions to check if the input provided by the user can be used to add a node to the circuit.
     - 'CircuitRecap' provides auxiliary functions for recapping the circuit.
 
-# Exported Functions:
+# Exported functions:
     - test_is_valid_format()
     - test_is_coordinate_available(circuit)
                 
