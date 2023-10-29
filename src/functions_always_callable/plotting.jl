@@ -108,12 +108,19 @@ module Plotting
         """
             draw_plot(circuit) 
 
-        Invoke this function to visualize a given circuit. This function sets up the basic
-        visualization parameters and then integrates helper functions to plot nodes, edges,
-        and components of the circuit.
+        This function visualizes a given circuit. It uses the PlotlyJS backend for interactivity. 
+        The plot is interactive. The user can zoom in and out, pan, and hover over nodes and
+        components to see their details. If an error occurs, the function provides feedback.
+
+        # Parameters
+        - `circuit`: Data structure representing the circuit.
             
-        # Arguments
-        - `circuit`: A representation of the circuit to visualize.
+        # Returns
+        - nothing
+        
+        # Notes 
+        - The function is invoked by the main of Circuit Plotter Program and by Module HandlingSpecialInput.
+        - Empty plots cannot be displayed.
         """
         function draw_plot(circuit)
 
@@ -123,8 +130,26 @@ module Plotting
             # Create an empty plot
             p = scatter([], [], markersize=NODE_SIZE, markercolor=NODE_COLOR, label=false) 
 
-            # Prepare and display the plot
-            _prepare_and_display_plot(p, circuit)
+            # Try to visualize the circuit
+            try
+                    
+                # Prepare and display the plot
+                _prepare_and_display_plot(p, circuit)
+                    
+            # If an error occurs, provide feedback to the user and return
+            catch
+
+                # Provide feedback to the user and return
+                println("""
+                \033[31m
+                An error occurred while visualizing the circuit.
+                \033[33m
+                Consider that empty plots cannot be displayed.
+                \033[36m
+                Check that the circuit is valid and try again.
+                If the problem persists, please contact the developer.\033[0m""")
+                return
+            end
 
             # Provide feedback to the user
             println("\033[32mCircuit visualization complete. \n")
