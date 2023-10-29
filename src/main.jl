@@ -11,7 +11,7 @@
 Program: Circuit Plotter
 
 Author: Michelangelo Dondi
-Date: 28-10-2023
+Date: 29-10-2023
 Description:
     A user-friendly tool that allows the creation and visualization of electrical circuits.
     Users can define nodes, components, and their connections, with an end visualization
@@ -31,50 +31,61 @@ Notes:
     - \033[36m (Cyan):    Instructions and comunications (e.g. "Press enter to continue", etc.)
     - \033[0m  (White):   Other
 """
+################################################################################
+################################################################################
+# ====================== Begin Of Circuit-Plotter Program ===================== #
+################################################################################
+################################################################################
 
-# ==============================================================================
-# ============================ Required Packages ===============================
-# ==============================================================================
+    # ==============================================================================
+    # ============================ Required Packages ===============================
+    # ==============================================================================
 
-    # Ensure necessary packages are added and used.
-    using Pkg
+        # Ensure necessary packages are added and used.
+        using Pkg
 
-    # List of packages to be installed and loaded
-    for package in [
-        "LightGraphs",   # For graph data structures
-        "GraphRecipes",  # For plotting the circuit (the graph)
-        "Plots",         # For plotting the circuit (labels, etc.)
-        "PlotlyJS"       # Plotting backend for interactivity
-        ]
+        # List of packages to be installed and loaded
+        for package in [
+            "LightGraphs",   # For graph data structures
+            "GraphRecipes",  # For plotting the circuit (the graph)
+            "Plots",         # For plotting the circuit (labels, etc.)
+            "PlotlyJS"       # Plotting backend for interactivity
+            ]
 
-        # Try to load the packages
-        try 
-            
-            # Load the package
-            eval(Meta.parse("using $package"))
+            # Try to load the packages
+            try 
+                
+                # Load the package
+                eval(Meta.parse("using $package"))
 
-        # If any of the packages is not installed, install it
-        catch
-            
-            # Install the package
-            Pkg.add(package)        
+            # If any of the packages is not installed, install it
+            catch
+                
+                # Install the package
+                Pkg.add(package)        
 
-            # Load the package
-            eval(Meta.parse("using $package"))
+                # Load the package
+                eval(Meta.parse("using $package"))
+            end
         end
-    end
 
-# ==============================================================================
-# ============================== Included Modules ==============================
-# ==============================================================================
+    # ==============================================================================
+    # ============================== Included Modules ==============================
+    # ==============================================================================
 
-    # mainfunction.jl provides the main function of the Circuit Plotter Program.
-    include("mainfunction.jl")
-    using .MainFunction # Access the main function
+        # mainfunction.jl provides the main function of the Circuit Plotter Program.
+        include("mainfunction.jl")
+        using .MainFunction # Access the main function
+
+    ################################################################################
+    # ============================ Main Function Call ============================ #
+    ################################################################################
+
+        #Run the main function of the program
+        main(circuit, edge_info)
 
 ################################################################################
-# ============================== Main Function ================================ #
 ################################################################################
-
-    #Run the main function
-    main(circuit, edge_info)
+# ====================== End Of Circuit-Plotter Program ====================== #
+################################################################################
+################################################################################
