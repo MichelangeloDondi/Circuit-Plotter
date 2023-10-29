@@ -8,17 +8,46 @@
     Module: Plotting
 
 Author: Michelangelo Dondi
-Date: 28-10-2023
+Date: 29-10-2023
 Description:
-    A module dedicated to visually representing electrical circuits. This module provides
-    core functionalities for plotting the circuit components and its design. It integrates
-    with the main Circuit Plotter to provide an end-to-end circuit visualization tool.
+    This module provides the functions to visualize a circuit. It uses the PlotlyJS
+    backend for interactivity. The module is invoked by the main of Circuit Plotter
+    Program and by Module HandlingSpecialInput.
 
-Version: 4.3
+Version: 4.5
 License: MIT License
         
 Exported functions:
 - `draw_plot(circuit)`: Invoke this function to visualize a given circuit.
+
+Included modules:
+- DataStructure provides the data structures used by the Circuit Plotter Program.
+
+Required packages:
+- For plotting the circuit
+    - `PlotlyJS`: Interactive plotting library
+    - `Plots`: Scatter plots to represent nodes
+    - `LightGraphs`: Graph representation of the circuit
+    - `GraphRecipes`: For plotting graph structures
+
+Constants:
+
+    # Constants that define visual properties for the circuit visualization.
+    const NODE_SIZE = 25            # Size of the nodes
+    const NODE_COLOR = :skyblue     # Color of the nodes
+    const NODE_FONT_SIZE = 9        # Font size for node annotations
+    const EDGE_WIDTH = 2            # Width of the edges
+    const EDGE_FONT_SIZE = 9        # Font size for edge annotations
+    const COMPONENT_SIZE = 50       # Size of the component marker
+    const COMPONENT_FONT_SIZE = 12  # Font size for component annotations
+    const ALPHA = 0.92              # Transparency of the nodes and components
+    const FONT = "Tahoma"           # Font for the annotations
+    const FONT_COLOR = :black       # Font color for the annotations
+    const PHI = 1.61803398875       # Golden ratio
+    const TITLE_WIDTH = 500         # Width of the plot title
+
+Notes:
+- The module is invoked by the main of Circuit Plotter Program and by Module HandlingSpecialInput.
 """
 module Plotting
 
@@ -48,7 +77,7 @@ module Plotting
         using GraphRecipes    # For plotting graph structures
 
     # ==============================================================================
-    # ============================== Constants =====================================
+    # ================================= Constants ==================================
     # ==============================================================================
 
         # Constants that define visual properties for the circuit visualization.
@@ -73,7 +102,7 @@ module Plotting
         plotlyjs()
     
     # ==============================================================================
-    # ============================= function draw_plot =============================
+    # ======================== Function: draw_plot(circuit) ========================
     # ==============================================================================
 
         """
@@ -103,7 +132,7 @@ module Plotting
         end
 
     # ==============================================================================
-    # --------------------- function _prepare_and_display_plot ---------------------
+    # --------------- Function: _prepare_and_display_plot(p, circuit) --------------
     # ==============================================================================
 
         """
@@ -129,7 +158,7 @@ module Plotting
         end
     
     # ------------------------------------------------------------------------------
-    # ------------------------- function _set_plot_labels --------------------------
+    # ------------------- Function: _set_plot_labels(p, circuit) -------------------
     # ------------------------------------------------------------------------------
 
         """
@@ -147,7 +176,7 @@ module Plotting
         end
 
     # ------------------------------------------------------------------------------
-    # ------------------------- function _set_plot_title ---------------------------
+    # ------------------- Function: _set_plot_title(p, circuit) --------------------
     # ------------------------------------------------------------------------------
 
         """
@@ -168,7 +197,7 @@ module Plotting
         end
 
     # ------------------------------------------------------------------------------
-    # ----------------------- function _add_edges_to_plot --------------------------
+    # ----------------- Function: _add_edges_to_plot(p, circuit) -------------------
     # ------------------------------------------------------------------------------
 
         """
@@ -195,7 +224,7 @@ module Plotting
         end
 
     # ------------------------------------------------------------------------------
-    # ----------------------- function _add_nodes_to_plot --------------------------
+    # ----------------- Function: _add_nodes_to_plot(p, circuit) -------------------
     # ------------------------------------------------------------------------------
 
         """
@@ -213,7 +242,7 @@ module Plotting
         end
 
     # ------------------------------------------------------------------------------
-    # ---------------------- function _annotate_nodes_on_plot ----------------------
+    # ---------------- Function: _annotate_nodes_on_plot(p, circuit) ---------------
     # ------------------------------------------------------------------------------
 
         """
@@ -233,7 +262,7 @@ module Plotting
         end
     
     # ------------------------------------------------------------------------------
-    # ------------------------- _annotate_components_on_plot -----------------------
+    # ------------- Function: _annotate_components_on_plot(p, circuit) -------------
     # ------------------------------------------------------------------------------
 
         """
@@ -252,7 +281,7 @@ module Plotting
             end
         end
     
-    # ===================== function _mark_component_position ======================
+    # ========= Function: _mark_component_position(p, circuit, component) ==========
 
         """
             _mark_component_position(p, circuit, component)
@@ -271,7 +300,7 @@ module Plotting
         end
     
     
-    # ----------------- function _calculate_midpoint_of_component ------------------
+    # ------- Function: _calculate_midpoint_of_component(circuit, component) -------
 
         """
             _calculate_midpoint_of_component(circuit, component)
@@ -292,7 +321,7 @@ module Plotting
             return mid_x, mid_y
         end
 
-    # ===================== function _label_component_details ======================
+    # ========= Function: _label_component_details(p, circuit, component) ==========
 
         """
             _label_component_details(p, circuit, component)
@@ -311,7 +340,7 @@ module Plotting
         end
 
     # ------------------------------------------------------------------------------
-    # -------------------- function _optimize_plot_dimensions ----------------------
+    # ------------- Function: _optimize_plot_dimensions(p, circuit) ----------------
     # ------------------------------------------------------------------------------
 
         """
