@@ -17,7 +17,7 @@ Description:
     Users can define nodes, components, and their connections, with an end visualization
     rendered using the PlotlyJS backend for interactivity.
 
-Version: 4.5
+Version: 4.6
 License: MIT License
 
 Notes:
@@ -49,7 +49,8 @@ Notes:
             "LightGraphs",   # For graph data structures
             "GraphRecipes",  # For plotting the circuit (the graph)
             "Plots",         # For plotting the circuit (labels, etc.)
-            "PlotlyJS"       # Plotting backend for interactivity
+            "PlotlyJS",      # Plotting backend for interactivity
+            "FilePathsBase"  # For saving plots
             ]
 
             # Try to load the packages

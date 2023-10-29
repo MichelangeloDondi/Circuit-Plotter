@@ -34,14 +34,17 @@ module Saving
         export save_plot_displayed
 
     # ==============================================================================
-    # ============================ Required Packages ===============================
+    # ============================= Required Packages ==============================
     # ==============================================================================
 
         # For saving plots
         using Plots
-    
+
+        # For saving plots
+        using FilePathsBase
+
     # ==============================================================================
-    # =========================== Included Modules =================================
+    # ============================== Included Modules ==============================
     # ==============================================================================  
 
         # Module DataStructure provides the data structures used by the Circuit Plotter Program.
@@ -53,7 +56,7 @@ module Saving
         using .Plotting: draw_plot # Draw the current circuit plot
 
     # ==============================================================================
-    # ================= Function: save_plot_displayed(circuit) =====================
+    # =================== Function: save_plot_displayed(circuit) ===================
     # ==============================================================================
 
         """
@@ -69,6 +72,7 @@ module Saving
 
         Parameters:
         - circuit: The circuit to draw and save.
+        - io: The input/output stream to use for prompting the user for a filename.
 
         Returns:
         - nothing
@@ -86,21 +90,31 @@ module Saving
             _ensure_plot_exists(circuit)
 
             # Determine paths
-            project_dir = joinpath(@__DIR__, "../..")   # Project root directory
+            project_directory = joinpath(@__DIR__, "../..")   # Project root directory
 
-            # Ensure that the "Images" directory exists and create it if it does not
-            images_dir = _ensure_images_directory(project_dir)
+            # Ensure that the "circuit_drawings" directory exists and create it if it does not
+            drawings_directory = _ensure_drawings_directory(project_directory)
             
             # Generate filename
             filename = _generate_filename(io)
 
             # Generate filepath
-            filepath = joinpath(images_dir, filename)
-                
-            # Save the plot and provide feedback to user
-            Plots.savefig(filepath)
-            println("\033[32mCircuit plot successfully saved as '$filepath'.\033[0m")
-            return filepath
+            filepath = joinpath(drawings_directory, filename)
+            
+            # Normalize the filepath to make it more user-friendly
+            normalized_filepath = normpath(filepath)
+
+            # Try to save the plot
+            try
+
+                # Save the plot in the "circuit_drawings" directory as a .png file
+                Plots.savefig(normalized_filepath)
+                println("\033[32mCircuit plot successfully saved as '$normalized_filepath'.\033[0m")
+
+            # If an error occurs, provide feedback to the user
+            catch e
+                println("\033[31mError saving the file: $e\033[0m")
+            end
         end
 
     # ==============================================================================
@@ -143,11 +157,11 @@ module Saving
         end
 
     # ==============================================================================
-    # ------ Function: _ensure_images_directory(base_dir::String)::String ----------
+    # ------- Function: _ensure_drawings_directory(base_dir::String)::String -------
     # ==============================================================================
 
         """
-            _ensure_circuit_drawings_directory(base_dir::String)::String
+            _ensure_drawings_directory(base_dir::String)::String
 
         Ensures that a "circuit_drawings" directory exists within the specified base directory.
         Returns the path to the "circuit_drawings" directory.
@@ -158,7 +172,7 @@ module Saving
         Returns:
         - The path to the "circuit_drawings" directory.
         """
-        function _ensure_images_directory(base_dir::String)::String
+        function _ensure_drawings_directory(base_dir::String)::String
             images_path = joinpath(base_dir, "circuit_drawings")
             if !isdir(images_path)
                 mkdir(images_path)
