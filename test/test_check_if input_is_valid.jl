@@ -8,20 +8,24 @@
     Module: TestCheckIfInputIsValid
 
 Author: Michelangelo Dondi
-Date: 28-10-2023
-Description: This module provides a function to test the function check_if_input_is_valid(). 
-    The function check_if_input_is_valid() checks if the input provided by the user can 
-    be used to add a node to the circuit. The input is valid if it is in the format 'x,y'
-    and if the coordinates are available. The coordinates are available if there is no node
-    already in that position. The function check_if_input_is_valid() returns true if the
-    input is valid, false otherwise.
+Date: 29-10-2023
+Description: This module provides functions to test the function 'check_if_input_is_valid()' 
+    of the module CheckingNodesInput. The function 'check_if_input_is_valid()' checks if the 
+    input provided by the user can be used to add a node to the circuit. 
 
 Version: 4.5
 Licence: MIT Licence
 
-Exported Function(s):
+Exported Functions:
     test_is_valid_format()
     test_is_coordinate_available(circuit)
+        
+Required Packages:
+    Test
+        
+Including Modules:
+    CheckingNodesInput
+    CircuitRecap
 """
 module TestCheckIfInputIsValid
 
@@ -47,8 +51,8 @@ module TestCheckIfInputIsValid
 
         # Module CheckingNodesInput provides functions to check if the input provided by the user can be used to add a node to the circuit.
         include("../src/nodes_management/helper_functions_collecting_nodes/checking_nodes_input.jl")
-        using .CheckingNodesInput.CoordinateAvailabilityCheck # Check if the node can be added to the circuit.
-        using .CheckingNodesInput.InputFormatCheck # Check if the input is in the correct format.
+        using .CheckingNodesInput.CoordinateAvailabilityCheck # Check if the coordinates are available.
+        using .CheckingNodesInput.InputFormatCheck # Check if the input is in the correct format (a pair of integers).
 
         # Module_Auxiliary_Functions_Circuit_Recap.jl provides auxiliary functions for recapping the circuit.
         include("../src/functions_always_callable/circuit_recap.jl")
@@ -105,7 +109,7 @@ module TestCheckIfInputIsValid
                 println("\nRunning tests for is_valid_format()...\n")
 
                 # Cases where the input is a valid pair of integers
-                println("\033[93mCases 'A' where the input is a valid pair of integers: \033[0m\n")
+                println("\n\033[93mCases 'A' where the input is a valid pair of integers: \033[0m\n")
 
                 # In this section, the assertion is true == true because the function is_valid_format(input) is tested in the following cases:
 
@@ -121,7 +125,7 @@ module TestCheckIfInputIsValid
                 test_is_valid_format_cases_A_where_the_input_is_a_pair_of_valid_integers()
 
                 # Cases where the input is not in the format 'x,y'
-                println("\033[93mCases 'B' where the input is composed of integer numbers but is not in the format 'x,y': \033[0m\n")
+                println("\n\033[93mCases 'B' where the input is composed of integer numbers but is not in the format 'x,y': \033[0m\n")
 
                 # In this section, the assertion is false == false because the function is_valid_format(input) is tested in the following cases:
                 
@@ -137,7 +141,7 @@ module TestCheckIfInputIsValid
                 test_is_valid_format_cases_B_where_the_input_is_not_in_the_format_x_y()
 
                 # Cases where the input is not composed of integer numbers
-                println("\033[93mCases 'C' where the input is not composed of integer numbers.\033[0m")
+                println("\n\033[93mCases 'C' where the input is not composed of integer numbers.\033[0m\n")
 
                 # In this section, the assertion is false == false because the function is_valid_format(input) is tested in the following cases:
 
@@ -153,7 +157,7 @@ module TestCheckIfInputIsValid
         end
 
     # ==============================================================================
-    # Function: test_is_valid_format_cases_A_where_the_input_is_a_pair_of_valid_integers 
+    # === Function: test_is_valid_format_cases_A_where_the_input_is_a_pair_of_valid_integers() ===
     # ==============================================================================
 
         """
@@ -281,7 +285,7 @@ module TestCheckIfInputIsValid
         end      
 
     # ==============================================================================
-    # Function: test_is_valid_format_cases_B_where_the_input_is_not_in_the_format_x_y 
+    # --- Function: test_is_valid_format_cases_B_where_the_input_is_not_in_the_format_x_y() ---
     # ==============================================================================
 
         """
@@ -409,7 +413,7 @@ module TestCheckIfInputIsValid
         end
 
     # ==============================================================================
-    # Function: test_is_valid_format_cases_C_where_the_input_is_not_composed_of_integer_numbers()
+    # --- Function: test_is_valid_format_cases_C_where_the_input_is_not_composed_of_integer_numbers() ---
     # ==============================================================================
 
         """
@@ -507,23 +511,20 @@ module TestCheckIfInputIsValid
         end
 
     # ==============================================================================
-    # =================== Function: test_is_coordinate_available ===================
+    # ============== Function: test_is_coordinate_available(circuit) ===============
     # ==============================================================================
 
         """
-            test_is_coordinate_available(input, circuit) -> Bool
+            test_is_coordinate_available(circuit)
 
         Test if the input is associated to available coordinates.
 
         Parameters:
-        input : String
-            The input to be tested.
-        circuit : Dict{String, Dict{String, Any}}
-            The circuit to be tested.
+        - input : the input to be tested.
+        - circuit : the circuit to be tested.
 
         Returns:
-        Bool
-            True if the coordinates are available, false otherwise.
+        None
         
         Notes:
         The function is_coordinate_available(input, circuit) is tested in the following cases:
@@ -551,7 +552,7 @@ module TestCheckIfInputIsValid
                 show_nodes_recap(circuit)
 
                 # Cases where the coordinates are available
-                println("\033[93mCases 'A' where the coordinates are available and therefore the function should return true: \033[0m\n")
+                println("\n\033[93mCases 'A' where the coordinates are available and therefore the function should return true: \033[0m\n")
 
                 # In this section, the assertion is true == true because the function is_coordinate_available(input, circuit) is tested in the following cases:
 
@@ -559,6 +560,7 @@ module TestCheckIfInputIsValid
                     # - Test 1A: node at (2,2) does not already exist so the coordinates are available
                     # - Test 2A: node at (-3,4) does not already exist so the coordinates are available
                     # - Test 3A: node at (1001,0) does not already exist so the coordinates are available
+
                 test_is_coordinate_available_cases_A_where_the_coordinates_are_available(circuit)
 
                 # Test if the coordinates are not available
@@ -567,9 +569,9 @@ module TestCheckIfInputIsValid
                 # In this section, the assertion is false == false because the function is_coordinate_available(input, circuit) is tested in the following cases:
 
                     # Cases 'B' where the coordinates are not available and therefore the function should return false:
-                    # - Test 1B: node at (0,0) already exists so the coordinates are not available
-                    # - Test 2B: node at (1,1) already exists so the coordinates are not available
-                    # - Test 3B: node at (-1,0) already exists so the coordinates are not available
+                    # - Test 1B: node at (0,0)  already exists so the coordinates are not available
+                    # - Test 2B: node at (1,1)  already exists so the coordinates are not available
+                    # - Test 3B: node at (1,-1) already exists so the coordinates are not available
 
                 test_is_coordinate_available_cases_B_where_the_coordinates_are_not_available(circuit)
 
@@ -585,7 +587,7 @@ module TestCheckIfInputIsValid
         end
     
     # ==============================================================================
-    # Function: test_is_coordinate_available_cases_A_where_the_coordinates_are_available(circuit) 
+    # --- Function: test_is_coordinate_available_cases_A_where_the_coordinates_are_available(circuit) --- 
     # ==============================================================================
 
         """
@@ -594,7 +596,7 @@ module TestCheckIfInputIsValid
         Test if the coordinates that are available are indicated as available.
 
         Parameters:
-        None
+        - circuit: the circuit to be tested.
             
         Returns:
         None
@@ -653,7 +655,7 @@ module TestCheckIfInputIsValid
         end
     
     # ==============================================================================
-    # Function: test_is_coordinate_available_cases_B_where_the_coordinates_are_not_available(circuit)
+    # --- Function: test_is_coordinate_available_cases_B_where_the_coordinates_are_not_available(circuit) ---
     # ==============================================================================
 
         """
@@ -662,7 +664,7 @@ module TestCheckIfInputIsValid
         Test if the coordinates that are already occupied are indicated as not available.
 
         Parameters:
-        None
+        - circuit: the circuit to be tested.
             
         Returns:
         None
@@ -673,7 +675,7 @@ module TestCheckIfInputIsValid
         Cases 'B' where the coordinates are not available and therefore the function should return false:
             - Test 1B: node at (0,0) already exists so the coordinates are not available
             - Test 2B: node at (1,1) already exists so the coordinates are not available
-            - Test 3B: node at (-1,0) already exists so the coordinates are not available
+            - Test 3B: node at (1,-1) already exists so the coordinates are not available
         """        
         function test_is_coordinate_available_cases_B_where_the_coordinates_are_not_available(circuit)
 
@@ -705,8 +707,8 @@ module TestCheckIfInputIsValid
             ---------------------------------------------------""")
             @test is_coordinate_available(input2B, circuit) == false
 
-            # Test 3B: node at (-1,0) already exists so the coordinates are not available
-            input3B = "-1,0"
+            # Test 3B: node at (1,-1) already exists so the coordinates are not available
+            input3B = "1,-1"
             println("""
             ---------------------------------------------------
 
