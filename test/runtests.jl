@@ -9,15 +9,34 @@
 """
     File: runtests.jl
 
-Author: Michelangelo Dondi
-Date: 29-10-2023
-Description: This file runs the tests for the Circuit Plotter Program.
+This file runs the tests for the Circuit Plotter Program.
 
-Version: 4.6
-License: MIT License
+# Author: Michelangelo Dondi
 
-Notes:
-- The program is structured in modules, each of which is described in the corresponding file.
+# Date: 29-10-2023
+
+# Version: 4.7
+
+# License: MIT License
+
+# Required packages:
+    - `Test`: For testing
+    - `Parameters`: For defining the data structures (e.g. 'Node(id=1, x=1, y=1)' instead of 'Node(1, 1, 1)')
+    - `LightGraphs`: For graph data structures
+    - `GraphRecipes`: For plotting the circuit (the graph)
+    - `Plots`: For plotting the circuit (labels, etc.)
+    - `PlotlyJS`: Plotting backend for interactivity
+
+# Included modules:
+    - `DataStructure`: For housing the data structures used by the Circuit Plotter Program
+    - `TestCheckIfInputIsValid`: For housing the tests for the function 'check_if_input_is_valid()'
+    - `TestSavePlotDisplayed`: For housing the tests for the function 'save_plot_displayed()'
+
+# Exported functions:
+    - none
+
+# Notes:
+    - The program is structured in modules, each of which is described in the corresponding file.
 """
 # ---------------------------------------------------------------------------- #
 ################################################################################
@@ -63,16 +82,16 @@ Notes:
     # ============================ Including Modules ===============================
     # ==============================================================================
 
-        # Module DataStructure provides the data structures used by the Circuit Plotter Program.
-        include("../src/datastructure.jl")
+        # Module 'DataStructure' provides the data structures used by the Circuit Plotter Program.
+        include("../src/data_structure.jl")
         using .DataStructure: Node, Circuit # Access the data structures
 
-        # Module TestCheckIfInputIsValid.jl provides the function 'check_if_input_is_valid()'.
+        # Module 'TestCheckIfInputIsValid' provides the function 'check_if_input_is_valid()'.
         include("test_check_if input_is_valid.jl")
         using .TestCheckIfInputIsValid: test_is_coordinate_available # Access the function
         using .TestCheckIfInputIsValid: test_is_valid_format # Access the function
 
-        # Module TestImageName provides the function 'test_save_plot_displayed()'.
+        # Module 'TestImageName' provides the function 'test_save_plot_displayed()'.
         #include("test_save_plot_displayed.jl")
         #using .TestSavePlotDisplayed: test_save_plot_displayed # Access the function
         
@@ -91,6 +110,11 @@ Notes:
         |    |    | 
         N2 -- ┴ -- N1
 
+        # Notes:
+        - The circuit is hard-coded for testing purposes.
+        - The circuit is a graph, and is represented by a 'Circuit' object.
+
+
         """
         # Create a circuit hard-coded
         # Edge list: (N1, N2), (N2, N3), (N3, N4), (N4, N5), (N4, N6), (N5, N1), (N6, N2)
@@ -108,13 +132,13 @@ Notes:
     # ==============================================================================
 
         # Test module 'Module_Test_check_if_input_is_valid.jl'
-        println("\nRunning tests for Module TestCheckIfInputIsValid...")
+        #println("\nRunning tests for Module TestCheckIfInputIsValid...")
 
         # Test 'is_valid_format()' of Module Auxiliary_Functions_Checking_Input_Of_Nodes
-        test_is_valid_format()
+        #test_is_valid_format()
 
         # Test 'is_coordinate_available(circuit)' of Module Auxiliary_Functions_Checking_Input_Of_Nodes
-        test_is_coordinate_available(circuit)
+        #test_is_coordinate_available(circuit)
 
     # ==============================================================================
     # ========================== Testing Module Saving =============================

@@ -44,7 +44,7 @@ This module provides functions for handling the following special user input:
         `handle_special_input_yes_no(input::String)::Symbol` in module 'GatheringEdges'.
 
 # Notes:
-    - This module exports 
+    - None
 """
 module HandlingSpecialInput
 
@@ -271,6 +271,7 @@ module HandlingSpecialInput
         # Parameters:
             - input: The input provided by the user.
             - circuit: The circuit object.
+            - edge_info: The edge info object.
 
         # Returns:
             - :handled if the input was handled.
