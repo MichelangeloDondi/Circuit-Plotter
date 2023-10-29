@@ -1,14 +1,14 @@
 
 # ==============================================================================
 # ==============================================================================
-# =========================== Module: MainFunction =============================
+# ============================ Module: MainFunction ============================
 # ==============================================================================
 # ==============================================================================
 
 """
     Module: MainFunction
 
-Dedicated to housing the main function of the Circuit Visualization Tool.
+Dedicated to housing the main function '' of the Circuit Plotter Program. 
 This module orchestrates the execution of the various modules that comprise the program,
 and provides the user with feedback and instructions as necessary.
 
@@ -114,7 +114,7 @@ module MainFunction
     # ==============================================================================
 
         """
-            main()
+            main(circuit, edge_info)
 
         The main function of the program. It orchestrates the execution of the
         various modules that comprise the program, and provides the user with
@@ -130,11 +130,41 @@ module MainFunction
         Before exiting the program, the program asks the user whether to save the
         plot displayed.
             
-        Parameters:
-        - none
+        # Parameters:
+            - none
             
-        Returns:
-        - nothing
+        # Returns:
+            - nothing
+
+        # Function logic:
+            - Greet the user and provide any necessary instructions or information.
+            - While the user wants to create another circuit:
+                - Gather the particulars of the nodes.
+                - Gather the particulars of the edges and of the components and provide feedback to the user.
+                - Recap the circuit.
+                - Draw the circuit plot.
+                - Ask the user whether to create another circuit.
+            - Ask the user whether to save the plot displayed before exiting the program.
+
+        # Invoked functions:
+            - Function `show_initial_greetings()` from module 'Helping': 
+                This function is invoked to greet the user and provide any necessary instructions or information.
+            - Function `collect_nodes(circuit, edge_info)` from module 'GatheringNodes': 
+                This function is invoked to gather the particulars of the nodes.
+            - Function `collect_edges(circuit, edge_info)` from module 'GatheringEdges': 
+                This function is invoked to gather the particulars of the edges and of the components and provide feedback to the user.
+            - Function `show_circuit_recap(circuit, edge_info)` from module 'CircuitRecap': 
+                This function is invoked to recap the circuit.
+            - Function `draw_plot(circuit)` from module 'Plotting': 
+                This function is invoked to draw the circuit plot.
+            - Function `show_final_greetings_asking_whether_to_save_plot_displayed(circuit)` from module 'Helping': 
+                This function is invoked to ask the user whether to save the plot displayed before exiting the program.
+
+         # When is this function invoked?
+            - This function is invoked in module 'Main' when the program is run.
+
+        # Notes:
+            - This function is the entry point of the program.
         """
         function main(circuit, edge_info)
             
@@ -155,6 +185,7 @@ module MainFunction
                 # Draw the circuit plot.
                 draw_plot(circuit)
 
+                # Ask the user whether to create another circuit.
                 println("""
                 
                 Do you want to create another circuit?\033[36m

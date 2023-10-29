@@ -7,35 +7,41 @@
 """
     Module: Helping 
 
-Author: Michelangelo Dondi
-Date: 29-10-2023
-Description:
-    Dedicated to providing guidance to users interacting with the Circuit Plotter Program.
-    This module simplifies user interactions by offering clear instructions and comprehensive assistance.
+Dedicated to providing guidance to users interacting with the Circuit Plotter Program.
+This module simplifies user interactions by offering clear instructions and comprehensive assistance.
 
-Version: 4.6
-License: MIT License
+# Author: Michelangelo Dondi
 
-Included modules:
-- 'DataStructure' provides the data structures used by the Circuit Plotter Program.
-- 'Saving provides' functions for plotting the circuit.
+# Date: 29-10-2023
 
-Required packages:
-- none
+# Version: 4.7
 
-Exported functions:
-- `show_initial_greetings()`: Presents the welcoming message and initial instructions.
-- `show_help()`: Delivers an in-depth guide on the program's usage.
+# License: MIT License
 
-Notes:
-- This module is used by the function 'main(circuit, edgeinfo)' in module 'MainFunction'.
-- This module is used by the function '_handle_special_input' in module 'HandlingSpecialInput'.
-- This module is used by the function 'show_final_greetings_asking_whether_to_save_plot_displayed(circuit)' in module 'MainFunction'.
+# Included modules:
+    - 'DataStructure' provides the data structures used by the Circuit Plotter Program.
+    - 'Saving provides' functions for plotting the circuit.
+
+# Required packages:
+    - none
+
+# Exported functions:
+    - `show_initial_greetings()`: Presents the welcoming message and initial instructions.
+    - `show_help()`: Delivers an in-depth guide on the program's usage.
+
+# When are the exported functions invoked?
+    - `show_initial_greetings()` is invoked by the function `main(circuit, edgeinfo)` in module `MainFunction`.
+    - `show_help()` is invoked by the function `_handle_special_input` in module `HandlingSpecialInput`.
+    - `show_final_greetings_asking_whether_to_save_plot_displayed(circuit)` is invoked by the function `main()` in module `MainFunction`.
+
+# Notes:
+    - This module is not intended to be used by the user.
+    - This module is only used by the other modules in the program.
 """
 module Helping
 
     # ==============================================================================
-    # ============================ Exported Functions ==============================
+    # ============================= Exported Functions =============================
     # ==============================================================================
         
         # Invoke these function to show greetings and instructions
@@ -48,14 +54,14 @@ module Helping
         export show_final_greetings_asking_whether_to_save_plot_displayed
 
     # ==============================================================================
-    # ============================ Including Modules ===============================
+    # ============================= Including Modules ==============================
     # ==============================================================================
 
-        # Module DataStructure provides the data structures used by the Circuit Plotter Program.
+        # Module 'DataStructure' provides the data structures used by the Circuit Plotter Program.
         include("../data_structure.jl")
         using .DataStructure: Circuit # Access the data structures
 
-        # Module Saving provides functions for plotting the circuit.
+        # Module 'Saving' provides functions for plotting the circuit.
         include("saving.jl")
         using .Saving: save_plot_displayed # Save the plot displayed
 
@@ -233,10 +239,10 @@ module Helping
             end
 
             # Show the final greetings.
-            println("""
+            println("""\033[33m
             Thank you for having used the Circuit Plotter Program.
             We hope you have found it useful and that you will use it again in the future. 
-            \033[33m
+            
             The program will be quitted in 5 seconds.
             
             ---------------------------------------------------

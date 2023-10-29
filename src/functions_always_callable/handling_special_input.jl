@@ -7,7 +7,7 @@
 """
     Module: HandlingSpecialInput
 
-This module provides functions for handling special user input, such as
+This module provides functions for handling the following special user input:
 'exit', 'help', 'recap', 'draw' and 'save'.     
 
 # Author: Michelangelo Dondi

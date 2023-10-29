@@ -203,7 +203,7 @@ module GatheringEdges
 
         # Function logic:
             - Print the number of edges already present in the Circuit.
-            - Prompt the user for the next edge (E$(edge_count + 1)) or type 'break' or 'b' to stop adding edges.
+            - Prompt the user for the next edge (E(edge_count + 1)) or type 'break' or 'b' to stop adding edges.
             - Return the user's input as a string.
 
         # Invoked functions:
@@ -213,8 +213,10 @@ module GatheringEdges
             - The function is invoked by the function `collect_edges(circuit, edge_info)` in module 'GatheringEdges'.
 
         # Notes:
-            - The function calls the following functions:
-                - `readline()`: Read the user's input.
+            - The function aims to achieve the following:
+                1. Print the number of edges already present in the Circuit.
+                2. Prompt the user for the next edge (E(edge_count + 1)) or type 'break' or 'b' to stop adding edges.
+                3. Return the user's input as a string.
         """
         function _get_edge_input(edge_count::Int)::String
             print("""\n===================================================

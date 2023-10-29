@@ -92,6 +92,18 @@ module ModifyingNodes
             - If the user wants to stop modifying, break the loop.
             - If the user wants to modify a node, prompt them for the ID of the node they wish to modify.
 
+        # Invoked functions:
+            - Function `_prompt_modify_node_instructions(circuit)::String` from module 'ModifyingNodes': 
+                prompts the user for the ID of the node they wish to modify.
+            - Function `_process_user_input(input::String, circuit, edgeinfo)::Symbol` from module 'ModifyingNodes': 
+                processes the user's input when modifying a node's coordinates.
+            - Function `_parse_input_as_integer(input::String, circuit)` from module 'ModifyingNodes':
+                parses the user's input as an integer and modifies the node's coordinates.
+            - Function `_get_node_by_id(node_id::Int, circuit)::Node` from module 'ModifyingNodes':
+                retrieves a specific node from the circuit using its ID.
+            - Function `_update_node_coordinates(node, x::Int, y::Int)` from module 'ModifyingNodes':
+                updates the x and y coordinates of a given node.
+
         # When is this function invoked?
             - This function is invoked by the function `collect_nodes(circuit, edgeinfo)` in module 'GatheringNodes'.
 
@@ -104,7 +116,7 @@ module ModifyingNodes
             while true
 
                 # Display instructions for the user.
-                input = _prompt_modify_node_instructions(circuit, edgeinfo) 
+                input = _prompt_modify_node_instructions(circuit) 
 
                 # Process the user's input.
                 action = _process_user_input(input, circuit, edgeinfo)
@@ -136,12 +148,17 @@ module ModifyingNodes
             - Show the current state of the circuit to aid user decision.
             - Ask the user for the ID of the node they wish to modify.
             - Return the user's input.
+
+        # Invoked functions:
+            - Function `show_nodes_recap(circuit)` from module 'CircuitRecap': 
+                shows the current state of the circuit to aid user decision.
             
         # When is this function invoked?
             - This function is invoked by the function `modify_existing_node(circuit)` in module 'ModifyingNodes'.    
 
         # Notes:
-            - This function is used by the modify_existing_node function to prompt the user for the ID of the node they wish to modify.
+            - This function is used by the function 'modify_existing_node(circuit, edgeinfo)' to prompt the user 
+                for the ID of the node they wish to modify.
         """
         function _prompt_modify_node_instructions(circuit)::String
 
@@ -198,6 +215,16 @@ module ModifyingNodes
             - Update the node's coordinates with the new values.
             - Confirm to the user that the node's coordinates were successfully modified.
             - Return :continue to continue the loop.
+
+        # Invoked functions:
+            - Function `handle_special_input_break(input, circuit, edgeinfo)` from module 'HandlingSpecialInput': 
+                checks if the user entered special commands.
+            - Function `_parse_input_as_integer(input::String, circuit)` from module 'ModifyingNodes':
+                parses the user's input as an integer and modifies the node's coordinates.
+            - Function `_get_node_by_id(node_id::Int, circuit)::Node` from module 'ModifyingNodes':
+                retrieves a specific node from the circuit using its ID.
+            - Function `_update_node_coordinates(node, x::Int, y::Int)` from module 'ModifyingNodes':
+                updates the x and y coordinates of a given node.
 
         # When is this function invoked?
             - This function is invoked by the function `modify_existing_node(circuit, edgeinfo)` in module 'ModifyingNodes'.
@@ -267,6 +294,12 @@ module ModifyingNodes
             - Confirm to the user that the node's coordinates were successfully modified.
             - Return :continue to continue the loop.
 
+        # Invoked functions:
+            - Function `_get_node_by_id(node_id::Int, circuit)::Node` from module 'ModifyingNodes':
+                retrieves a specific node from the circuit using its ID.
+            - Function `_update_node_coordinates(node, x::Int, y::Int)` from module 'ModifyingNodes':
+                updates the x and y coordinates of a given node.
+
         # When is this function invoked?
             - This function is invoked by the function `_process_user_input(input::String, circuit, edgeinfo)::Symbol` in module 'ModifyingNodes'.
 
@@ -313,10 +346,10 @@ module ModifyingNodes
             end
         end
 
-    # ----------- Function: _get_node_by_id(node_id::Int, circuit)::Node -----------
+    # -------------- Function: _get_node_by_id(node_id::Int, circuit) --------------
 
         """
-            _get_node_by_id(node_id::Int, circuit)::Node
+            _get_node_by_id(node_id::Int, circuit)
 
         Retrieve a specific node from the circuit using its ID.
 
@@ -332,13 +365,17 @@ module ModifyingNodes
             - If the current node's ID matches the provided ID, return the node.
             - If no node with the given ID was found, return nothing.
 
+        # Invoked functions:
+            - Function `nodes(circuit)` from module 'DataStructure': 
+                retrieves all nodes in the circuit.
+
         # When is this function invoked?
             - This function is invoked by the function `_parse_input_as_integer(input::String, circuit)` in module 'ModifyingNodes'.
 
         # Notes:
             - It's essential for node IDs to be unique to retrieve the correct node.
         """
-        function _get_node_by_id(node_id::Int, circuit)::Node
+        function _get_node_by_id(node_id::Int, circuit)
 
             # Iterate over all nodes in the circuit.
             for node in circuit.nodes
@@ -370,6 +407,9 @@ module ModifyingNodes
 
         # Function logic:
             - Update the node's coordinates.
+
+        # Invoked functions:
+            - none
 
         # When is this function invoked?
             - This function is invoked by the function `_parse_input_as_integer(input::String, circuit)` in module 'ModifyingNodes'.

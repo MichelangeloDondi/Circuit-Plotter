@@ -57,7 +57,7 @@ module DeletingNodes
     # ==============================================================================
 
         # Module 'DataStructure' provides the data structures used by the Circuit Plotter Program.
-        include("../../datastructure.jl")
+        include("../../data_structure.jl")
         using .DataStructure: EdgeInfo, Circuit # Access the data structures
 
         # Module 'CircuitRecap' provides auxiliary functions for recapping the circuit.
