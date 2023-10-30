@@ -8,13 +8,13 @@
     Module: Plotting
 
 Author: Michelangelo Dondi
-Date: 29-10-2023
+Date: 30-10-2023
 Description:
     This module provides the functions to visualize a circuit. It uses the PlotlyJS
     backend for interactivity. The module is invoked by the main of Circuit Plotter
     Program and by Module HandlingSpecialInput.
 
-Version: 4.6
+Version: 4.8
 License: MIT License
         
 Included modules:
@@ -30,13 +30,13 @@ Required packages:
 Constants:
 
     # Constants that define visual properties for the circuit visualization.
-    const NODE_SIZE = 25            # Size of the nodes
+    const NODE_SIZE = 20            # Size of the nodes
     const NODE_COLOR = :skyblue     # Color of the nodes
-    const NODE_FONT_SIZE = 9        # Font size for node annotations
+    const NODE_FONT_SIZE = 6        # Font size for node annotations
     const EDGE_WIDTH = 2            # Width of the edges
-    const EDGE_FONT_SIZE = 9        # Font size for edge annotations
-    const COMPONENT_SIZE = 50       # Size of the component marker
-    const COMPONENT_FONT_SIZE = 12  # Font size for component annotations
+    const EDGE_FONT_SIZE = 6        # Font size for edge annotations
+    const COMPONENT_SIZE = 30       # Size of the component marker
+    const COMPONENT_FONT_SIZE = 9  # Font size for component annotations
     const ALPHA = 0.92              # Transparency of the nodes and components
     const FONT = "Tahoma"           # Font for the annotations
     const FONT_COLOR = :black       # Font color for the annotations
@@ -84,13 +84,13 @@ module Plotting
     # ==============================================================================
 
         # Constants that define visual properties for the circuit visualization.
-        const NODE_SIZE = 25            # Size of the nodes
+        const NODE_SIZE = 20            # Size of the nodes
         const NODE_COLOR = :skyblue     # Color of the nodes
-        const NODE_FONT_SIZE = 9        # Font size for node annotations
+        const NODE_FONT_SIZE = 6        # Font size for node annotations
         const EDGE_WIDTH = 2            # Width of the edges
-        const EDGE_FONT_SIZE = 9        # Font size for edge annotations
-        const COMPONENT_SIZE = 50       # Size of the component marker
-        const COMPONENT_FONT_SIZE = 12  # Font size for component annotations
+        const EDGE_FONT_SIZE = 6        # Font size for edge annotations
+        const COMPONENT_SIZE = 30       # Size of the component marker
+        const COMPONENT_FONT_SIZE = 9  # Font size for component annotations
         const ALPHA = 0.92              # Transparency of the nodes and components
         const FONT = "Tahoma"           # Font for the annotations
         const FONT_COLOR = :black       # Font color for the annotations
@@ -465,7 +465,7 @@ module Plotting
 
             # Golden ratio for aesthetic padding calculation
             phi = 1.61803398875
-            edge_fraction = 1 / (2 * phi)
+            edge_fraction = 1 / (4 * phi)
 
             # Calculate padding for X and Y axes based on node positions
             padding_x = edge_fraction * (maximum(x_coords) - minimum(x_coords))
