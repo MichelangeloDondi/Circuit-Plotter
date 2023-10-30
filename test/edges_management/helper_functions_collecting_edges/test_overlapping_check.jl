@@ -57,7 +57,7 @@ module TestOverlappingCheck
 
         # Module 'OverlappingCheck' provides functions to check if the edge to be added overlaps with an existing edge.
         include("../../../src/edges_management/helper_functions_collecting_edges/overlapping_check.jl")
-        using .OverlappingCheck # Check if the edge to be added overlaps with an existing edge.   
+        using .OverlappingCheck: overlapping_edges # Check if the edge to be added overlaps with an existing edge.   
 
         # Module 'CircuitRecap' provides auxiliary functions for recapping the circuit.
         include("../../../src/functions_always_callable/circuit_recap.jl")
@@ -125,13 +125,13 @@ module TestOverlappingCheck
         end
 
     # ==============================================================================
-    # ====== Function: cccc =====
+    # === Function: test_overlapping_check_cases_A_where_the_edge_to_be_added_overlaps_with_an_existing_edge() ===
     # ==============================================================================
 
         """
-            test_is_valid_format_cases_A_where_the_input_is_a_pair_of_valid_integers()
+            test_overlapping_check_cases_A_where_the_edge_to_be_added_overlaps_with_an_existing_edge()
 
-        Test if 
+        Test if èèèèèèèèèèèèèèèèèèèèèèèèèè
 
         # Parameters:
             - None
@@ -150,102 +150,46 @@ module TestOverlappingCheck
         function test_is_valid_format_cases_A_where_the_input_is_a_pair_of_valid_integers()
 
             # Test 1A: pair of small integers
-            input1A = "1,2"
+            input1A = "1,3"
             println("""
             ---------------------------------------------------
 
-            \033[96mTest 1A: checking if a t 'x,y' is valid \033[0m <=========== CHECK THIS
+            \033[96mTest 1A: checking if
 
                 - Input: '$input1A'
                 - Expected Output: true
-                - Notes: The input is in the format 'x,y' so the format of the input should be valid
+                - Notes: 
                 
             ---------------------------------------------------""")
             @test is_valid_format(input1A) == true       
 
-            # Test 2A: pair of large positive integers
-            input2A = "2,2222"
+            # Test 2A: 
+            input2A = "2,5"
             println("""
             ---------------------------------------------------
 
-            \033[96mTest 2A: checking if a pair of large positive integers in the format 'x,y' is valid \033[0m
+            \033[96mTest 2A: checking if 
 
                 - Input: $input2A
                 - Expected Output: true
-                - Notes: The input is in the format 'x,y' so the format of the input should be valid
+                - Notes: 
 
             ---------------------------------------------------""")
             @test is_valid_format(input2A) == true  
             
-            # Test 3A: pair of lange integers with opposit signs
-            input3A = "333333333,-333333333"
+            # Test 3A: 
+            input3A = "4,6"
             println("""
             ---------------------------------------------------
 
-            \033[96mTest 3A: checking if a pair of large integers with opposite signs in the format 'x,y' is valid \033[0m
+            \033[96mTest 3A: checking if 
 
                 - Input: $input3A
                 - Expected Output: true
-                - Notes: The input is in the format 'x,y' so the format of the input should be valid
+                - Notes: 
 
             ---------------------------------------------------""")
             @test is_valid_format(input3A) == true
-
-            # Test 4A: pair of integers with a space in front
-            input4A = " 4,4"
-            println("""
-            ---------------------------------------------------
-
-            \033[96mTest 4A: checking if a pair of integers with a space in front in the format 'x,y' is valid \033[0m
-
-                - Input: '$input4A'
-                - Expected Output: true
-                - Notes: The input is in the format 'x,y' so the format of the input should be valid
-
-            ---------------------------------------------------""")
-            @test is_valid_format(input4A) == true
-
-            # Test 5A: pair of integers with a space at the end
-            input5A = "5,5 "
-            println("""
-            ---------------------------------------------------
-
-            \033[96mTest 5A: checking if a pair of integers with a space at the end in the format 'x,y' is valid \033[0m
-
-                - Input: '$input5A'
-                - Expected Output: true
-                - Notes: The input is in the format 'x,y' so the format of the input should be valid
-
-            ---------------------------------------------------""")
-            @test is_valid_format(input5A) == true
-
-            # Test 6A: pair of integers with a space in the middle after the comma
-            input6A = "6, 6"
-            println("""
-            ---------------------------------------------------
-
-            \033[96mTest 6A: checking if a pair of integers with a space in the middle after the comma in the format 'x,y' is valid \033[0m
-
-                - Input: '$input6A'
-                - Expected Output: true
-                - Notes: The input is in the format 'x,y' so the format of the input should be valid
-
-            ---------------------------------------------------""")
-            @test is_valid_format(input6A) == true
-
-            # Test 7A: pair of integers with a space in the middle before the comma
-            input7A = "7 ,7"
-            println("""
-            ---------------------------------------------------
-
-            \033[96mTest 7A: checking if a pair of integers with a space in the middle before the comma in the format 'x,y' is valid \033[0m
-
-                - Input: '$input7A'
-                - Expected Output: true
-                - Notes: The input is in the format 'x,y' so the format of the input should be valid
-
-            ---------------------------------------------------""")
-            @test is_valid_format(input7A) == true
         end      
 
     # ==============================================================================
