@@ -108,7 +108,31 @@ module TestOverlappingCheck
                     # - Test 2A: edge to be added overlaps with an existing edge
                     # - Test 3A: edge to be added overlaps with an existing edge
 
-                test_overlapping_check_cases_A_where_the_edge_to_be_added_overlaps_with_an_existing_edge()
+                #test_overlapping_check_cases_A_where_the_edge_to_be_added_overlaps_with_an_existing_edge()
+
+
+
+                # Test 1A: edge to be added overlaps with an existing edge
+                input1A = "1,3"
+                node1A = 1
+                node2A = 3
+                println("""
+                ---------------------------------------------------
+
+                \033[96mTest 1A: checking if
+
+                    - Input: '$node1A, $node2A'
+                    - Expected Output: true
+                    - Notes: the edge to be added overlaps with an existing edge
+                    
+                ---------------------------------------------------""")
+                @test isempty(overlapping_edges((node1A, node2A), edge_info.edges, circuit.nodes)(input1A)) == false  
+
+
+
+
+
+
 
                 # Cases where the edge to be added does not overlap with an existing edge
                 println("\n\033[93mCases 'B' where the edge to be added does not overlap with an existing edge: \033[0m\n")
@@ -149,19 +173,20 @@ module TestOverlappingCheck
         """
         function test_is_valid_format_cases_A_where_the_input_is_a_pair_of_valid_integers()
 
-            # Test 1A: pair of small integers
-            input1A = "1,3"
+            # Test 1A: edge to be added overlaps with an existing edge
+            node1A = 1
+            node2A = 3
             println("""
             ---------------------------------------------------
 
             \033[96mTest 1A: checking if
 
-                - Input: '$input1A'
+                - Input: '$node1A, $node2A'
                 - Expected Output: true
-                - Notes: 
+                - Notes: the edge to be added overlaps with an existing edge
                 
             ---------------------------------------------------""")
-            @test is_valid_format(input1A) == true       
+            @test !isempty(overlapping_edges((node1A, node2A), edge_info.edges, circuit.nodes)(input1A)) == true       
 
             # Test 2A: 
             input2A = "2,5"
