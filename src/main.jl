@@ -1,4 +1,3 @@
-
 # ==============================================================================
 # ==============================================================================
 # ==============================================================================
@@ -16,9 +15,9 @@ rendered using the PlotlyJS backend for interactivity.
 
 # Author: Michelangelo Dondi
 
-# Date: 29-10-2023
+# Date: 30-10-2023
 
-# Version: 4.7
+# Version: 4.8
 
 # License: MIT License
 
@@ -31,9 +30,6 @@ rendered using the PlotlyJS backend for interactivity.
 
 # Included modules:
     - `MainFunction`: For housing the main function of the Circuit Plotter Program
-
-# Exported functions:
-    - none
 
 # Notes:
     - The program is structured in modules, each of which is described in the corresponding file.
