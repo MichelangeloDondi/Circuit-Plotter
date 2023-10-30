@@ -12,9 +12,9 @@ This module simplifies the main function definition process by providing a singl
     
 # Author: Michelangelo Dondi
 
-# Date: 29-10-2023
+# Date: 30-10-2023
 
-# Version: 4.7
+# Version: 4.8
 
 # License: MIT License
 
@@ -32,7 +32,7 @@ This module simplifies the main function definition process by providing a singl
         The accumulated data finds its place within the `circuit` structure. 
 
 # When is the exported function invoked?
-    - The function is invoked by the function `main(circuit, edge_info)` in module 'MainFunction'.
+    - Function `gather_edges(circuit, edge_info)` is invoked by the function `main(circuit, edge_info)` in module 'MainFunction'.
 
 # Notes:
     - Function `gather_edges(circuit, edge_info)` is the primary function for collecting edge details.
@@ -79,7 +79,6 @@ module GatheringEdges
 
         Sequentially gathers edge details from the user.
 
-
         # Parameters:
             - circuit: The primary structure amalgamating nodes, components, and their illustrative
                 representation within the circuit.
@@ -106,17 +105,18 @@ module GatheringEdges
             - Print a confirmation message. 
 
         # Invoked functions:
-            - `_get_edge_input(edge_count::Int)::String`: Prompt the user for the next edge.
+            - `_get_edge_input(edge_count::Int)::String`: 
+                Prompt the user for the next edge.
             - `_validate_edge_input(edge_nodes::Vector{String}, node_count::Int, edge_info, circuit)::Bool`: 
                 Validate user-provided input for defining an edge in the circuit.
-            - `_add_edge_to_circuit(node1::Int, node2::Int, edge_info, circuit)::Bool`: Add an edge between 
-                two nodes in the circuit.
-            - `_collect_component_from_cmd(edge_count::Int, circuit, edge_info)`: Sequentially gathers  
-                component details from the user.
-            - `handle_special_input_break(input, circuit, edge_info)`: Handle special input ('help', 'recap', 
-                'draw', 'exit', 'save', 'break').
-            - `handle_special_input_yes_no(input, circuit, edge_info)`: Handle special input ('help', 'recap', 
-                'draw', 'exit', 'yes', 'no').      
+            - `_add_edge_to_circuit(node1::Int, node2::Int, edge_info, circuit)::Bool`: 
+                Add an edge between two nodes in the circuit.
+            - `_collect_component_from_cmd(edge_count::Int, circuit, edge_info)`: 
+                Sequentially gathers component details from the user.
+            - `handle_special_input_break(input, circuit, edge_info)`: 
+                Handle special input ('help', 'recap', 'draw', 'exit', 'save', 'break').
+            - `handle_special_input_yes_no(input, circuit, edge_info)`: 
+                Handle special input ('help', 'recap', 'draw', 'exit', 'yes', 'no').      
         
         # When is the function invoked?
             - The function is invoked by the function `main(circuit, edge_info)` in module 'MainFunction'.
@@ -130,7 +130,7 @@ module GatheringEdges
                 5.  Parse the node indices.
                 6.  Try adding the edge to the circuit.
                 7.  If the edge was added successfully, prompt the user for the component details.
-                8.  Handle special input ('help', 'recap', 'draw', 'exit', 'stop').
+                8.  Handle special input ('help', 'recap', 'draw', 'exit', 'break').
                 9.  If the input was to not add a component, break out of the loop.
                 10. If the input was to add a component, prompt the user for the component details.
                 11. Add the component to the circuit.
