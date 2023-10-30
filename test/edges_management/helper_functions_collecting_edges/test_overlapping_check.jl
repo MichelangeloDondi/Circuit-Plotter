@@ -35,32 +35,36 @@ of the module `OverlappingCheck`.
 # Notes:
     - none
 """
-module TestCheckIfInputIsValid
+module TestOverlappingCheck
 
     # ==============================================================================
-    # =========================== Exported Functions ===============================
+    # ============================= Exported Functions =============================
     # ==============================================================================
 
         # Invoke the function test_overlapping_edges(new_edge, existing_edges, nodes) to test the function 
         export test_overlapping_edges
         
     # ==============================================================================
-    # ============================ Required Packages ===============================
+    # ============================== Required Packages =============================
     # ==============================================================================
 
         # Package 'Test' provides the macro @testset.
         using Test
 
     # ==============================================================================
-    # ============================ Including Modules ===============================
+    # ============================== Including Modules =============================
     # ==============================================================================
 
         # Module 'OverlappingCheck' provides functions to check if the edge to be added overlaps with an existing edge.
         include("../../../src/edges_management/helper_functions_collecting_edges/overlapping_check.jl")
         using .OverlappingCheck # Check if the edge to be added overlaps with an existing edge.   
 
+        # Module 'CircuitRecap' provides auxiliary functions for recapping the circuit.
+        include("../../../src/functions_always_callable/circuit_recap.jl")
+        using .CircuitRecap: show_circuit_recap # Recap the elements present in the circuit    
+
     # ==============================================================================
-    # ====================== Function: test_overlapping_edges() ====================
+    # ===================== Function: test_overlapping_edges() =====================
     # ==============================================================================
 
         """
@@ -81,9 +85,9 @@ module TestCheckIfInputIsValid
         # Notes:
             - The function 'overlapping_check' of the module 'OverlappingCheck' is tested in the following cases:
 
-                - 
+                - -----------------------------------------------
         """
-        function test_overlapping_check()
+        function test_overlapping_check(circuit, edge_info)
 
             @testset "Check if the function 'overlapping_check' of the module 'OverlappingCheck' returns true if the edge to be added overlaps with an existing edge and false otherwise" begin
 
@@ -92,7 +96,7 @@ module TestCheckIfInputIsValid
 
                 # Show the sample circuit
                 println("Hard-coded circuit:")
-                show_nodes_recap(circuit)
+                show_circuit_recap(circuit, edge_info)
 
                 # Cases where the edge to be added overlaps with an existing edge
                 println("\n\033[93mCases 'A' where the edge to be added overlaps with an existing edge: \033[0m\n")
