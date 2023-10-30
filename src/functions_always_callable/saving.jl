@@ -12,9 +12,9 @@ This module simplifies the saving process by providing a single function to call
 
 # Author: Michelangelo Dondi
 
-# Date: 29-10-2023
+# Date: 30-10-2023
 
-# Version: 4.7
+# Version: 4.8
 
 # License: MIT License
 
@@ -31,8 +31,8 @@ This module simplifies the saving process by providing a single function to call
         If no plot is rendered, the plot is first drawn and then saved. The user is prompted 
         to provide a filename for the plot. If no filename is provided, a default filename 
         "circuit_plot.png" is used. If the provided filename does not have an extension, 
-        ".png" is appended to the filename. The plot is saved in the "Images" directory. 
-        If the "circuit_drawings" directory does not exist, it is created.
+        ".png" is appended to the filename. If the "circuit_drawings" directory does not
+        exist, it is created.
 
 # When are the exported functions invoked?
     - Function `save_plot_displayed(circuit)` is invoked by the function 'show_final_greetings_asking_whether_to_save_plot_displayed(circuit)' 
@@ -84,7 +84,7 @@ module Saving
     # ==============================================================================
 
         """
-        save_plot_displayed(circuit)
+            save_plot_displayed(circuit)
 
         Saves the current plot into a "circuit_drawings" directory. If no plot is 
         rendered, the plot is first drawn and then saved. The user is prompted to 
@@ -95,7 +95,6 @@ module Saving
 
         Parameters:
         - circuit: The circuit to draw and save.
-        - io: The input/output stream to use for prompting the user for a filename.
 
         Returns:
         - nothing
@@ -107,7 +106,7 @@ module Saving
         - If no filename is provided, a default filename "circuit_plot.png" is used. 
         - If the provided filename does not have an extension, ".png" is appended to the filename.
         """
-        function save_plot_displayed(circuit, io::IO=stdin)
+        function save_plot_displayed(circuit)
 
             # Ensure that the plot is rendered
             _ensure_plot_exists(circuit)
@@ -132,7 +131,15 @@ module Saving
 
                 # Save the plot in the "circuit_drawings" directory as a .png file
                 Plots.savefig(normalized_filepath)
-                println("\033[32mCircuit plot successfully saved as '$normalized_filepath'.\033[0m")
+                println("""\033[32mCircuit plot successfully saved as '$normalized_filepath'.
+                \033[36m
+                Check the '$normalized_filepath' file to see the plot.
+                 
+                If the image file shows superimposition issues, try to increase the size 
+                of the plot by increasing the distance between the nodes of the circuit.
+                \033[33m
+                Otherwise, you can also take a screenshot of the plot.\033[0m
+                """)
 
             # If an error occurs, provide feedback to the user
             catch e
