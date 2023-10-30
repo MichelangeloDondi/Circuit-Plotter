@@ -15,7 +15,7 @@ and provides the user with feedback and instructions as necessary.
 
 # Date: 29-10-2023
 
-# Version: 4.7
+# Version: 4.8
 
 # License: MIT License
 
@@ -169,7 +169,11 @@ module MainFunction
             show_initial_greetings()
 
             while true
-                
+
+                # Initialize the data structures that will house the circuit particulars.
+                circuit = Circuit([], [], SimpleGraph())
+                edge_info = EdgeInfo([])
+                        
                 # Gather the particulars of the nodes.
                 collect_nodes(circuit, edge_info)
 
