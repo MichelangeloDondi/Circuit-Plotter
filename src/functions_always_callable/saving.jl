@@ -93,18 +93,33 @@ module Saving
         the filename. If the "circuit_drawings" directory does not exist, it is
         created and the plot is saved in it.
 
-        Parameters:
-        - circuit: The circuit to draw and save.
+        # Parameters:
+            - circuit: The circuit to draw and save.
 
-        Returns:
-        - nothing
+        # Returns:
+            - nothing
+
+        # Function logic:
+            - Ensure that the plot is rendered.
+            - Determine paths.
+            - Ensure that the "circuit_drawings" directory exists and create it if it does not.
+            - Generate filename.
+            - Generate filepath.
+            - Normalize the filepath to make it more user-friendly.
+            - Try to save the plot.
+            - If an error occurs, provide feedback to the user.
+
+        # When is this function invoked?
+            - This function is invoked by the function 'show_final_greetings_asking_whether_to_save_plot_displayed(circuit)' 
+                in module 'Helping' 
+            - This function is invoked by the function 'main(circuit, edge_info)' in module 'MainFunction'.
             
-        Notes:
-        - The plot is saved in the "circuit_drawings" directory. If the "Images" directory does not exist, it is created.
-        - If no plot is rendered, the plot is first drawn and then saved.
-        - The user is prompted to provide a filename for the plot. 
-        - If no filename is provided, a default filename "circuit_plot.png" is used. 
-        - If the provided filename does not have an extension, ".png" is appended to the filename.
+        # Notes:
+            - The plot is saved in the "circuit_drawings" directory. If the "Images" directory does not exist, it is created.
+            - If no plot is rendered, the plot is first drawn and then saved.
+            - The user is prompted to provide a filename for the plot. 
+            - If no filename is provided, a default filename "circuit_plot.png" is used. 
+            - If the provided filename does not have an extension, ".png" is appended to the filename.
         """
         function save_plot_displayed(circuit)
 
@@ -118,7 +133,7 @@ module Saving
             drawings_directory = _ensure_drawings_directory(project_directory)
             
             # Generate filename
-            filename = _generate_filename(io)
+            filename = _generate_filename()
 
             # Generate filepath
             filepath = joinpath(drawings_directory, filename)
@@ -138,8 +153,7 @@ module Saving
                 If the image file shows superimposition issues, try to increase the size 
                 of the plot by increasing the distance between the nodes of the circuit.
                 \033[33m
-                Otherwise, you can also take a screenshot of the plot.\033[0m
-                """)
+                Otherwise, consider that you can also take a screenshot of the plot.\033[0m""")
 
             # If an error occurs, provide feedback to the user
             catch e
@@ -157,14 +171,21 @@ module Saving
         Ensures that a plot exists for the specified circuit. If no plot exists, 
         a plot is drawn.
 
-        Parameters:
-        - circuit: The circuit to draw and save.
+        # Parameters:
+            - circuit: The circuit to draw and save.
 
-        Returns:
-        - nothing
+        # Returns:
+            - nothing
 
-        Notes:
-        - If no plot is rendered, the plot is first drawn and then saved.
+        # Function logic:
+            - Ensure that the plot is rendered.
+            - If no plot is rendered, draw the plot.
+
+        # When is this function invoked?
+            - This function is invoked by the function 'save_plot_displayed(circuit)' in module 'Saving'.
+
+        # Notes:
+            - If no plot is rendered, the plot is first drawn and then saved.
         """
         function _ensure_plot_exists(circuit)
 
@@ -196,11 +217,20 @@ module Saving
         Ensures that a "circuit_drawings" directory exists within the specified base directory.
         Returns the path to the "circuit_drawings" directory.
 
-        Parameters:
-        - base_dir: The base directory to check for the existence of an "circuit_drawings" directory.
+        # Parameters:
+            - base_dir: The base directory to check for the existence of an "circuit_drawings" directory.
 
-        Returns:
-        - The path to the "circuit_drawings" directory.
+        # Returns:
+            - The path to the "circuit_drawings" directory.
+
+        # Function logic:
+            - Ensure that the "circuit_drawings" directory exists and create it if it does not.
+
+        # When is this function invoked?
+            - This function is invoked by the function 'save_plot_displayed(circuit)' in module 'Saving'.
+
+        # Notes:
+            - If the "circuit_drawings" directory does not exist, it is created.
         """
         function _ensure_drawings_directory(base_dir::String)::String
             images_path = joinpath(base_dir, "circuit_drawings")
@@ -220,16 +250,26 @@ module Saving
         Ask the user for a filename to save the plot as. If no filename is provided, 
         a default filename "circuit_plot.png" is used.    
 
-        Parameters:
-        - io: The input/output stream to use for prompting the user for a filename.
+        # Parameters:
+            - io: The input/output stream to use for prompting the user for a filename.
             
-        Returns:
-        - The generated filename.
+        # Returns:
+            - The generated filename.
+
+        # Function logic:
+            - Prompt the user for a filename.
+            - Read the filename.
+            - If filename is empty, use the default filename.
+            - Append ".png" to filename.
+            - Return the filename.
+
+        # When is this function invoked?
+            - This function is invoked by the function 'save_plot_displayed(circuit)' in module 'Saving'.
             
-        Notes:
-        - The user is prompted to provide a filename for the plot.
-        - If no filename is provided, a default filename "circuit_plot.png" is used.
-        - The ".png" is appended to the filename.
+        # Notes:
+            - The user is prompted to provide a filename for the plot.
+            - If no filename is provided, a default filename "circuit_plot.png" is used.
+            - The ".png" is appended to the filename.
         """
         function _generate_filename(io::IO=stdin)::String
 
