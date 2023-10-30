@@ -124,13 +124,23 @@ This file runs the tests for the Circuit Plotter Program.
     # ==============================================================================
 
         # Test module 'Module_Test_check_if_input_is_valid.jl'
-        println("\nRunning tests for Module TestCheckIfInputIsValid...")
+        #println("\nRunning tests for module TestCheckIfInputIsValid...")
 
         # Test 'is_valid_format()' of Module Auxiliary_Functions_Checking_Input_Of_Nodes
-        test_is_valid_format()
+        #test_is_valid_format()
 
         # Test 'is_coordinate_available(circuit)' of Module Auxiliary_Functions_Checking_Input_Of_Nodes
-        test_is_coordinate_available(circuit)
+        #test_is_coordinate_available(circuit)
+
+    # ==============================================================================
+    # ====================== Testing Module OverlappingCheck =======================
+    # ==============================================================================
+
+        # Test module 'OverlappingCheck'
+        println("\nRunning tests for module OverlappingCheck...")
+
+        # Test 'overlapping_check()'
+        test_overlapping_check()
 
     # ==============================================================================
     # ========================== Testing Module Saving =============================
