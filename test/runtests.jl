@@ -160,15 +160,15 @@ This file runs the tests for the Circuit Plotter Program.
     # ==============================================================================
 
         # Test module 'CheckingNodesInput'
-        #println("\nRunning tests for module 'CheckingNodesInput'...")
+        println("\nRunning tests for module 'CheckingNodesInput'...")
 
         # Test 'is_valid_format()' of submodule 'InputFormatCheck' of module 'CheckingNodesInput'
-        #println("\nRunning tests for submodule 'InputFormatCheck'...")    
-        #test_is_valid_format()
+        println("\nRunning tests for submodule 'InputFormatCheck'...")    
+        test_is_valid_format()
 
         # Test 'is_coordinate_available(circuit)' of submodule 'CoordinateAvailabilityCheck' of module 'CheckingNodesInput'
-        #println("\nRunning tests for submodule 'CoordinateAvailabilityCheck'...")
-        #test_is_coordinate_available(circuit)
+        println("\nRunning tests for submodule 'CoordinateAvailabilityCheck'...")
+        test_is_coordinate_available(circuit)
 
     # ==============================================================================
     # ====================== Testing Module OverlappingCheck =======================
