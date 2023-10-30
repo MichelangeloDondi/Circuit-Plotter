@@ -110,29 +110,53 @@ module TestOverlappingCheck
 
                 #test_overlapping_check_cases_A_where_the_edge_to_be_added_overlaps_with_an_existing_edge()
 
+                    # Test 1A: edge to be added overlaps with an existing edge
+                    input1A = "1,3"
+                    node1A1 = 1
+                    node2A1 = 3
+                    println("""
+                    ---------------------------------------------------
 
+                    \033[96mTest 1A: checking if \033[0m
 
-                # Test 1A: edge to be added overlaps with an existing edge
-                input1A = "1,3"
-                node1A = 1
-                node2A = 3
-                println("""
-                ---------------------------------------------------
+                        - Input: '$node1A1, $node2A1'
+                        - Expected Output: false
+                        - Notes: the edge to be added overlaps with an existing edge
+                        
+                    ---------------------------------------------------""")
+                    @test isempty(overlapping_edges((node1A1, node2A1), edge_info.edges, circuit.nodes)(input1A)) == false  
 
-                \033[96mTest 1A: checking if
+                    # Test 2A: edge to be added overlaps with an existing edge
+                    input2A = "2,5"
+                    node1A2 = 2
+                    node2A2 = 5
+                    println("""
+                    ---------------------------------------------------
+                        
+                    \033[96mTest 2A: checking if \033[0m
 
-                    - Input: '$node1A, $node2A'
-                    - Expected Output: true
-                    - Notes: the edge to be added overlaps with an existing edge
-                    
-                ---------------------------------------------------""")
-                @test isempty(overlapping_edges((node1A, node2A), edge_info.edges, circuit.nodes)(input1A)) == false  
+                        - Input: '$node1A2, $node2A2'
+                        - Expected Output: false
+                        - Notes: the edge to be added overlaps with an existing edge
 
+                    ---------------------------------------------------""")
+                    @test isempty(overlapping_edges((node1A2, node2A2), edge_info.edges, circuit.nodes)(input2A)) == false
 
+                    # Test 3A: edge to be added overlaps with an existing edge
+                    input3A = "4,6"
+                    node1A3 = 4
+                    node2A3 = 6
+                    println("""
+                    ---------------------------------------------------
+                        
+                    \033[96mTest 3A: checking if \033[0m
 
+                        - Input: '$node1A3, $node2A3'
+                        - Expected Output: false
+                        - Notes: the edge to be added overlaps with an existing edge
 
-
-
+                    ---------------------------------------------------""")
+                    @test isempty(overlapping_edges((node1A3, node2A3), edge_info.edges, circuit.nodes)(input3A)) == false
 
                 # Cases where the edge to be added does not overlap with an existing edge
                 println("\n\033[93mCases 'B' where the edge to be added does not overlap with an existing edge: \033[0m\n")
@@ -144,7 +168,55 @@ module TestOverlappingCheck
                     # - Test 2B: edge to be added does not overlap with an existing edge
                     # - Test 3B: edge to be added does not overlap with an existing edge    
 
-                test_overlapping_check_cases_B_where_the_edge_to_be_added_does_not_overlap_with_an_existing_edge()
+                # test_overlapping_check_cases_B_where_the_edge_to_be_added_does_not_overlap_with_an_existing_edge()
+
+                    # Test 1B: edge to be added do not overlaps with an existing edge
+                    input1B = "1,5"
+                    node1B1 = 1
+                    node2B1 = 5
+                    println("""
+                    ---------------------------------------------------
+
+                    \033[96mTest 1B: checking if \033[0m
+
+                        - Input: '$node1B1, $node2B1'
+                        - Expected Output: true
+                        - Notes: the edge to be added overlaps with an existing edge
+                        
+                    ---------------------------------------------------""")
+                    @test isempty(overlapping_edges((node1B1, node2B1), edge_info.edges, circuit.nodes)(input1B)) == true
+
+                    # Test 2B: edge to be added do not overlaps with an existing edge
+                    input2B = "2,4"
+                    node1B2 = 2
+                    node2B2 = 4
+                    println("""
+                    ---------------------------------------------------
+
+                    \033[96mTest 2B: checking if \033[0m
+
+                        - Input: '$node1B2, $node2B2'
+                        - Expected Output: true
+                        - Notes: the edge to be added do not overlaps with an existing edge
+
+                    ---------------------------------------------------""")
+                    @test isempty(overlapping_edges((node1B2, node2B2), edge_info.edges, circuit.nodes)(input2B)) == true
+
+                    # Test 3B: edge to be added do not overlaps with an existing edge
+                    input3B = "3,6"
+                    node1B3 = 3
+                    node2B3 = 6
+                    println("""
+                    ---------------------------------------------------
+
+                    \033[96mTest 3B: checking if \033[0m
+
+                        - Input: '$node1B3, $node2B3'
+                        - Expected Output: true
+                        - Notes: the edge to be added do not overlaps with an existing edge
+
+                    ---------------------------------------------------""")
+                    @test isempty(overlapping_edges((node1B3, node2B3), edge_info.edges, circuit.nodes)(input3B)) == true
             end
         end
 
